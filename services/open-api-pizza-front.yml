@@ -1,0 +1,163 @@
+openapi: 3.0.1
+info:
+  title: pizza-account-api
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: API de gestion des comptes PizzaShop
+paths:
+  /auth/inscription:
+    post:
+      tags:
+        - auth-controller
+      operationId: inscrire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandeInscription'
+        required: true
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReponseJeton'
+        '400':
+          description: Déjà inscrit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErreurBasique'
+  /auth/connexion:
+    post:
+      tags:
+        - auth-controller
+      operationId: connexion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandeAuth'
+        required: true
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReponseJeton'
+        '400':
+          description: Identifiants invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErreurBasique'
+  /auth/jeton:
+    get:
+      tags:
+        - auth-controller
+      operationId: validerJeton
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReponseJeton'
+        '400':
+          description: Jeton invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErreurBasique'
+        '403':
+          description: Jeton banni
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErreurBasique'
+  /auth/desinscription:
+    delete:
+      tags:
+        - auth-controller
+      operationId: desinscrire
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReponseBasique'
+        '400':
+          description: Identifiants invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErreurBasique'
+  /auth/deconnexion:
+    delete:
+      tags:
+        - auth-controller
+      operationId: deconnecter
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Succès
+components:
+  schemas:
+    ReponseBasique:
+      type: object
+      properties:
+        message:
+          type: string
+    ErreurBasique:
+      type: object
+      properties:
+        erreur:
+          type: string
+    DemandeInscription:
+      required:
+        - mot_de_passe
+        - nom_utilisateur
+      type: object
+      properties:
+        nom_utilisateur:
+          type: string
+        mot_de_passe:
+          type: string
+    DemandeAuth:
+      required:
+        - mot_de_passe
+        - nom_utilisateur
+      type: object
+      properties:
+        nom_utilisateur:
+          type: string
+        mot_de_passe:
+          type: string
+    ReponseJeton:
+      type: object
+      properties:
+        message:
+          type: string
+        jeton:
+          type: string
