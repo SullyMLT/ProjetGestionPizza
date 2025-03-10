@@ -1,0 +1,309 @@
+openapi: 3.0.0
+info:
+  title: API de Gestion des Pizzas
+  version: 1.0.0
+
+paths:
+  /pizzas:
+    get:
+      summary: Récupérer la liste des pizzas
+      responses:
+        '200':
+          description: Liste des pizzas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pizza'
+    post:
+      summary: Ajouter une nouvelle pizza
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pizza'
+      responses:
+        '201':
+          description: Pizza créée
+
+  /pizzas/{id}:
+    get:
+      summary: Récupérer une pizza par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Détails d'une pizza
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pizza'
+    put:
+      summary: Mettre à jour une pizza
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pizza'
+      responses:
+        '200':
+          description: Pizza mise à jour
+    delete:
+      summary: Supprimer une pizza
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Pizza supprimée
+
+  /ingredients:
+    get:
+      summary: Récupérer la liste des ingrédients
+      responses:
+        '200':
+          description: Liste des ingrédients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+    post:
+      summary: Ajouter un nouvel ingrédient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        '201':
+          description: Ingrédient ajouté
+
+  /ingredients/{id}:
+    get:
+      summary: Récupérer un ingrédient par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Détails d'un ingrédient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+    delete:
+      summary: Supprimer un ingrédient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Ingrédient supprimé
+
+  /commandes:
+    get:
+      summary: Récupérer la liste des commandes
+      responses:
+        '200':
+          description: Liste des commandes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Commande'
+    post:
+      summary: Ajouter une nouvelle commande
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Commande'
+      responses:
+        '201':
+          description: Commande créée
+
+  /commandes/{id}:
+    get:
+      summary: Récupérer une commande par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Détails d'une commande
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commande'
+
+  /comptes:
+    get:
+      summary: Récupérer la liste des comptes
+      responses:
+        '200':
+          description: Liste des comptes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Compte'
+    post:
+      summary: Créer un nouveau compte
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Compte'
+      responses:
+        '201':
+          description: Compte créé
+
+  /comptes/{id}:
+    get:
+      summary: Récupérer un compte par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Détails d'un compte
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Compte'
+    delete:
+      summary: Supprimer un compte
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Compte supprimé
+
+  /commentaires/{id}:
+    get:
+      summary: Récupérer un commentaire par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Détails d'un commentaire
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commentaire'
+    delete:
+      summary: Supprimer un commentaire
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Commentaire supprimé
+
+components:
+  schemas:
+    Pizza:
+      type: object
+      properties:
+        nom:
+          type: string
+        description:
+          type: string
+        photo:
+          type: string
+        prix:
+          type: number
+    
+    Ingredient:
+      type: object
+      properties:
+        nom:
+          type: string
+        description:
+          type: string
+        photo:
+          type: string
+        prix:
+          type: number
+    
+    Commande:
+      type: object
+      properties:
+        numero:
+          type: integer
+        description:
+          type: string
+        validation:
+          type: integer
+        pizzaOrigine:
+          type: integer
+        date:
+          type: string
+          format: date
+    
+    Compte:
+      type: object
+      properties:
+        identifiant:
+          type: string
+        motDePasse:
+          type: string
+    
+    Commentaire:
+      type: object
+      properties:
+        description:
+          type: string
+        photo:
+          type: string
+        date:
+          type: string
+          format: date
+        note:
+          type: integer
