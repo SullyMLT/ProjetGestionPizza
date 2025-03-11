@@ -18,21 +18,4 @@ public class Commentaire {
     private String date;
     private long pizza_origine;
     private int note;
-
-    public Commentaire(Long id, String description, Date date, int pizzaOrigine, int note) {
-        this.id = id;
-        this.description = description;
-        this.date = date.toString();
-        this.pizza_origine = pizzaOrigine;
-        this.note = note;
-    }
-
-    public CommentaireDto toDto() {
-        return new CommentaireDto(this.id, this.description, this.date, this.pizza_origine, this.note);
-    }
-
-    public Commentaire(){
-
-    }
-
 }

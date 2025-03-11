@@ -50,7 +50,7 @@ public class CommentaireServiceImpl implements CommentaireService {
 
         if (optionalCom.isPresent()) {
             Commentaire commentaire = (Commentaire) optionalCom.get();
-            return commentaire.toDto();
+            return new CommentaireDto().CommentaireToDto(commentaire);
         } else {
             return null;
         }
@@ -62,7 +62,7 @@ public class CommentaireServiceImpl implements CommentaireService {
         List<CommentaireDto> commentaireDtos = new ArrayList<>();
 
         for (Commentaire comDto : Commentaires){
-            commentaireDtos.add(comDto.toDto());
+            commentaireDtos.add(new CommentaireDto().CommentaireToDto(comDto));
         }
         return commentaireDtos;
     }
