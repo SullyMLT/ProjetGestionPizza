@@ -29,4 +29,16 @@ public class Commande {
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<PizzaCommande> pizzasPersonnalisees;
+
+    public Commande(){
+
+    }
+
+    public Commande(int numero, String description, int validation, int pizza_origine, String date) {
+        this.numero = numero;
+        this.description = description;
+        this.validation = validation;
+        this.pizza_origine = pizza_origine;
+        this.date = date;
+    }
 }

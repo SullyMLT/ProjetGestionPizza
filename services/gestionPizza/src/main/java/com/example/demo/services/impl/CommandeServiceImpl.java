@@ -1,5 +1,6 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.CommandeDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.services.CommandeService;
@@ -15,8 +16,8 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    @Override
-    public void addCommande(Commande commande) {
+    public void addCommande(CommandeDto commandeDto) {
+        Commande commande = commandeDto.toEntity();
         commandeRepository.save(commande);
     }
 
@@ -28,10 +29,11 @@ public class CommandeServiceImpl implements CommandeService {
         return commandeRepository.findById(Math.toIntExact(id));
     }
 
-    public void updateCommande(Long id, Commande updatedCommande) {
+    public void updateCommande(Long id, CommandeDto updatedCommande) {
+        Commande commande = updatedCommande.toEntity();
         if (commandeRepository.existsById(Math.toIntExact(id))) {
-            updatedCommande.setId(id);
-            commandeRepository.save(updatedCommande);
+            commande.setId(id);
+            commandeRepository.save(commande);
         }
     }
 
