@@ -36,7 +36,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: long
       responses:
         '200':
           description: Détails d'une pizza
@@ -51,7 +51,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: long
       requestBody:
         required: true
         content:
@@ -68,7 +68,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: long
       responses:
         '204':
           description: Pizza supprimée
@@ -96,34 +96,6 @@ paths:
       responses:
         '201':
           description: Ingrédient ajouté
-
-  /ingredients/{id}:
-    get:
-      summary: Récupérer un ingrédient par ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Détails d'un ingrédient
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ingredient'
-    delete:
-      summary: Supprimer un ingrédient
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: Ingrédient supprimé
 
   /commandes:
     get:
@@ -157,7 +129,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: long
       responses:
         '200':
           description: Détails d'une commande
@@ -165,6 +137,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Commande'
+
+  /pizza_commandes:
+    post:
+      summary: Ajouter une pizza personnalisée à une commande
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PizzaCommande'
+      responses:
+        '201':
+          description: Pizza personnalisée ajoutée à la commande
 
   /comptes:
     get:
@@ -198,7 +183,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: long
       responses:
         '200':
           description: Détails d'un compte
@@ -213,44 +198,19 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: long
       responses:
         '204':
           description: Compte supprimé
 
-  /commentaires/{id}:
-    get:
-      summary: Récupérer un commentaire par ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Détails d'un commentaire
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Commentaire'
-    delete:
-      summary: Supprimer un commentaire
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: Commentaire supprimé
 
 components:
   schemas:
     Pizza:
       type: object
       properties:
+        id:
+          type: long
         nom:
           type: string
         description:
@@ -259,10 +219,12 @@ components:
           type: string
         prix:
           type: number
-    
+
     Ingredient:
       type: object
       properties:
+        id:
+          type: long
         nom:
           type: string
         description:
@@ -271,10 +233,12 @@ components:
           type: string
         prix:
           type: number
-    
+
     Commande:
       type: object
       properties:
+        id:
+          type: long
         numero:
           type: integer
         description:
@@ -282,28 +246,38 @@ components:
         validation:
           type: integer
         pizzaOrigine:
-          type: integer
+          type: long
         date:
           type: string
           format: date
-    
+        pizzas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pizza'
+        pizzasPersonnalisees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PizzaCommande'
+
+    PizzaCommande:
+      type: object
+      properties:
+        id:
+          type: long
+        commandeId:
+          type: long
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        prixTotal:
+          type: number
     Compte:
       type: object
       properties:
+        id:
+          type: long
         identifiant:
           type: string
         motDePasse:
           type: string
-    
-    Commentaire:
-      type: object
-      properties:
-        description:
-          type: string
-        photo:
-          type: string
-        date:
-          type: string
-          format: date
-        note:
-          type: integer
