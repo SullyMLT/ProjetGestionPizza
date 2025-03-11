@@ -1,0 +1,14 @@
+services:
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    ports:
+      - "27017:27017"  
+    volumes:
+      - mongodb-data:/data/db  
+
+    environment:
+      - MONGO_INITDB_DATABASE=e22100765
+
+volumes:
+  mongodb-data:
