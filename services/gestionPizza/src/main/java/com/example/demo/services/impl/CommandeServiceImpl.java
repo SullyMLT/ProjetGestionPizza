@@ -7,6 +7,7 @@ import com.example.demo.services.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,28 +17,34 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    public void addCommande(CommandeDto commandeDto) {
+    public CommandeDto addCommande(CommandeDto commandeDto) {
         Commande commande = commandeDto.toEntity();
         commandeRepository.save(commande);
+        return new CommandeDto().CommandeToDto(commande);
     }
 
-    public List<Commande> getAllCommandes() {
-        return commandeRepository.findAll();
-    }
+    public List<CommandeDto> getAllCommandes() {
+        List<Commande> commandes = commandeRepository.findAll();
+        List<CommandeDto> commandeDtos = new ArrayList<>();
 
-    public Optional<Commande> getCommandeById(Long id) {
-        return commandeRepository.findById(Math.toIntExact(id));
-    }
-
-    public void updateCommande(Long id, CommandeDto updatedCommande) {
-        Commande commande = updatedCommande.toEntity();
-        if (commandeRepository.existsById(Math.toIntExact(id))) {
-            commande.setId(id);
-            commandeRepository.save(commande);
+        if (commandes.isEmpty()) {
+            return null;
+        }else {
+            for (Commande commande : commandes) {
+                commandeDtos.add(new CommandeDto().CommandeToDto(commande));
+            }
+            return commandeDtos;
         }
     }
 
-    public void deleteCommande(Long id) {
-        commandeRepository.deleteById(Math.toIntExact(id));
+    public CommandeDto getCommandeById(Long id) {
+        Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(id));
+        if (optionalCommande.isPresent()) {
+            CommandeDto commandeDtos = new CommandeDto().CommandeToDto(optionalCommande.get());
+            return commandeDtos;
+        }else{
+            System.out.println("get commandeById raté");
+            return null;
+        }
     }
 }
