@@ -1,49 +1,87 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import "../App.css";
 
-const AddPizza = () => {
-  const [nom, setNom] = useState('');
-  const [description, setDescription] = useState('');
-  const [photo, setPhoto] = useState('');
-  const [prix, setPrix] = useState('');
+function AddPizza({ addPizza }) {
+  const [pizza, setPizza] = useState({
+    nom: "",
+    description: "",
+    photo: "",
+    prix: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPizza({ ...pizza, [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const pizzaData = {
-      nom,
-      description,
-      photo,
-      prix: parseFloat(prix),
-    };
-
-    axios.post('http://localhost:5000/pizzas', pizzaData)
-      .then(response => {
-        alert('Pizza ajoutée avec succès !');
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-        alert('Erreur lors de l\'ajout de la pizza.');
-      });
+    if (pizza.nom && pizza.description && pizza.prix && pizza.photo) {
+      addPizza(pizza);
+      setPizza({ nom: "", description: "", photo: "", prix: "" });
+    } else {
+      alert("Tous les champs doivent être remplis");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Nom de la Pizza:</label>
-      <input type="text" value={nom} onChange={e => setNom(e.target.value)} required />
+    <div className="add-pizza-form">
+      <h2>Ajouter une Pizza</h2>
+      <form onSubmit={handleSubmit} className="pizza-form">
+        <div className="form-group">
+          <label htmlFor="nom">Nom</label>
+          <input
+            type="text"
+            id="nom"
+            name="nom"
+            value={pizza.nom}
+            onChange={handleChange}
+            placeholder="Nom de la pizza"
+            required
+          />
+        </div>
 
-      <label>Description:</label>
-      <input type="text" value={description} onChange={e => setDescription(e.target.value)} required />
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            value={pizza.description}
+            onChange={handleChange}
+            placeholder="Description de la pizza"
+            required
+          />
+        </div>
 
-      <label>Photo URL:</label>
-      <input type="text" value={photo} onChange={e => setPhoto(e.target.value)} />
+        <div className="form-group">
+          <label htmlFor="photo">URL de la photo</label>
+          <input
+            type="url"
+            id="photo"
+            name="photo"
+            value={pizza.photo}
+            onChange={handleChange}
+            placeholder="Lien vers une image"
+            required
+          />
+        </div>
 
-      <label>Prix:</label>
-      <input type="number" value={prix} onChange={e => setPrix(e.target.value)} required />
-
-      <button type="submit">Ajouter Pizza</button>
-    </form>
+        <div className="form-group">
+          <label htmlFor="prix">Prix</label>
+          <input
+            type="number"
+            id="prix"
+            name="prix"
+            value={pizza.prix}
+            onChange={handleChange}
+            placeholder="Prix de la pizza"
+            required
+          />
+        </div>
+        <button class="button">Ajouter une Pizza</button>
+      </form>
+    </div>
   );
-};
+}
 
 export default AddPizza;
