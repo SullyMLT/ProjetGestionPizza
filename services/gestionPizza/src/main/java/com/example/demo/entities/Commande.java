@@ -29,4 +29,5 @@ public class Commande {
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<PizzaCommande> pizzasPersonnalisees;
+
 }
