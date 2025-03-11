@@ -4,7 +4,6 @@ import com.example.demo.entities.Commentaire;
 import com.example.demo.dtos.CommentaireDto;
 import com.example.demo.repositories.CommentaireRepository;
 import com.example.demo.services.CommentaireService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;

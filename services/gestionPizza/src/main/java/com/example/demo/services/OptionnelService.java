@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.example.demo.services;
 
 import com.example.demo.entities.Optionnel;
@@ -12,9 +11,3 @@ public interface OptionnelService {
     Optionnel updateOptionnel(Long id, Optionnel optionnel);
     void deleteOptionnel(Long id);
 }
-=======
-package com.example.demo.services;
-
-public interface OptionnelService {
-}
->>>>>>> refs/remotes/origin/main
