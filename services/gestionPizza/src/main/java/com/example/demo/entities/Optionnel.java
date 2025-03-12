@@ -23,6 +23,7 @@ public class Optionnel {
     )
     private List<Ingredient> ingredients;
 
-    @ManyToMany(mappedBy = "optionnels")
-    private List<Pizza> pizzas;
+    @ManyToOne
+    @JoinColumn(name = "pizza_id")
+    private Pizza pizza;
 }

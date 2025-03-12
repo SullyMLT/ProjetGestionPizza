@@ -67,7 +67,7 @@ public class DataInitializer implements CommandLineRunner {
         Ingredient ingredient2 = new Ingredient();
         ingredient2.setName("Ingredient 2");
         ingredient2.setDescription("Description 2");
-        ingredient2.setPathPhoto("path2.jpg");
+        ingredient2.setPathPhoto("/pizza-1498148703.jpg");
         ingredient2.setPrix(20.0);
         ingredient2.setOptionnels(Arrays.asList(optionnel1));
         ingredient2.setStandards(Arrays.asList(standard2));
@@ -77,16 +77,16 @@ public class DataInitializer implements CommandLineRunner {
         Pizza pizza1 = new Pizza();
         pizza1.setNom("Pizza 1");
         pizza1.setDescription("Description 1");
-        pizza1.setPhoto("photo1.jpg");
+        pizza1.setPhoto("/Pepperoni_Pizza_Beauty_1200x1200.webp");
         pizza1.setPrix(15.0f);
         pizza1.setOptionnels(Arrays.asList(optionnel1, optionnel2));
         pizza1.setStandards(Arrays.asList(standard1, standard2));
         pizzaRepository.save(pizza1);
 
         Pizza pizza2 = new Pizza();
-        pizza2.setNom("Pizza 2");
+        pizza2.setNom("PEPERO- NICO-NIIII");
         pizza2.setDescription("Description 2");
-        pizza2.setPhoto("photo2.jpg");
+        pizza2.setPhoto("/pizza-1498148703.jpg");
         pizza2.setPrix(25.0f);
         pizza2.setOptionnels(Arrays.asList(optionnel2));
         pizza2.setStandards(Arrays.asList(standard1));

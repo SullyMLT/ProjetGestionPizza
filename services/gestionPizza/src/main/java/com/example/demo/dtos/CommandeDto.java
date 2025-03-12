@@ -5,6 +5,7 @@ import com.example.demo.entities.Pizza;
 import com.example.demo.entities.PizzaCommande;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,47 +16,25 @@ public class CommandeDto {
     private int validation;
     private int pizzaOrigine;
     private String date;
-    private List<Pizza> pizzas;
+    private List<PizzaDto> pizzas;
     private List<PizzaCommande> pizzasPersonnalisees;
 
-    public CommandeDto() {
-    }
 
-    public CommandeDto commandeToDto(Commande commande) {
-        CommandeDto dto = new CommandeDto();
-        dto.setId(commande.getId());
-        dto.setNumero(commande.getNumero());
-        dto.setDescription(commande.getDescription());
-        dto.setValidation(commande.getValidation());
-        dto.setPizzaOrigine(commande.getPizza_origine());
-        dto.setDate(commande.getDate());
+    public CommandeDto(Commande commande) {
+
+        this.setId(commande.getId());
+        this.setNumero(commande.getNumero());
+        this.setDescription(commande.getDescription());
+        this.setValidation(commande.getValidation());
+        this.setPizzaOrigine(commande.getPizza_origine());
+        this.setDate(commande.getDate());
+        this.pizzas = new ArrayList<>();
+        this.pizzasPersonnalisees = new ArrayList<>();
         for (Pizza pizza : commande.getPizzas()) {
-            dto.pizzas.add(pizza);
+            this.pizzas.add(new PizzaDto(pizza));
         }
         for (PizzaCommande pizzaCommande : commande.getPizzasPersonnalisees()) {
-            dto.pizzasPersonnalisees.add(pizzaCommande);
+            this.pizzasPersonnalisees.add(pizzaCommande);
         }
-
-        return dto;
     }
-
-    public Commande toEntity() {
-        Commande commande = new Commande();
-        commande.setId(this.id);
-        commande.setNumero(this.getNumero());
-        commande.setDescription(this.getDescription());
-        commande.setValidation(this.getValidation());
-        commande.setPizza_origine(this.getPizzaOrigine());
-        commande.setDate(this.getDate());
-        for (Pizza pizza : this.getPizzas()) {
-            commande.getPizzas().add(pizza);
-        }
-        for (PizzaCommande pizzaCommande : this.getPizzasPersonnalisees()) {
-            commande.getPizzasPersonnalisees().add(pizzaCommande);
-        }
-
-        return commande;
-    }
-
-
 }

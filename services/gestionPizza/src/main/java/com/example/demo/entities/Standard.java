@@ -23,6 +23,7 @@ public class Standard {
     )
     private List<Ingredient> ingredients;
 
-    @ManyToMany(mappedBy = "standards")
-    private List<Pizza> pizzas;
+    @ManyToOne
+    @JoinColumn(name = "pizza_id")
+    private Pizza pizza;
 }

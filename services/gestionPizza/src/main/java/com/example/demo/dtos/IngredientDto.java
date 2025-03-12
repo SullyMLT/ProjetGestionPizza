@@ -5,6 +5,7 @@ import com.example.demo.entities.Optionnel;
 import com.example.demo.entities.Standard;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,6 +28,8 @@ public class IngredientDto {
         this.setDescription(ingredient.getDescription());
         this.setPathPhoto(ingredient.getPathPhoto());
         this.setPrix(ingredient.getPrix());
+        this.optionnels = new ArrayList<>();
+        this.standards = new ArrayList<>();
         for (Optionnel optionnel : ingredient.getOptionnels()) {
             this.getOptionnels().add(new OptionnelDto(optionnel));
         }

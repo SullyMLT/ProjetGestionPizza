@@ -17,10 +17,9 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    public CommandeDto addCommande(CommandeDto commandeDto) {
-        Commande commande = commandeDto.toEntity();
+    public CommandeDto addCommande(Commande commande) {
         commandeRepository.save(commande);
-        return new CommandeDto().commandeToDto(commande);
+        return new CommandeDto(commande);
     }
 
     public List<CommandeDto> getAllCommandes() {
@@ -31,7 +30,7 @@ public class CommandeServiceImpl implements CommandeService {
             return null;
         }else {
             for (Commande commande : commandes) {
-                commandeDtos.add(new CommandeDto().commandeToDto(commande));
+                commandeDtos.add(new CommandeDto(commande));
             }
             return commandeDtos;
         }
@@ -40,7 +39,7 @@ public class CommandeServiceImpl implements CommandeService {
     public CommandeDto getCommandeById(Long id) {
         Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(id));
         if (optionalCommande.isPresent()) {
-            CommandeDto commandeDtos = new CommandeDto().commandeToDto(optionalCommande.get());
+            CommandeDto commandeDtos = new CommandeDto(optionalCommande.get());
             return commandeDtos;
         }else{
             System.out.println("get commandeById raté");
