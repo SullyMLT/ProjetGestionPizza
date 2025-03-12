@@ -12,11 +12,10 @@ public class Commande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int numero;
     private String description;
     private int validation;
-    private int pizza_origine;
     private String date;
+    private float prix;
 
     @ManyToMany
     @JoinTable(

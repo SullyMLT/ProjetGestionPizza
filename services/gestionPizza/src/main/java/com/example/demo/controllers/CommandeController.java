@@ -30,8 +30,8 @@ public class CommandeController {
     }
 
     @PostMapping
-    public ResponseEntity<CommandeDto> createCommande(@RequestBody Commande commande) {
-        CommandeDto createdCommande = commandeServiceImpl.addCommande(commande);
+    public ResponseEntity<CommandeDto> createCommande(@RequestBody CommandeDto commandeDto) {
+        CommandeDto createdCommande = commandeServiceImpl.addCommande(commandeDto);
         return ResponseEntity.status(201).body(createdCommande);
     }
 }

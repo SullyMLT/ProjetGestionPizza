@@ -23,4 +23,14 @@ public class IngredientDto {
         this.setPathPhoto(ingredient.getPathPhoto());
         this.setPrix(ingredient.getPrix());
     }
+
+    public Ingredient toEntity() {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(this.getId());
+        ingredient.setName(this.getName());
+        ingredient.setDescription(this.getDescription());
+        ingredient.setPathPhoto(this.getPathPhoto());
+        ingredient.setPrix(this.getPrix());
+        return ingredient;
+    }
 }

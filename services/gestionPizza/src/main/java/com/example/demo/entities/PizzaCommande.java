@@ -17,11 +17,7 @@ public class PizzaCommande {
     @JoinColumn(name = "commande_id", nullable = false)
     private Commande commande;
 
-    @ManyToMany
-    @JoinTable(
-            name = "pizza_commande_ingredient",
-            joinColumns = @JoinColumn(name = "pizza_commande_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private List<Ingredient> ingredients;
+    @ManyToOne
+    @JoinColumn(name = "optionnel_id")
+    private Optionnel optionnel;
 }

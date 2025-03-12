@@ -17,8 +17,8 @@ public class IngredientController {
     private IngredientService ingredientService;
 
     @PostMapping
-    public ResponseEntity<IngredientDto> addIngredient(@RequestBody Ingredient ingredient) {
-        IngredientDto createdIngredient = ingredientService.addIngredient(ingredient);
+    public ResponseEntity<IngredientDto> addIngredient(@RequestBody IngredientDto ingredientDto) {
+        IngredientDto createdIngredient = ingredientService.addIngredient(ingredientDto);
         return ResponseEntity.status(201).body(createdIngredient);
     }
 
@@ -39,8 +39,8 @@ public class IngredientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IngredientDto> updateIngredient(@PathVariable long id, @RequestBody Ingredient ingredient) {
-        IngredientDto updatedIngredient = ingredientService.updateIngredient(id, ingredient);
+    public ResponseEntity<IngredientDto> updateIngredient(@PathVariable long id, @RequestBody IngredientDto ingredientDto) {
+        IngredientDto updatedIngredient = ingredientService.updateIngredient(id, ingredientDto);
         if (updatedIngredient != null) {
             return ResponseEntity.ok(updatedIngredient);
         } else {

@@ -4,6 +4,7 @@ import com.example.demo.entities.Commentaire;
 import com.example.demo.dtos.CommentaireDto;
 import com.example.demo.repositories.CommentaireRepository;
 import com.example.demo.services.CommentaireService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +12,8 @@ import java.util.Optional;
 
 public class CommentaireServiceImpl implements CommentaireService {
 
+    @Autowired
     private CommentaireRepository commentaireRepository;
-
-    public CommentaireServiceImpl(CommentaireRepository commentaireRepository) {
-        this.commentaireRepository = commentaireRepository;
-    }
 
     public void addCommentaire(CommentaireDto commentaireDto) {
         Commentaire commentaire = commentaireDto.toEntity();
@@ -29,10 +27,10 @@ public class CommentaireServiceImpl implements CommentaireService {
 
     @Override
     public CommentaireDto getCommentaire(long id) {
-        Optional optionalCom = commentaireRepository.findById(Math.toIntExact(id));
+        Optional<Commentaire> optionalCom = commentaireRepository.findById(Math.toIntExact(id));
 
         if (optionalCom.isPresent()) {
-            Commentaire commentaire = (Commentaire) optionalCom.get();
+            Commentaire commentaire = optionalCom.get();
             return new CommentaireDto().CommentaireToDto(commentaire);
         } else {
             return null;

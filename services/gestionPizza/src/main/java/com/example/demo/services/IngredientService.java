@@ -6,9 +6,9 @@ import com.example.demo.entities.Ingredient;
 import java.util.List;
 
 public interface IngredientService {
-    IngredientDto addIngredient(Ingredient ingredient);
+    IngredientDto addIngredient(IngredientDto ingredientDto);
     void deleteIngredient(long id);
-    IngredientDto updateIngredient(long id, Ingredient ingredient);
+    IngredientDto updateIngredient(long id, IngredientDto ingredientDto);
     IngredientDto getIngredientById(long id);
     List<IngredientDto> getAllIngredients();
 }

@@ -11,22 +11,20 @@ import java.util.List;
 @Data
 public class CommandeDto {
     private long id;
-    private int numero;
     private String description;
     private int validation;
-    private int pizzaOrigine;
     private String date;
+    private float prix;
     private List<PizzaDto> pizzas;
-    private List<PizzaCommande> pizzasPersonnalisees;
+    private List<PizzaCommandeDto> pizzasPersonnalisees;
 
 
     public CommandeDto(Commande commande) {
 
         this.setId(commande.getId());
-        this.setNumero(commande.getNumero());
         this.setDescription(commande.getDescription());
         this.setValidation(commande.getValidation());
-        this.setPizzaOrigine(commande.getPizza_origine());
+        this.prix = commande.getPrix();
         this.setDate(commande.getDate());
         this.pizzas = new ArrayList<>();
         this.pizzasPersonnalisees = new ArrayList<>();
@@ -34,7 +32,7 @@ public class CommandeDto {
             this.pizzas.add(new PizzaDto(pizza));
         }
         for (PizzaCommande pizzaCommande : commande.getPizzasPersonnalisees()) {
-            this.pizzasPersonnalisees.add(pizzaCommande);
+            this.pizzasPersonnalisees.add(new PizzaCommandeDto(pizzaCommande));
         }
     }
 }

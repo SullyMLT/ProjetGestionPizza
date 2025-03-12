@@ -17,18 +17,26 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    public CommandeDto addCommande(Commande commande) {
-        commandeRepository.save(commande);
-        return new CommandeDto(commande);
+    @Override
+    public CommandeDto addCommande(CommandeDto commandeDto) {
+        Commande commande = new Commande();
+        commande.setDescription(commandeDto.getDescription());
+        commande.setPrix(commandeDto.getPrix());
+        commande.setDate(commandeDto.getDate());
+        commande.setValidation(commandeDto.getValidation());
+
+        Commande savedCommande = commandeRepository.save(commande);
+        return new CommandeDto(savedCommande);
     }
 
+    @Override
     public List<CommandeDto> getAllCommandes() {
         List<Commande> commandes = commandeRepository.findAll();
         List<CommandeDto> commandeDtos = new ArrayList<>();
 
         if (commandes.isEmpty()) {
             return null;
-        }else {
+        } else {
             for (Commande commande : commandes) {
                 commandeDtos.add(new CommandeDto(commande));
             }
@@ -36,13 +44,31 @@ public class CommandeServiceImpl implements CommandeService {
         }
     }
 
+    @Override
     public CommandeDto getCommandeById(Long id) {
         Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(id));
         if (optionalCommande.isPresent()) {
-            CommandeDto commandeDtos = new CommandeDto(optionalCommande.get());
-            return commandeDtos;
-        }else{
-            System.out.println("get commandeById raté");
+            return new CommandeDto(optionalCommande.get());
+        } else {
+            System.out.println("get commandeById failed");
+            return null;
+        }
+    }
+
+    @Override
+    public CommandeDto updateCommande(Long id, Commande commandePizza) {
+        Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(id));
+        if (optionalCommande.isPresent()) {
+            Commande commande = optionalCommande.get();
+            commande.setDescription(commandePizza.getDescription());
+            commande.setPrix(commandePizza.getPrix());
+            commande.setDate(commandePizza.getDate());
+            commande.setValidation(commandePizza.getValidation());
+
+            Commande updatedCommande = commandeRepository.save(commande);
+            return new CommandeDto(updatedCommande);
+        } else {
+            System.out.println("update commande failed");
             return null;
         }
     }

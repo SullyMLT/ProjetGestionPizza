@@ -12,8 +12,11 @@ public class Optionnel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "pizza_id")
+    private Pizza pizza;
 
     @ManyToMany
     @JoinTable(
@@ -22,8 +25,4 @@ public class Optionnel {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> ingredients;
-
-    @ManyToOne
-    @JoinColumn(name = "pizza_id")
-    private Pizza pizza;
 }
