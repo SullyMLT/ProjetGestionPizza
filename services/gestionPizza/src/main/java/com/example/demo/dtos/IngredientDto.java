@@ -1,7 +1,11 @@
 package com.example.demo.dtos;
 
 import com.example.demo.entities.Ingredient;
+import com.example.demo.entities.Optionnel;
+import com.example.demo.entities.Standard;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class IngredientDto {
@@ -10,24 +14,24 @@ public class IngredientDto {
     private String description;
     private String pathPhoto;
     private double prix;
+    private List<OptionnelDto> optionnels;
+    private List<StandardDto> standards;
 
-    public IngredientDto ingredientToDto(Ingredient ingredient) {
-        IngredientDto dto = new IngredientDto();
-        dto.setId(ingredient.getId());
-        dto.setName(ingredient.getName());
-        dto.setDescription(ingredient.getDescription());
-        dto.setPathPhoto(ingredient.getPathPhoto());
-        dto.setPrix(ingredient.getPrix());
-        return dto;
+    public IngredientDto() {
+
     }
 
-    public Ingredient toEntity(){
-        Ingredient ingredient = new Ingredient();
-        ingredient.setId(this.getId());
-        ingredient.setName(this.getName());
-        ingredient.setDescription(this.getDescription());
-        ingredient.setPathPhoto(this.getPathPhoto());
-        ingredient.setPrix(this.getPrix());
-        return ingredient;
+    public IngredientDto (Ingredient ingredient) {
+        this.setId(ingredient.getId());
+        this.setName(ingredient.getName());
+        this.setDescription(ingredient.getDescription());
+        this.setPathPhoto(ingredient.getPathPhoto());
+        this.setPrix(ingredient.getPrix());
+        for (Optionnel optionnel : ingredient.getOptionnels()) {
+            this.getOptionnels().add(new OptionnelDto(optionnel));
+        }
+        for (Standard standard : ingredient.getStandards()) {
+            this.getStandards().add(new StandardDto(standard));
+        }
     }
 }

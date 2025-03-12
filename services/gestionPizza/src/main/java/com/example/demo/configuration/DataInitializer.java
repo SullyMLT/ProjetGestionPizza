@@ -1,87 +1,95 @@
-package com.example.demo;
+package com.example.demo.configuration;
 
-import com.example.demo.entities.*;
-import com.example.demo.repositories.*;
+import com.example.demo.entities.Ingredient;
+import com.example.demo.entities.Optionnel;
+import com.example.demo.entities.Pizza;
+import com.example.demo.entities.Standard;
+import com.example.demo.repositories.IngredientRepository;
+import com.example.demo.repositories.OptionnelRepository;
+import com.example.demo.repositories.PizzaRepository;
+import com.example.demo.repositories.StandardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Configuration
-public class DataInitializer {
+@Component
+public class DataInitializer implements CommandLineRunner {
 
-    @Bean
-    CommandLineRunner initData(PizzaRepository pizzaRepository, IngredientRepository ingredientRepository,
-                               CommandeRepository commandeRepository, CommentaireRepository commentaireRepository,
-                               OptionnelRepository optionnelRepository, StandardRepository standardRepository,
-                               PizzaCommandeRepository pizzaCommandeRepository) {
-        return args -> {
-            // Initialize Optionnel
-            Optionnel optionnel = new Optionnel();
-            optionnelRepository.save(optionnel);
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
-            // Initialize Standard
-            Standard standard = new Standard();
-            standardRepository.save(standard);
+    @Autowired
+    private OptionnelRepository optionnelRepository;
 
-            // Initialize Ingredients
-            Ingredient ingredient1 = new Ingredient();
-            ingredient1.setName("Tomato");
-            ingredient1.setDescription("Fresh tomatoes");
-            ingredient1.setPathPhoto("path/to/photo");
-            ingredient1.setPrix(1.5);
-            ingredient1.setOptionnel(optionnel);
-            ingredient1.setStandard(standard);
-            ingredientRepository.save(ingredient1);
+    @Autowired
+    private PizzaRepository pizzaRepository;
 
-            Ingredient ingredient2 = new Ingredient();
-            ingredient2.setName("Cheese");
-            ingredient2.setDescription("Mozzarella cheese");
-            ingredient2.setPathPhoto("path/to/photo");
-            ingredient2.setPrix(2.0);
-            ingredient2.setOptionnel(optionnel);
-            ingredient2.setStandard(standard);
-            ingredientRepository.save(ingredient2);
+    @Autowired
+    private StandardRepository standardRepository;
 
-            // Initialize Pizzas
-            Pizza pizza1 = new Pizza();
-            pizza1.setNom("Margherita");
-            pizza1.setDescription("Classic Margherita pizza");
-            pizza1.setPhoto("path/to/photo");
-            pizza1.setPrix(8.0f);
-            pizzaRepository.save(pizza1);
+    @Override
+    public void run(String... args) throws Exception {
 
-            Pizza pizza2 = new Pizza();
-            pizza2.setNom("Pepperoni");
-            pizza2.setDescription("Pepperoni pizza");
-            pizza2.setPhoto("path/to/photo");
-            pizza2.setPrix(10.0f);
-            pizzaRepository.save(pizza2);
+        // Delete all existing data
+        ingredientRepository.deleteAll();
+        pizzaRepository.deleteAll();
+        standardRepository.deleteAll();
+        optionnelRepository.deleteAll();
 
-            // Initialize Commandes
-            Commande commande1 = new Commande();
-            commande1.setNumero(1);
-            commande1.setDescription("First order");
-            commande1.setValidation(1);
-            commande1.setPizza_origine(1);
-            commande1.setDate("2023-01-01");
-            commande1.setPizzas(Arrays.asList(pizza1, pizza2));
-            commandeRepository.save(commande1);
 
-            // Initialize Commentaires
-            Commentaire commentaire1 = new Commentaire();
-            commentaire1.setDescription("Great pizza!");
-            commentaire1.setDate("2023-01-01");
-            commentaire1.setPizza_origine(1);
-            commentaire1.setNote(5);
-            commentaireRepository.save(commentaire1);
 
-            // Initialize PizzaCommande
-            PizzaCommande pizzaCommande1 = new PizzaCommande();
-            pizzaCommande1.setCommande(commande1);
-            pizzaCommande1.setIngredients(Arrays.asList(ingredient1, ingredient2));
-            pizzaCommandeRepository.save(pizzaCommande1);
-        };
+        // Create Optionnels
+        Optionnel optionnel1 = new Optionnel();
+        optionnel1.setName("Optionnel 1");
+        Optionnel optionnel2 = new Optionnel();
+        optionnel2.setName("Optionnel 2");
+        optionnelRepository.saveAll(Arrays.asList(optionnel1, optionnel2));
+
+        // Create Standards
+        Standard standard1 = new Standard();
+        standard1.setName("Standard 1");
+        Standard standard2 = new Standard();
+        standard2.setName("Standard 2");
+        standardRepository.saveAll(Arrays.asList(standard1, standard2));
+
+        // Create Ingredients
+        Ingredient ingredient1 = new Ingredient();
+        ingredient1.setName("Ingredient 1");
+        ingredient1.setDescription("Description 1");
+        ingredient1.setPathPhoto("path1.jpg");
+        ingredient1.setPrix(10.0);
+        ingredient1.setOptionnels(Arrays.asList(optionnel1, optionnel2));
+        ingredient1.setStandards(Arrays.asList(standard1, standard2));
+        ingredientRepository.save(ingredient1);
+
+        Ingredient ingredient2 = new Ingredient();
+        ingredient2.setName("Ingredient 2");
+        ingredient2.setDescription("Description 2");
+        ingredient2.setPathPhoto("path2.jpg");
+        ingredient2.setPrix(20.0);
+        ingredient2.setOptionnels(Arrays.asList(optionnel1));
+        ingredient2.setStandards(Arrays.asList(standard2));
+        ingredientRepository.save(ingredient2);
+
+        // Create Pizzas
+        Pizza pizza1 = new Pizza();
+        pizza1.setNom("Pizza 1");
+        pizza1.setDescription("Description 1");
+        pizza1.setPhoto("photo1.jpg");
+        pizza1.setPrix(15.0f);
+        pizza1.setOptionnels(Arrays.asList(optionnel1, optionnel2));
+        pizza1.setStandards(Arrays.asList(standard1, standard2));
+        pizzaRepository.save(pizza1);
+
+        Pizza pizza2 = new Pizza();
+        pizza2.setNom("Pizza 2");
+        pizza2.setDescription("Description 2");
+        pizza2.setPhoto("photo2.jpg");
+        pizza2.setPrix(25.0f);
+        pizza2.setOptionnels(Arrays.asList(optionnel2));
+        pizza2.setStandards(Arrays.asList(standard1));
+        pizzaRepository.save(pizza2);
     }
 }

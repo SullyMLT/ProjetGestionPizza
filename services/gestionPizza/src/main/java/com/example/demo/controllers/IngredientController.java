@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dtos.IngredientDto;
+import com.example.demo.entities.Ingredient;
 import com.example.demo.services.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ public class IngredientController {
     private IngredientService ingredientService;
 
     @PostMapping
-    public ResponseEntity<IngredientDto> addIngredient(@RequestBody IngredientDto ingredientDto) {
-        IngredientDto createdIngredient = ingredientService.addIngredient(ingredientDto);
+    public ResponseEntity<IngredientDto> addIngredient(@RequestBody Ingredient ingredient) {
+        IngredientDto createdIngredient = ingredientService.addIngredient(ingredient);
         return ResponseEntity.status(201).body(createdIngredient);
     }
 
@@ -38,8 +39,8 @@ public class IngredientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IngredientDto> updateIngredient(@PathVariable long id, @RequestBody IngredientDto ingredientDto) {
-        IngredientDto updatedIngredient = ingredientService.updateIngredient(id, ingredientDto);
+    public ResponseEntity<IngredientDto> updateIngredient(@PathVariable long id, @RequestBody Ingredient ingredient) {
+        IngredientDto updatedIngredient = ingredientService.updateIngredient(id, ingredient);
         if (updatedIngredient != null) {
             return ResponseEntity.ok(updatedIngredient);
         } else {

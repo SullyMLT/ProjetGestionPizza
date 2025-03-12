@@ -20,7 +20,7 @@ public class CommandeServiceImpl implements CommandeService {
     public CommandeDto addCommande(CommandeDto commandeDto) {
         Commande commande = commandeDto.toEntity();
         commandeRepository.save(commande);
-        return new CommandeDto().CommandeToDto(commande);
+        return new CommandeDto().commandeToDto(commande);
     }
 
     public List<CommandeDto> getAllCommandes() {
@@ -31,7 +31,7 @@ public class CommandeServiceImpl implements CommandeService {
             return null;
         }else {
             for (Commande commande : commandes) {
-                commandeDtos.add(new CommandeDto().CommandeToDto(commande));
+                commandeDtos.add(new CommandeDto().commandeToDto(commande));
             }
             return commandeDtos;
         }
@@ -40,7 +40,7 @@ public class CommandeServiceImpl implements CommandeService {
     public CommandeDto getCommandeById(Long id) {
         Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(id));
         if (optionalCommande.isPresent()) {
-            CommandeDto commandeDtos = new CommandeDto().CommandeToDto(optionalCommande.get());
+            CommandeDto commandeDtos = new CommandeDto().commandeToDto(optionalCommande.get());
             return commandeDtos;
         }else{
             System.out.println("get commandeById raté");

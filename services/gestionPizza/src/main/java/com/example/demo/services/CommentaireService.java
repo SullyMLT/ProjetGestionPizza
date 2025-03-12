@@ -8,7 +8,6 @@ import com.example.demo.entities.Commentaire;
 public interface CommentaireService {
     public void addCommentaire(CommentaireDto commentaire);
     public void deleteCommentaire(long id);
-    public void updateCommentaire(CommentaireDto commentaire);
     public CommentaireDto getCommentaire(long id);
     public List<CommentaireDto> getCommentaires();
 }

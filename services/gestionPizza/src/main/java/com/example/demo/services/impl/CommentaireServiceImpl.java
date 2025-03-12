@@ -4,7 +4,6 @@ import com.example.demo.entities.Commentaire;
 import com.example.demo.dtos.CommentaireDto;
 import com.example.demo.repositories.CommentaireRepository;
 import com.example.demo.services.CommentaireService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +25,6 @@ public class CommentaireServiceImpl implements CommentaireService {
     @Override
     public void deleteCommentaire(long id) {
         commentaireRepository.deleteById(Math.toIntExact(id));
-    }
-
-    @Override
-    public void updateCommentaire(CommentaireDto updatedCommentaire) {
-        Optional<Commentaire> optionalCom = commentaireRepository.findById(Math.toIntExact(updatedCommentaire.getId()));
-
-        if (optionalCom.isEmpty()) {
-            return;
-        }
-        Commentaire commentaire = updatedCommentaire.toEntity();
-
-        commentaire.setDescription(updatedCommentaire.getDescription());
-        commentaire.setDate(String.valueOf(updatedCommentaire.getDate()));
-        commentaire.setPizza_origine(updatedCommentaire.getPizzaOrigine());
-        commentaire.setNote(updatedCommentaire.getNote());
-        commentaireRepository.save(commentaire);
     }
 
     @Override

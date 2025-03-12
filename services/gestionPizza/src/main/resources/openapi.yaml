@@ -219,6 +219,30 @@ components:
           type: string
         prix:
           type: number
+        optionnels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Optionnel'
+        standards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Standard'
+
+      Optionnel:
+        type: object
+        properties:
+          id:
+            type: long
+          nom:
+            type: string
+
+      Standard:
+        type: object
+        properties:
+          id:
+            type: long
+          nom:
+            type: string
 
     Ingredient:
       type: object

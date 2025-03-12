@@ -6,13 +6,12 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "commande")
+@Table(name = "Commande")
 public class Commande {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private int numero;
     private String description;
     private int validation;
