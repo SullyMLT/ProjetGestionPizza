@@ -1,40 +1,44 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import "../App.css";
-const Register = () => {
+
+function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('client');  // Rôle par défaut
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post('http://localhost:5000/api/register', {
-        username,
-        password,
-        role,
-      });
-      alert('Inscription réussie');
+      await axios.post('http://localhost:3100/auth/register', { username, password });
+      setErrorMessage('');
+      alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
     } catch (error) {
-      console.error('Erreur lors de l\'inscription', error);
-      alert('Erreur lors de l\'inscription');
+      setErrorMessage('Erreur lors de l\'inscription');
     }
   };
 
   return (
     <div>
       <h2>S'inscrire</h2>
-      <form onSubmit={handleRegister}>
-        <input type="text" placeholder="Nom d'utilisateur" value={username} onChange={(e) => setUsername(e.target.value)} required />
-        <input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="client">Client</option>
-          <option value="admin">Admin</option>
-        </select>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Nom d'utilisateur"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button type="submit">S'inscrire</button>
       </form>
+      {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
-};
+}
 
 export default Register;

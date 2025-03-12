@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
 import AddPizza from './components/AddPizza';
 import PizzaList from './components/PizzaList';
 import Login from './components/Login';
@@ -7,35 +7,35 @@ import Register from './components/Register';
 import "./App.css";
 
 function App() {
-  const [pizzas, setPizzas] = useState([
-    {
-      id: 1,
-      nom: "Margherita",
-      description: "Tomate, mozzarella, basilic",
-      photo: process.env.PUBLIC_URL + "/pizza-1498148703.jpg",
-      prix: 10.99,
-    },
-    {
-      id: 2,
-      nom: "Pepperoni",
-      description: "Tomate, mozzarella, pepperoni",
-      photo: process.env.PUBLIC_URL + "/Pepperoni_Pizza_Beauty_1200x1200.webp",
-      prix: 12.99,
-    },
-  ]);
+  const [pizzas, setPizzas] = useState([]); // Liste des pizzas vide initialement
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));  // Récupérer l'utilisateur stocké
+  const [error, setError] = useState(null); // État pour gérer les erreurs
+  const location = useLocation(); // Utilisation de useLocation pour obtenir l'URL actuelle
 
-  const [user, setUser] = useState(null);  // Gestion de l'utilisateur
+  // Fonction pour récupérer les pizzas depuis l'API
+  useEffect(() => {
+    fetch('http://172.28.133.124:8080/pizzas')
+      .then((response) => response.json())
+      .then((data) => setPizzas(data)) // Mettre à jour l'état des pizzas avec les données récupérées
+      .catch((error) => {
+        setError("Erreur de récupération des pizzas");
+        console.error("Erreur de récupération des pizzas :", error);
+      });
+  }, []); // L'appel API se fait une seule fois au montage du composant
 
   const addPizza = (pizza) => {
     setPizzas([...pizzas, { ...pizza, id: pizzas.length + 1 }]);
   };
 
-  const login = (username) => {
-    setUser({ username });
+  const login = (username, role) => {
+    const newUser = { username, role };
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser)); // Sauvegarder l'utilisateur dans le localStorage
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('user'); // Retirer l'utilisateur du localStorage
   };
 
   return (
@@ -43,10 +43,16 @@ function App() {
       <h1>Gestion des Pizzas</h1>
       <nav>
         <Link to="/">Liste des pizzas</Link> |
-        <Link to="/ajouter-pizza"> Ajouter une pizza</Link> |
+        {user && user.role === 'admin' && (
+          <>
+            |
+            <Link to="/ajouter-pizza"> Ajouter une pizza</Link>
+          </>
+        )}
+
         {user ? (
           <>
-            <span>Bienvenue, {user.username}</span> |
+           |
             <button onClick={logout}>Se déconnecter</button>
           </>
         ) : (
@@ -56,6 +62,8 @@ function App() {
           </>
         )}
       </nav>
+
+      {error && <p>{error}</p>} {/* Affichage des erreurs d'API */}
 
       <Routes>
         <Route path="/ajouter-pizza" element={<AddPizza addPizza={addPizza} />} />

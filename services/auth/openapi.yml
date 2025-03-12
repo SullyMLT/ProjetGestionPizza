@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: API d'authentification
+  description: API pour l'inscription et la connexion des utilisateurs
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:3100'
+
+paths:
+  /auth/register:
+    post:
+      summary: Créer un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Utilisateur créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Nom d'utilisateur déjà utilisé
+        '500':
+          description: Erreur interne du serveur
+
+  /auth/login:
+    post:
+      summary: Authentifier un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Connexion réussie
+        '404':
+          description: Utilisateur non trouvé
+        '400':
+          description: Mot de passe incorrect
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: L'ID unique de l'utilisateur
+        username:
+          type: string
+          description: Le nom d'utilisateur
+        password:
+          type: string
+          description: Le mot de passe de l'utilisateur
+        role:
+          type: string
+          enum: [admin, client]
+          default: client
+          description: Le rôle de l'utilisateur, soit "admin" ou "client"
+        activer:
+          type: boolean
+          default: true
+          description: Indique si l'utilisateur est activé. Les clients sont activés par défaut, mais un administrateur doit activer les admins.
+      required:
+        - username
+        - password
+        - role
+        - activer
