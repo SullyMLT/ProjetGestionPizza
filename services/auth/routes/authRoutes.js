@@ -79,15 +79,15 @@ router.post('/login', async (req, res) => {
       return res.status(403).json({ message: 'Votre compte n\'est pas activé.' });
     }
 
-    // Création du token
+    // Création du token avec le rôle inclus
     const token = jwt.sign(
-      { data: { ident: user.username, role: user.role } },
+      { data: { ident: user.username, role: user.role } }, // Inclure le rôle dans le token
       privateKey,
       { expiresIn: '1h' }
     );
 
     console.log('Connexion réussie');
-    res.json({ res: 'Connexion réussie', token });
+    res.json({ res: 'Connexion réussie', token }); // Renvoyer le token avec le rôle
   } catch (error) {
     console.error('Erreur serveur:', error);
     res.status(500).json({ message: 'Erreur lors de la connexion', error });

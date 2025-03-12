@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'; // Utilisation de l'export nommé
 
 const Login = ({ login }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Hook pour la redirection
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,15 +18,16 @@ const Login = ({ login }) => {
         password,
       });
 
-      // Enregistrer l'utilisateur et son rôle
-      const { username: loggedInUsername, role } = response.data;
-      login(loggedInUsername, role);
+      const { token } = response.data;
+      localStorage.setItem('token', token); // Stocke le token dans le localStorage
 
-      // Rediriger vers la liste des pizzas après une connexion réussie
-      navigate('/'); // Redirection vers la page "Liste des pizzas"
+      // Décoder le token pour récupérer l'utilisateur et son rôle
+      const decodedToken = jwtDecode(token); // Décoder le token
+      login(decodedToken.data.ident, decodedToken.data.role); // Sauvegarder l'utilisateur avec son rôle
+
+      navigate('/'); // Rediriger après la connexion
     } catch (error) {
       setError('Utilisateur ou mot de passe incorrect');
-      console.error('Erreur lors de la connexion', error);
     }
   };
 
