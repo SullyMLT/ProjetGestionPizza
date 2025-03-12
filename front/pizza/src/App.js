@@ -14,7 +14,7 @@ function App() {
 
   // Fonction pour récupérer les pizzas depuis l'API
   useEffect(() => {
-    fetch('http://172.28.133.124:8080/pizzas')
+    fetch('http://localhost:8080/pizzas')
       .then((response) => response.json())
       .then((data) => setPizzas(data)) // Mettre à jour l'état des pizzas avec les données récupérées
       .catch((error) => {
