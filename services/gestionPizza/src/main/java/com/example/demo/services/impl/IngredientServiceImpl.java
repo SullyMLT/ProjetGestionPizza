@@ -18,10 +18,10 @@ public class IngredientServiceImpl implements IngredientService {
     private IngredientRepository ingredientRepository;
 
     @Override
-    public IngredientDto addIngredient(IngredientDto ingredientDto) {
-        Ingredient ingredient = ingredientDto.toEntity();
-        ingredientRepository.save(ingredient);
-        return new IngredientDto().ingredientToDto(ingredient);
+    public IngredientDto addIngredient(Ingredient ingredient) {
+        Ingredient saveIngredient = ingredientRepository.save(ingredient);
+
+        return new IngredientDto(saveIngredient);
     }
 
     @Override
@@ -30,16 +30,16 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public IngredientDto updateIngredient(long id, IngredientDto ingredientDto) {
+    public IngredientDto updateIngredient(long id, Ingredient ingredient) {
         Optional<Ingredient> optionalIngredient = ingredientRepository.findById((int) id);
         if (optionalIngredient.isPresent()) {
-            Ingredient ingredient = optionalIngredient.get();
-            ingredient.setName(ingredientDto.getName());
-            ingredient.setDescription(ingredientDto.getDescription());
-            ingredient.setPathPhoto(ingredientDto.getPathPhoto());
-            ingredient.setPrix(ingredientDto.getPrix());
-            ingredientRepository.save(ingredient);
-            return new IngredientDto().ingredientToDto(ingredient);
+            Ingredient ingredientUpdated = optionalIngredient.get();
+            ingredient.setName(ingredientUpdated.getName());
+            ingredient.setDescription(ingredientUpdated.getDescription());
+            ingredient.setPathPhoto(ingredientUpdated.getPathPhoto());
+            ingredient.setPrix(ingredientUpdated.getPrix());
+            ingredientRepository.save(ingredientUpdated);
+            return new IngredientDto(ingredientUpdated);
         }
         System.out.println("Ingredient problème update");
         return null;
@@ -49,7 +49,7 @@ public class IngredientServiceImpl implements IngredientService {
     public IngredientDto getIngredientById(long id) {
         Optional<Ingredient> optionalIngredient = ingredientRepository.findById((int) id);
         if (optionalIngredient.isPresent()){
-            return new IngredientDto().ingredientToDto(optionalIngredient.get());
+            return new IngredientDto(optionalIngredient.get());
         }else{
             System.out.println("Ingredient pas trouvé");
             return null;
@@ -61,7 +61,7 @@ public class IngredientServiceImpl implements IngredientService {
         List<Ingredient> ingredients = ingredientRepository.findAll();
         List<IngredientDto> ingredientDtos = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
-            ingredientDtos.add(new IngredientDto().ingredientToDto(ingredient));
+            ingredientDtos.add(new IngredientDto(ingredient));
         }
         return ingredientDtos;
     }

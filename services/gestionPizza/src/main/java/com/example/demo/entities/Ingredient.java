@@ -18,14 +18,9 @@ public class Ingredient {
     private String pathPhoto;
     private double prix;
 
-    @ManyToOne
-    @JoinColumn(name = "optionnel_id")
-    private Optionnel optionnel;
-
-    @ManyToOne
-    @JoinColumn(name = "standard_id")
-    private Standard standard;
+    @ManyToMany(mappedBy = "ingredients")
+    private List<Optionnel> optionnels;
 
     @ManyToMany(mappedBy = "ingredients")
-    private List<PizzaCommande> pizzasCommande;
+    private List<Standard> standards;
 }

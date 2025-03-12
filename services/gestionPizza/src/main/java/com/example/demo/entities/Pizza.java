@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "pizza")
+@Table(name = "Pizza")
 public class Pizza {
 
     @Id
@@ -20,4 +20,20 @@ public class Pizza {
 
     @ManyToMany(mappedBy = "pizzas")
     private List<Commande> commandes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "pizza_optionnel",
+            joinColumns = @JoinColumn(name = "pizza_id"),
+            inverseJoinColumns = @JoinColumn(name = "optionnel_id")
+    )
+    private List<Optionnel> optionnels;
+
+    @ManyToMany
+    @JoinTable(
+            name = "pizza_standard",
+            joinColumns = @JoinColumn(name = "pizza_id"),
+            inverseJoinColumns = @JoinColumn(name = "standard_id")
+    )
+    private List<Standard> standards;
 }

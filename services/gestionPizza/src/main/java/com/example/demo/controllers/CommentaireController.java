@@ -32,12 +32,6 @@ public class CommentaireController {
         return ResponseEntity.ok(commentaireDto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CommentaireDto> updateCommentaire(@RequestBody CommentaireDto updatedCommentaire) {
-        commentaireServiceImpl.updateCommentaire(updatedCommentaire);
-        return ResponseEntity.ok(updatedCommentaire);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCommentaire(@PathVariable Long id) {
         commentaireServiceImpl.deleteCommentaire(id);

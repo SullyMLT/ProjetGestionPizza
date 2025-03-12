@@ -28,22 +28,6 @@ public class CommentaireServiceImpl implements CommentaireService {
     }
 
     @Override
-    public void updateCommentaire(CommentaireDto updatedCommentaire) {
-        Optional<Commentaire> optionalCom = commentaireRepository.findById(Math.toIntExact(updatedCommentaire.getId()));
-
-        if (optionalCom.isEmpty()) {
-            return;
-        }
-        Commentaire commentaire = updatedCommentaire.toEntity();
-
-        commentaire.setDescription(updatedCommentaire.getDescription());
-        commentaire.setDate(String.valueOf(updatedCommentaire.getDate()));
-        commentaire.setPizza_origine(updatedCommentaire.getPizzaOrigine());
-        commentaire.setNote(updatedCommentaire.getNote());
-        commentaireRepository.save(commentaire);
-    }
-
-    @Override
     public CommentaireDto getCommentaire(long id) {
         Optional optionalCom = commentaireRepository.findById(Math.toIntExact(id));
 

@@ -8,13 +8,21 @@ import java.util.List;
 @Data
 @Table(name = "Optionnel")
 public class Optionnel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "optionnel")
-    private List<Pizza> pizzas;
+    private String name;
 
-    @OneToMany(mappedBy = "optionnel")
+    @ManyToMany
+    @JoinTable(
+            name = "optionnel_ingredient",
+            joinColumns = @JoinColumn(name = "optionnel_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     private List<Ingredient> ingredients;
+
+    @ManyToMany(mappedBy = "optionnels")
+    private List<Pizza> pizzas;
 }
