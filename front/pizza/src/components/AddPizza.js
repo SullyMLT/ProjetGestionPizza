@@ -11,16 +11,34 @@ function AddPizza({ addPizza }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPizza({ ...pizza, [name]: value });
+    setPizza((prevPizza) => ({ ...prevPizza, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (pizza.nom && pizza.description && pizza.prix && pizza.photo) {
-      addPizza(pizza);
-      setPizza({ nom: "", description: "", photo: "", prix: "" });
-    } else {
-      alert("Tous les champs doivent être remplis");
+
+    // Vérifier que tous les champs sont remplis
+    if (Object.values(pizza).includes("")) {
+      return alert("Tous les champs doivent être remplis");
+    }
+
+    try {
+      const response = await fetch("http://172.28.133.124:8080/pizzas", {
+        method: "POST",
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify(pizza),
+      });
+
+      if (response.ok) {
+        addPizza(pizza);
+        setPizza({ nom: "", description: "", photo: "", prix: "" });
+        alert("Pizza ajoutée avec succès !");
+      } else {
+        throw new Error("Erreur lors de l'ajout de la pizza");
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error.message || "Erreur lors de l'ajout de la pizza");
     }
   };
 
@@ -28,57 +46,21 @@ function AddPizza({ addPizza }) {
     <div className="add-pizza-form">
       <h2>Ajouter une Pizza</h2>
       <form onSubmit={handleSubmit} className="pizza-form">
-        <div className="form-group">
-          <label htmlFor="nom">Nom</label>
-          <input
-            type="text"
-            id="nom"
-            name="nom"
-            value={pizza.nom}
-            onChange={handleChange}
-            placeholder="Nom de la pizza"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            value={pizza.description}
-            onChange={handleChange}
-            placeholder="Description de la pizza"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="photo">URL de la photo</label>
-          <input
-            type="url"
-            id="photo"
-            name="photo"
-            value={pizza.photo}
-            onChange={handleChange}
-            placeholder="Lien vers une image"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="prix">Prix</label>
-          <input
-            type="number"
-            id="prix"
-            name="prix"
-            value={pizza.prix}
-            onChange={handleChange}
-            placeholder="Prix de la pizza"
-            required
-          />
-        </div>
-        <button class="button">Ajouter une Pizza</button>
+        {["nom", "description", "photo", "prix"].map((field) => (
+          <div className="form-group" key={field}>
+            <label htmlFor={field}>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+            <input
+              type={field === "prix" ? "number" : "text"}
+              id={field}
+              name={field}
+              value={pizza[field]}
+              onChange={handleChange}
+              placeholder={`Entrez ${field === "prix" ? "le" : "la"} ${field}`}
+              required
+            />
+          </div>
+        ))}
+        <button type="submit" className="button">Ajouter une Pizza</button>
       </form>
     </div>
   );
