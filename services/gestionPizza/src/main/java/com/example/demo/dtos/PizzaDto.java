@@ -16,7 +16,6 @@ public class PizzaDto {
     private String description;
     private String photo;
     private float prix;
-    private List<OptionnelDto> optionnels;
     private List<StandardDto> standards;
 
     public PizzaDto(Pizza pizza) {
@@ -26,12 +25,8 @@ public class PizzaDto {
         this.photo = pizza.getPhoto();
         this.prix = pizza.getPrix();
 
-        this.optionnels = new ArrayList<>();
         this.standards = new ArrayList<>();
 
-        for(Optionnel optionnel : pizza.getOptionnels()) {
-            this.optionnels.add(new OptionnelDto(optionnel));
-        }
         for (Standard standard : pizza.getStandards()) {
             this.standards.add(new StandardDto(standard));
         }

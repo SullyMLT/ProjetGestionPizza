@@ -15,12 +15,6 @@ public class IngredientDto {
     private String description;
     private String pathPhoto;
     private double prix;
-    private List<OptionnelDto> optionnels;
-    private List<StandardDto> standards;
-
-    public IngredientDto() {
-
-    }
 
     public IngredientDto (Ingredient ingredient) {
         this.setId(ingredient.getId());
@@ -28,13 +22,5 @@ public class IngredientDto {
         this.setDescription(ingredient.getDescription());
         this.setPathPhoto(ingredient.getPathPhoto());
         this.setPrix(ingredient.getPrix());
-        this.optionnels = new ArrayList<>();
-        this.standards = new ArrayList<>();
-        for (Optionnel optionnel : ingredient.getOptionnels()) {
-            this.getOptionnels().add(new OptionnelDto(optionnel));
-        }
-        for (Standard standard : ingredient.getStandards()) {
-            this.getStandards().add(new StandardDto(standard));
-        }
     }
 }

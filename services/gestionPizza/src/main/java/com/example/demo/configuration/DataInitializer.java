@@ -38,25 +38,23 @@ public class DataInitializer implements CommandLineRunner {
         standardRepository.deleteAll();
         optionnelRepository.deleteAll();
 
-
-
         // Create Optionnels
         Optionnel optionnel1 = new Optionnel();
-        optionnel1.setName("Optionnel 1");
+        optionnel1.setName("Gruyère");
         Optionnel optionnel2 = new Optionnel();
-        optionnel2.setName("Optionnel 2");
+        optionnel2.setName("Raclette");
         optionnelRepository.saveAll(Arrays.asList(optionnel1, optionnel2));
 
         // Create Standards
         Standard standard1 = new Standard();
-        standard1.setName("Standard 1");
+        standard1.setName("Pizza Peperoni");
         Standard standard2 = new Standard();
-        standard2.setName("Standard 2");
+        standard2.setName("Pizza Margherita");
         standardRepository.saveAll(Arrays.asList(standard1, standard2));
 
         // Create Ingredients
         Ingredient ingredient1 = new Ingredient();
-        ingredient1.setName("Ingredient 1");
+        ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
         ingredient1.setPathPhoto("path1.jpg");
         ingredient1.setPrix(10.0);
@@ -65,7 +63,7 @@ public class DataInitializer implements CommandLineRunner {
         ingredientRepository.save(ingredient1);
 
         Ingredient ingredient2 = new Ingredient();
-        ingredient2.setName("Ingredient 2");
+        ingredient2.setName("Crême fraiche");
         ingredient2.setDescription("Description 2");
         ingredient2.setPathPhoto("/pizza-1498148703.jpg");
         ingredient2.setPrix(20.0);
@@ -75,11 +73,10 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create Pizzas
         Pizza pizza1 = new Pizza();
-        pizza1.setNom("Pizza 1");
+        pizza1.setNom("Pizza Peperoni");
         pizza1.setDescription("Description 1");
         pizza1.setPhoto("/Pepperoni_Pizza_Beauty_1200x1200.webp");
         pizza1.setPrix(15.0f);
-        pizza1.setOptionnels(Arrays.asList(optionnel1, optionnel2));
         pizza1.setStandards(Arrays.asList(standard1, standard2));
         pizzaRepository.save(pizza1);
 
@@ -88,7 +85,6 @@ public class DataInitializer implements CommandLineRunner {
         pizza2.setDescription("Description 2");
         pizza2.setPhoto("/pizza-1498148703.jpg");
         pizza2.setPrix(25.0f);
-        pizza2.setOptionnels(Arrays.asList(optionnel2));
         pizza2.setStandards(Arrays.asList(standard1));
         pizzaRepository.save(pizza2);
     }
