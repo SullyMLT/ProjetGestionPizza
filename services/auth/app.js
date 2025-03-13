@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');  // Routes d'authentification
+const commentaireController = require('./routes/commentaireController');
 const app = express();
 const cors = require('cors');
 
@@ -10,6 +11,7 @@ const PORT = 3100;
 app.use(express.json());  // Permet de parser les requêtes JSON
 app.use(cors());
 app.use('/auth', authRoutes);
+app.use('/comm', commentaireController);
 
 app.get("/", (req, res) => {
     res.send("Hello, Express!");

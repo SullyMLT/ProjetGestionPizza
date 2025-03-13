@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: API de Gestion des Pizzas
+  version: 1.0.0
+
+paths:
+  /pizzas:
+    get:
+      summary: Récupérer la liste des pizzas
+      responses:
+        '200':
+          description: Liste des pizzas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pizza'
+    post:
+      summary: Ajouter une nouvelle pizza
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pizza'
+      responses:
+        '201':
+          description: Pizza créée
+
+  /pizzas/{id}:
+    get:
+      summary: Récupérer une pizza par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Détails d'une pizza
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pizza'
+    put:
+      summary: Mettre à jour une pizza
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pizza'
+      responses:
+        '200':
+          description: Pizza mise à jour
+    delete:
+      summary: Supprimer une pizza
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Pizza supprimée
+
+  /ingredients:
+    get:
+      summary: Récupérer la liste des ingrédients
+      responses:
+        '200':
+          description: Liste des ingrédients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+    post:
+      summary: Ajouter un nouvel ingrédient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        '201':
+          description: Ingrédient ajouté
+
+  /commandes:
+    get:
+      summary: Récupérer la liste des commandes
+      responses:
+        '200':
+          description: Liste des commandes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Commande'
+    post:
+      summary: Ajouter une nouvelle commande
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Commande'
+      responses:
+        '201':
+          description: Commande créée
+
+  /commandes/{id}:
+    get:
+      summary: Récupérer une commande par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Détails d'une commande
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commande'
+
+  /pizza_commandes:
+    post:
+      summary: Ajouter une pizza personnalisée à une commande
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PizzaCommande'
+      responses:
+        '201':
+          description: Pizza personnalisée ajoutée à la commande
+
+components:
+  schemas:
+    Pizza:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nom:
+          type: string
+        description:
+          type: string
+        photo:
+          type: string
+        prix:
+          type: number
+        optionnels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Optionnel'
+        standards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Standard'
+
+    Optionnel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nom:
+          type: string
+
+    Standard:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nom:
+          type: string
+
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nom:
+          type: string
+        description:
+          type: string
+        photo:
+          type: string
+        prix:
+          type: number
+
+    Commande:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        numero:
+          type: integer
+        description:
+          type: string
+        validation:
+          type: integer
+        pizzaOrigine:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date
+        pizzas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pizza'
+        pizzasPersonnalisees:
+          type: array
+          items:
+            $ref: '#/components/schemas/PizzaCommande'
+
+    PizzaCommande:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        commandeId:
+          type: integer
+          format: int64
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        prixTotal:
+          type: number
