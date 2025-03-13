@@ -1,9 +1,15 @@
 package com.example.demo.configuration;
 
+import com.example.demo.entities.Commande;
+import com.example.demo.entities.Commentaire;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
+import com.example.demo.entities.PizzaCommande;
 import com.example.demo.entities.Standard;
+import com.example.demo.repositories.CommandeRepository;
+import com.example.demo.repositories.CommentaireRepository;
 import com.example.demo.repositories.IngredientRepository;
+import com.example.demo.repositories.PizzaCommandeRepository;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.repositories.StandardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +25,19 @@ public class DataInitializer implements CommandLineRunner {
     private IngredientRepository ingredientRepository;
 
     @Autowired
-    private OptionnelRepository optionnelRepository;
-
-    @Autowired
     private PizzaRepository pizzaRepository;
 
     @Autowired
     private StandardRepository standardRepository;
+
+    @Autowired
+    private CommandeRepository commandeRepository;
+
+    @Autowired
+    private CommentaireRepository commentaireRepository;
+
+    @Autowired
+    private PizzaCommandeRepository pizzaCommandeRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,21 +46,9 @@ public class DataInitializer implements CommandLineRunner {
         ingredientRepository.deleteAll();
         pizzaRepository.deleteAll();
         standardRepository.deleteAll();
-        optionnelRepository.deleteAll();
-
-        // Create Optionnels
-        Optionnel optionnel1 = new Optionnel();
-        optionnel1.setName("Gruyère");
-        Optionnel optionnel2 = new Optionnel();
-        optionnel2.setName("Raclette");
-        optionnelRepository.saveAll(Arrays.asList(optionnel1, optionnel2));
-
-        // Create Standards
-        Standard standard1 = new Standard();
-        standard1.setName("Pizza Peperoni");
-        Standard standard2 = new Standard();
-        standard2.setName("Pizza Margherita");
-        standardRepository.saveAll(Arrays.asList(standard1, standard2));
+        commandeRepository.deleteAll();
+        commentaireRepository.deleteAll();
+        pizzaCommandeRepository.deleteAll();
 
         // Create Ingredients
         Ingredient ingredient1 = new Ingredient();
@@ -56,8 +56,6 @@ public class DataInitializer implements CommandLineRunner {
         ingredient1.setDescription("Description 1");
         ingredient1.setPathPhoto("path1.jpg");
         ingredient1.setPrix(10.0);
-        ingredient1.setOptionnels(Arrays.asList(optionnel1, optionnel2));
-        ingredient1.setStandards(Arrays.asList(standard1, standard2));
         ingredientRepository.save(ingredient1);
 
         Ingredient ingredient2 = new Ingredient();
@@ -65,9 +63,18 @@ public class DataInitializer implements CommandLineRunner {
         ingredient2.setDescription("Description 2");
         ingredient2.setPathPhoto("/pizza-1498148703.jpg");
         ingredient2.setPrix(20.0);
-        ingredient2.setOptionnels(Arrays.asList(optionnel1));
-        ingredient2.setStandards(Arrays.asList(standard2));
         ingredientRepository.save(ingredient2);
+
+        // Create Standards
+        Standard standard1 = new Standard();
+        standard1.setName("Pizza Peperoni");
+        standard1.setIngredients(Arrays.asList(ingredient1, ingredient2));
+        standardRepository.save(standard1);
+
+        Standard standard2 = new Standard();
+        standard2.setName("Pizza Margherita");
+        standard2.setIngredients(Arrays.asList(ingredient1));
+        standardRepository.save(standard2);
 
         // Create Pizzas
         Pizza pizza1 = new Pizza();
@@ -79,11 +86,34 @@ public class DataInitializer implements CommandLineRunner {
         pizzaRepository.save(pizza1);
 
         Pizza pizza2 = new Pizza();
-        pizza2.setNom("PEPERO- NICO-NIIII");
+        pizza2.setNom("Pizza Margherita");
         pizza2.setDescription("Description 2");
         pizza2.setPhoto("/pizza-1498148703.jpg");
         pizza2.setPrix(25.0f);
-        pizza2.setStandards(Arrays.asList(standard1));
+        pizza2.setStandards(Arrays.asList(standard2));
         pizzaRepository.save(pizza2);
+
+        // Create Commandes
+        Commande commande1 = new Commande();
+        commande1.setDescription("Commande 1");
+        commande1.setValidation(1);
+        commande1.setDate("2023-10-01");
+        commande1.setPrix(40.0f);
+        commandeRepository.save(commande1);
+
+        // Create PizzaCommandes
+        PizzaCommande pizzaCommande1 = new PizzaCommande();
+        pizzaCommande1.setCommande(commande1);
+        pizzaCommande1.setPizza(pizza1);
+        pizzaCommande1.setIngredients(Arrays.asList(ingredient1, ingredient2));
+        pizzaCommandeRepository.save(pizzaCommande1);
+
+        // Create Commentaires
+        Commentaire commentaire1 = new Commentaire();
+        commentaire1.setDescription("Très bonne pizza !");
+        commentaire1.setDate("2023-10-01");
+        commentaire1.setPizza_origine(pizza1.getId());
+        commentaire1.setNote(5);
+        commentaireRepository.save(commentaire1);
     }
 }

@@ -18,10 +18,6 @@ public class Pizza {
     private String photo;
     private float prix;
 
-    @ManyToMany(mappedBy = "pizzas")
-    private List<Commande> commandes;
-
-
     @ManyToMany
     @JoinTable(
             name = "pizza_standard",

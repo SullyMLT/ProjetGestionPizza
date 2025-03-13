@@ -17,6 +17,6 @@ public class Commande {
     private String date;
     private float prix;
 
-    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PizzaCommande> pizzasPersonnalisees;
 }
