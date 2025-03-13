@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Data
 public class CommentaireDto {
-    private Long id;
+    private long id;
     private String description;
     private Date date;
     private int pizzaOrigine;

@@ -13,6 +13,6 @@ public class Commentaire {
     private long id;
     private String description;
     private String date;
-    private long pizza_origine;
+    private long pizzaOrigine;
     private int note;
 }

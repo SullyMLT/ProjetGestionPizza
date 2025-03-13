@@ -21,6 +21,7 @@ public class CommentaireServiceImpl implements CommentaireService {
     @Autowired
     private CommentaireMapper commentaireMapper;
 
+    @Override
     public void addCommentaire(CommentaireDto commentaireDto) {
         Commentaire commentaire = this.commentaireMapper.toEntity(commentaireDto);
         commentaireRepository.save(commentaire);
@@ -39,11 +40,11 @@ public class CommentaireServiceImpl implements CommentaireService {
 
     @Override
     public List<CommentaireDto> getCommentaires() {
-        List<Commentaire> Commentaires =  commentaireRepository.findAll();
+        List<Commentaire> commentaires =  commentaireRepository.findAll();
         List<CommentaireDto> commentaireDtos = new ArrayList<>();
 
-        for (Commentaire comDto : Commentaires){
-            commentaireDtos.add(this.commentaireMapper.toDto(comDto));
+        for (Commentaire com : commentaires){
+            commentaireDtos.add(this.commentaireMapper.toDto(com));
         }
         return commentaireDtos;
     }

@@ -42,13 +42,13 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // Delete all existing data
-        ingredientRepository.deleteAll();
-        pizzaRepository.deleteAll();
-        standardRepository.deleteAll();
-        commandeRepository.deleteAll();
+        // Delete all existing data in the correct order
         commentaireRepository.deleteAll();
         pizzaCommandeRepository.deleteAll();
+        commandeRepository.deleteAll();
+        pizzaRepository.deleteAll();
+        standardRepository.deleteAll();
+        ingredientRepository.deleteAll();
 
         // Create Ingredients
         Ingredient ingredient1 = new Ingredient();
@@ -112,7 +112,7 @@ public class DataInitializer implements CommandLineRunner {
         Commentaire commentaire1 = new Commentaire();
         commentaire1.setDescription("Très bonne pizza !");
         commentaire1.setDate("2023-10-01");
-        commentaire1.setPizza_origine(pizza1.getId());
+        commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
         commentaireRepository.save(commentaire1);
     }
