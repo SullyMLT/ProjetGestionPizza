@@ -4,6 +4,7 @@ import AddPizza from './components/AddPizza';
 import PizzaList from './components/PizzaList';
 import Login from './components/Login';
 import Register from './components/Register';
+import CommentList from './components/CommList';  // Import du composant CommentList
 import AddIngredient from './components/AddIngredient'; // Import du composant AddIngredient
 import IngredientList from './components/IngredientList'; // Import du composant IngredientList
 import "./App.css";
@@ -31,21 +32,22 @@ function App() {
         <Link to="/">Liste des pizzas</Link>
         {user && user.role === 'admin' && (
           <>
-            |
-            <Link to="/ajouter-pizza">Ajouter une pizza</Link> |
+            | <Link to="/ajouter-pizza">Ajouter une pizza</Link> |
             <Link to="/ajouter-ingredient">Ajouter un ingrédient</Link> |
-             <Link to="/ingredients">Liste des ingrédients</Link>
+            <Link to="/ingredients">Liste des ingrédients</Link>
           </>
         )}
+        |
+        {/* Ajouter le lien pour les commentaires */}
+        <Link to="/commentaires">Commentaires</Link>
 
         {user ? (
           <>
-            |
-            <button onClick={logout}>Se déconnecter</button>
+            | <button onClick={logout}>Se déconnecter</button>
           </>
         ) : (
-          <> |
-            <Link to="/login">Se connecter</Link> |
+          <>
+            | <Link to="/login">Se connecter</Link> |
             <Link to="/register">S'inscrire</Link>
           </>
         )}
@@ -64,7 +66,7 @@ function App() {
         />
         <Route
           path="/ingredients"
-          element={user && user.role === 'admin' ?<IngredientList />: <Navigate to="/" />}  // Route pour afficher la liste des ingrédients
+          element={user && user.role === 'admin' ? <IngredientList /> : <Navigate to="/" />}
         />
         <Route path="/" element={<PizzaList />} />
         <Route
@@ -75,7 +77,11 @@ function App() {
           path="/register"
           element={user ? <Navigate to="/" /> : <Register />}
         />
+
+        {/* Ajouter la route pour afficher les commentaires */}
+        <Route path="/commentaires" element={<CommentList />} />
       </Routes>
+
     </div>
   );
 }
