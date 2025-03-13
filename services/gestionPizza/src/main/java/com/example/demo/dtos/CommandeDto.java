@@ -1,11 +1,6 @@
 package com.example.demo.dtos;
 
-import com.example.demo.entities.Commande;
-import com.example.demo.entities.Pizza;
-import com.example.demo.entities.PizzaCommande;
 import lombok.Data;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

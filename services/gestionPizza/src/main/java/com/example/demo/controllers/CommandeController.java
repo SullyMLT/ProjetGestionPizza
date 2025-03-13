@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dtos.CommandeDto;
-import com.example.demo.entities.Commande;
 import com.example.demo.services.impl.CommandeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

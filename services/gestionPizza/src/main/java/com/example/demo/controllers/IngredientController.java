@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dtos.IngredientDto;
-import com.example.demo.entities.Ingredient;
 import com.example.demo.services.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
