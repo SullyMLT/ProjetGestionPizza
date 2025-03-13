@@ -42,14 +42,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // Delete all existing data in the correct order
-        commentaireRepository.deleteAll();
-        pizzaCommandeRepository.deleteAll();
-        commandeRepository.deleteAll();
-        pizzaRepository.deleteAll();
-        standardRepository.deleteAll();
-        ingredientRepository.deleteAll();
-
         // Create Ingredients
         Ingredient ingredient1 = new Ingredient();
         ingredient1.setName("Sauce tomate");
@@ -67,12 +59,10 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create Standards
         Standard standard1 = new Standard();
-        standard1.setName("Pizza Peperoni");
         standard1.setIngredients(Arrays.asList(ingredient1, ingredient2));
         standardRepository.save(standard1);
 
         Standard standard2 = new Standard();
-        standard2.setName("Pizza Margherita");
         standard2.setIngredients(Arrays.asList(ingredient1));
         standardRepository.save(standard2);
 
@@ -82,7 +72,7 @@ public class DataInitializer implements CommandLineRunner {
         pizza1.setDescription("Description 1");
         pizza1.setPhoto("/Pepperoni_Pizza_Beauty_1200x1200.webp");
         pizza1.setPrix(15.0f);
-        pizza1.setStandards(Arrays.asList(standard1, standard2));
+        pizza1.setStandard(standard1);
         pizzaRepository.save(pizza1);
 
         Pizza pizza2 = new Pizza();
@@ -90,7 +80,7 @@ public class DataInitializer implements CommandLineRunner {
         pizza2.setDescription("Description 2");
         pizza2.setPhoto("/pizza-1498148703.jpg");
         pizza2.setPrix(25.0f);
-        pizza2.setStandards(Arrays.asList(standard2));
+        pizza2.setStandard(standard2);
         pizzaRepository.save(pizza2);
 
         // Create Commandes

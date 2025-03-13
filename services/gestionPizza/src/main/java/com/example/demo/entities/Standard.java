@@ -13,8 +13,6 @@ public class Standard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String name;
-
     @ManyToMany
     @JoinTable(
             name = "standard_ingredient",

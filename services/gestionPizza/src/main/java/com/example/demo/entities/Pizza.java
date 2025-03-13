@@ -18,11 +18,7 @@ public class Pizza {
     private String photo;
     private float prix;
 
-    @ManyToMany
-    @JoinTable(
-            name = "pizza_standard",
-            joinColumns = @JoinColumn(name = "pizza_id"),
-            inverseJoinColumns = @JoinColumn(name = "standard_id")
-    )
-    private List<Standard> standards;
+    @ManyToOne
+    @JoinTable(name = "standard_id")
+    private Standard standard;
 }

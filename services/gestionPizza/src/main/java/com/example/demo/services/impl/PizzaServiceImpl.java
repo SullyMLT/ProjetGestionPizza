@@ -49,13 +49,19 @@ public class PizzaServiceImpl implements PizzaService {
     public PizzaDto updatePizza(Long id, PizzaDto pizzaDto) {
         Optional <Pizza> pizza = this.pizzaRepository.findById(Math.toIntExact(id));
         if (pizza.isPresent()) {
+            // information sur l'entity à mettre à jour
+            Pizza piz = this.pizzaMapper.toEntity(pizzaDto);
+            // entity to update
             Pizza p = pizza.get();
+            // mise à jour des données
             p.setNom(pizzaDto.getNom());
-            p.setDescription(pizzaDto.getDescription());
-            p.setPhoto(pizzaDto.getPhoto());
-            p.setPrix(pizzaDto.getPrix());
-            Pizza piz = pizzaRepository.save(p);
-            return this.pizzaMapper.toDto(piz);
+            p.setDescription(piz.getDescription());
+            p.setPhoto(piz.getPhoto());
+            p.setPrix(piz.getPrix());
+            p.setStandard(piz.getStandard());
+
+            Pizza savedPizza = pizzaRepository.save(p);
+            return this.pizzaMapper.toDto(savedPizza);
         } else {
             return null;
         }

@@ -10,6 +10,6 @@ public class PizzaDto {
     private String description;
     private String photo;
     private float prix;
-    private List<StandardDto> standards;
+    private StandardDto standard;
 
 }

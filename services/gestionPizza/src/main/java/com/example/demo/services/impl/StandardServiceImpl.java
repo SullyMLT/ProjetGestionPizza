@@ -39,7 +39,6 @@ public class StandardServiceImpl implements StandardService {
         if (optionalStandard.isPresent()) {
             Standard standardToUpdate = standardMapper.toEntity(standardDto);
             Standard standardUpdated = optionalStandard.get();
-            standardUpdated.setName(standardToUpdate.getName());
             standardUpdated.setIngredients(standardToUpdate.getIngredients());
             standardUpdated.setPizza(standardToUpdate.getPizza());
 
