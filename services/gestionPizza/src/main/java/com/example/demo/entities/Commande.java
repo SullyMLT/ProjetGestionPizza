@@ -17,6 +17,10 @@ public class Commande {
     private String date;
     private float prix;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "compte_id", nullable = true)
+    private Compte compte;
+
     @OneToMany(mappedBy = "commande", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PizzaCommande> pizzasPersonnalisees;
 }
