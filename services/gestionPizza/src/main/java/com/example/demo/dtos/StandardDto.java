@@ -14,13 +14,4 @@ public class StandardDto {
     private List<IngredientDto> ingredients;
     private PizzaDto pizza;
 
-    public StandardDto(Standard standard) {
-        this.id = standard.getId();
-        this.nom = standard.getName();
-        this.ingredients = new ArrayList<>();
-        for (Ingredient ingredient : standard.getIngredients()) {
-            this.ingredients.add(new IngredientDto(ingredient));
-        }
-        this.pizza = new PizzaDto(standard.getPizza());
-    }
 }

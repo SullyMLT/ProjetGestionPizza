@@ -8,7 +8,7 @@ import java.util.List;
 public interface PizzaService {
     List<PizzaDto> getAllPizzas();
     PizzaDto getPizzaById(Long id);
-    PizzaDto addPizza(Pizza pizza);
-    PizzaDto updatePizza(Long id, Pizza pizza);
+    PizzaDto addPizza(PizzaDto pizzaDto);
+    PizzaDto updatePizza(Long id, PizzaDto pizzaDto);
     void deletePizza(Long id);
 }

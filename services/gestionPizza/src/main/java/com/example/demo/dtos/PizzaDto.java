@@ -17,17 +17,4 @@ public class PizzaDto {
     private float prix;
     private List<StandardDto> standards;
 
-    public PizzaDto(Pizza pizza) {
-        this.id = pizza.getId();
-        this.nom = pizza.getNom();
-        this.description = pizza.getDescription();
-        this.photo = pizza.getPhoto();
-        this.prix = pizza.getPrix();
-
-        this.standards = new ArrayList<>();
-
-        for (Standard standard : pizza.getStandards()) {
-            this.standards.add(new StandardDto(standard));
-        }
-    }
 }

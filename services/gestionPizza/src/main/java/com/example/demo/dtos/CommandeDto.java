@@ -17,16 +17,4 @@ public class CommandeDto {
     private float prix;
     private List<PizzaCommandeDto> pizzasPersonnalisees;
 
-
-    public CommandeDto(Commande commande) {
-        this.setId(commande.getId());
-        this.setDescription(commande.getDescription());
-        this.setValidation(commande.getValidation());
-        this.prix = commande.getPrix();
-        this.setDate(commande.getDate());
-        this.pizzasPersonnalisees = new ArrayList<>();
-        for (PizzaCommande pizzaCommande : commande.getPizzasPersonnalisees()) {
-            this.pizzasPersonnalisees.add(new PizzaCommandeDto(pizzaCommande));
-        }
-    }
 }

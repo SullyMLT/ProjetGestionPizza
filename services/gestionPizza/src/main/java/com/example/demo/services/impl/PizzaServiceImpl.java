@@ -2,6 +2,7 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dtos.PizzaDto;
 import com.example.demo.entities.Pizza;
+import com.example.demo.mappers.PizzaMapper;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.services.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,15 @@ public class PizzaServiceImpl implements PizzaService {
     @Autowired
     private PizzaRepository pizzaRepository;
 
+    @Autowired
+    private PizzaMapper pizzaMapper;
+
     @Override
     public List<PizzaDto> getAllPizzas() {
         List<Pizza> pizzas = pizzaRepository.findAll();
         List<PizzaDto> pizzasDto = new ArrayList<PizzaDto>();
         for (Pizza pizza : pizzas) {
-            pizzasDto.add(new PizzaDto(pizza));
+            pizzasDto.add(this.pizzaMapper.toDto(pizza));
         }
         return pizzasDto;
     }
@@ -30,23 +34,31 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public PizzaDto getPizzaById(Long id) {
         Optional<Pizza> pizza = pizzaRepository.findById(Math.toIntExact(id));
-        return pizza.isPresent() ? new PizzaDto(pizza.get()) : null;
+        return pizza.isPresent() ? this.pizzaMapper.toDto(pizza.get()) : null;
     }
 
     @Override
-    public PizzaDto addPizza(Pizza pizza) {
+    public PizzaDto addPizza(PizzaDto pizzaDto) {
+        Pizza pizza = this.pizzaMapper.toEntity(pizzaDto);
+
         Pizza piz = pizzaRepository.save(pizza);
-        return new PizzaDto(piz);
+        return this.pizzaMapper.toDto(piz);
     }
 
     @Override
-    public PizzaDto updatePizza(Long id, Pizza pizza) {
-        if (pizzaRepository.existsById(Math.toIntExact(id))) {
-            pizza.setId(id);
-            pizzaRepository.save(pizza);
-            return new PizzaDto(pizza);
+    public PizzaDto updatePizza(Long id, PizzaDto pizzaDto) {
+        Optional <Pizza> pizza = this.pizzaRepository.findById(Math.toIntExact(id));
+        if (pizza.isPresent()) {
+            Pizza p = pizza.get();
+            p.setNom(pizzaDto.getNom());
+            p.setDescription(pizzaDto.getDescription());
+            p.setPhoto(pizzaDto.getPhoto());
+            p.setPrix(pizzaDto.getPrix());
+            Pizza piz = pizzaRepository.save(p);
+            return this.pizzaMapper.toDto(piz);
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override

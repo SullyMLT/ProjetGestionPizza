@@ -33,14 +33,14 @@ public class PizzaController {
     }
 
     @PostMapping
-    public ResponseEntity<PizzaDto> addPizza(@RequestBody Pizza pizza) {
-        PizzaDto newPizza = pizzaService.addPizza(pizza);
+    public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto) {
+        PizzaDto newPizza = pizzaService.addPizza(pizzaDto);
         return ResponseEntity.ok(newPizza);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PizzaDto> updatePizza(@PathVariable Long id, @RequestBody Pizza pizza) {
-        PizzaDto updatedPizza = pizzaService.updatePizza(id, pizza);
+    public ResponseEntity<PizzaDto> updatePizza(@PathVariable Long id, @RequestBody PizzaDto pizzaDto) {
+        PizzaDto updatedPizza = pizzaService.updatePizza(id, pizzaDto);
         if (updatedPizza != null) {
             return ResponseEntity.ok(updatedPizza);
         } else {

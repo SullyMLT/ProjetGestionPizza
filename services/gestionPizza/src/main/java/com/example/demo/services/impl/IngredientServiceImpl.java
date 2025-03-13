@@ -2,6 +2,7 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dtos.IngredientDto;
 import com.example.demo.entities.Ingredient;
+import com.example.demo.mappers.IngredientMapper;
 import com.example.demo.repositories.IngredientRepository;
 import com.example.demo.services.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,17 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
     private IngredientRepository ingredientRepository;
 
+    @Autowired
+    private IngredientMapper ingredientMapper;
+
     @Override
     public IngredientDto addIngredient(IngredientDto ingredientDto) {
         // conversion Dto to entity
-        Ingredient ingredient = ingredientDto.toEntity();
+        Ingredient ingredient = this.ingredientMapper.toEntity(ingredientDto);
         // sauvegarde de l'entité sur la base
-        Ingredient saveIngredient = ingredientRepository.save(ingredient);
+        Ingredient saveIngredient = this.ingredientRepository.save(ingredient);
 
-        return new IngredientDto(saveIngredient);
+        return this.ingredientMapper.toDto(saveIngredient);
     }
 
     @Override
@@ -35,23 +39,22 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public IngredientDto updateIngredient(long id, IngredientDto ingredientDto) {
 
-        Optional<Ingredient> optionalIngredient = ingredientRepository.findById((int) id);
+        Optional<Ingredient> optionalIngredient = this.ingredientRepository.findById((int) id);
 
         if (optionalIngredient.isPresent()) {
             // donnée à mettre à jour sur la base
-            IngredientDto ingredientDtoUpdated = ingredientDto;
+            Ingredient ingredientToUpdate = this.ingredientMapper.toEntity(ingredientDto);
             // donnée récupérée de la base
             Ingredient ingredientUpdated = optionalIngredient.get();
             // conversion de la donnée à mettre à jour en entité
-            Ingredient ingredientUpdated2 = ingredientDtoUpdated.toEntity();
-            // mise à jour des données
-            ingredientUpdated.setName(ingredientUpdated2.getName());
-            ingredientUpdated.setDescription(ingredientUpdated2.getDescription());
-            ingredientUpdated.setPathPhoto(ingredientUpdated2.getPathPhoto());
-            ingredientUpdated.setPrix(ingredientUpdated2.getPrix());
+            ingredientUpdated.setName(ingredientToUpdate.getName());
+            ingredientUpdated.setDescription(ingredientToUpdate.getDescription());
+            ingredientUpdated.setPathPhoto(ingredientToUpdate.getPathPhoto());
+            ingredientUpdated.setPrix(ingredientToUpdate.getPrix());
+
             // sauvegarde des données
-            ingredientRepository.save(ingredientUpdated);
-            return new IngredientDto(ingredientUpdated);
+            Ingredient savedIngredient = this.ingredientRepository.save(ingredientUpdated);
+            return this.ingredientMapper.toDto(savedIngredient);
         }
         System.out.println("Ingredient problème update");
         return null;
@@ -60,20 +63,15 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public IngredientDto getIngredientById(long id) {
         Optional<Ingredient> optionalIngredient = ingredientRepository.findById((int) id);
-        if (optionalIngredient.isPresent()){
-            return new IngredientDto(optionalIngredient.get());
-        }else{
-            System.out.println("Ingredient pas trouvé");
-            return null;
-        }
+        return optionalIngredient.isPresent() ? this.ingredientMapper.toDto(optionalIngredient.get()): null;
     }
 
     @Override
     public List<IngredientDto> getAllIngredients() {
-        List<Ingredient> ingredients = ingredientRepository.findAll();
+        List<Ingredient> ingredients = this.ingredientRepository.findAll();
         List<IngredientDto> ingredientDtos = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
-            ingredientDtos.add(new IngredientDto(ingredient));
+            ingredientDtos.add(this.ingredientMapper.toDto(ingredient));
         }
         return ingredientDtos;
     }

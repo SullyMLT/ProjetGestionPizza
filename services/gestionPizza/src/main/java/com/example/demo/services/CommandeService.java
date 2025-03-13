@@ -9,5 +9,5 @@ public interface CommandeService {
     public CommandeDto addCommande(CommandeDto commandeDto);
     public CommandeDto getCommandeById(Long id);
     public List<CommandeDto> getAllCommandes();
-    CommandeDto updateCommande(Long id, Commande commandePizza);
+    CommandeDto updateCommande(Long id, CommandeDto commandeDto);
 }
