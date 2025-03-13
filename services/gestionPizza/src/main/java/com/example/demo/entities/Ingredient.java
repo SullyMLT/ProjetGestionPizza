@@ -19,7 +19,7 @@ public class Ingredient {
     private double prix;
 
     @ManyToMany(mappedBy = "ingredients")
-    private List<Optionnel> optionnels;
+    private List<PizzaCommande> optionnels;
 
     @ManyToMany(mappedBy = "ingredients")
     private List<Standard> standards;

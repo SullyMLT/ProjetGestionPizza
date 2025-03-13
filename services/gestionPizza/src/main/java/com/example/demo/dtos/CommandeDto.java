@@ -15,22 +15,16 @@ public class CommandeDto {
     private int validation;
     private String date;
     private float prix;
-    private List<PizzaDto> pizzas;
     private List<PizzaCommandeDto> pizzasPersonnalisees;
 
 
     public CommandeDto(Commande commande) {
-
         this.setId(commande.getId());
         this.setDescription(commande.getDescription());
         this.setValidation(commande.getValidation());
         this.prix = commande.getPrix();
         this.setDate(commande.getDate());
-        this.pizzas = new ArrayList<>();
         this.pizzasPersonnalisees = new ArrayList<>();
-        for (Pizza pizza : commande.getPizzas()) {
-            this.pizzas.add(new PizzaDto(pizza));
-        }
         for (PizzaCommande pizzaCommande : commande.getPizzasPersonnalisees()) {
             this.pizzasPersonnalisees.add(new PizzaCommandeDto(pizzaCommande));
         }

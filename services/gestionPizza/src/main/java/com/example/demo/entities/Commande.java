@@ -17,15 +17,6 @@ public class Commande {
     private String date;
     private float prix;
 
-    @ManyToMany
-    @JoinTable(
-            name = "commande_pizza",
-            joinColumns = @JoinColumn(name = "commande_id"),
-            inverseJoinColumns = @JoinColumn(name = "pizza_id")
-    )
-    private List<Pizza> pizzas;
-
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<PizzaCommande> pizzasPersonnalisees;
-
 }

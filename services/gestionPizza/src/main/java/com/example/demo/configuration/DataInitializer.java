@@ -1,11 +1,9 @@
 package com.example.demo.configuration;
 
 import com.example.demo.entities.Ingredient;
-import com.example.demo.entities.Optionnel;
 import com.example.demo.entities.Pizza;
 import com.example.demo.entities.Standard;
 import com.example.demo.repositories.IngredientRepository;
-import com.example.demo.repositories.OptionnelRepository;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.repositories.StandardRepository;
 import org.springframework.beans.factory.annotation.Autowired;

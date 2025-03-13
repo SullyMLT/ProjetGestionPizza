@@ -21,13 +21,6 @@ public class Pizza {
     @ManyToMany(mappedBy = "pizzas")
     private List<Commande> commandes;
 
-    @ManyToMany
-    @JoinTable(
-            name = "pizza_optionnel",
-            joinColumns = @JoinColumn(name = "pizza_id"),
-            inverseJoinColumns = @JoinColumn(name = "optionnel_id")
-    )
-    private List<Optionnel> optionnels;
 
     @ManyToMany
     @JoinTable(

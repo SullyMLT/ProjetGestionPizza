@@ -1,7 +1,5 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.dtos.IngredientDto;
-import com.example.demo.dtos.OptionnelDto;
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.*;
 import com.example.demo.repositories.*;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PizzaCommandeServiceImpl implements PizzaCommandeService {
@@ -46,11 +43,12 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
             return null;
         }
 
+
         // get les ingredients pour Optionnel
-        OptionnelDto optionnelDto = pizzaCommandeDto.getOptionnelDto();
+
         List<Ingredient> ingredients = new ArrayList<>();
-        List<Long> ingredientDtos = optionnelDto.getIngredientsId();
-        for (Long ingredientId : ingredientDtos) {
+
+        for (Long ingredientId : ) {
             int id = ingredientId.intValue();
             Optional<Ingredient> ingredient = ingredientRepository.findById(id);
             if (ingredient.isEmpty()) {
