@@ -25,14 +25,6 @@ public class CommandeMapperImpl implements CommandeMapper {
         commandeDto.setPrix(commande.getPrix());
         commandeDto.setDescription(commande.getDescription());
         commandeDto.setDate(commande.getDate());
-        List<PizzaCommandeDto> pizCom = new ArrayList<>();
-        if (commande.getPizzasCommandes() != null) {
-            for (PizzaCommande pizzaCommande : commande.getPizzasCommandes()) {
-                PizzaCommandeDto pizzaCommandeDto = new PizzaCommandeMapperImpl().toDto(pizzaCommande);
-                pizCom.add(pizzaCommandeDto);
-            }
-        }
-        commandeDto.setPizzasCommandes(pizCom);
         return commandeDto;
     }
 
@@ -46,14 +38,6 @@ public class CommandeMapperImpl implements CommandeMapper {
         commande.setPrix(commandeDto.getPrix());
         commande.setDescription(commandeDto.getDescription());
         commande.setDate(commandeDto.getDate());
-        List<PizzaCommande> pizCom = new ArrayList<>();
-        if (commandeDto.getPizzasCommandes() != null) {
-            for (PizzaCommandeDto pizzaCommandeDto : commandeDto.getPizzasCommandes()) {
-                PizzaCommande pizzaCommande = new PizzaCommandeMapperImpl().toEntity(pizzaCommandeDto);
-                pizCom.add(pizzaCommande);
-            }
-        }
-        commande.setPizzasCommandes(pizCom);
         return new Commande();
     }
 }

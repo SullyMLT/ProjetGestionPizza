@@ -10,6 +10,4 @@ public class CommandeDto {
     private int validation;
     private String date;
     private float prix;
-    private List<PizzaCommandeDto> pizzasCommandes;
-
 }

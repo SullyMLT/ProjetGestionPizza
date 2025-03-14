@@ -23,6 +23,4 @@ public class Commande {
     @JoinColumn(name = "compte_id", nullable = true)
     private Compte compte;
 
-    @OneToMany(mappedBy = "commande", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PizzaCommande> pizzasCommandes;
 }
