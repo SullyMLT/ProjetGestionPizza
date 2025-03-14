@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // Importer useNavigate
 import "../App.css";
 
 // URL de l'API
@@ -8,6 +9,7 @@ const PizzaList = () => {
   const [pizzas, setPizzas] = useState([]);  // État pour les pizzas
   const [loading, setLoading] = useState(true);  // État pour savoir si les données sont en cours de chargement
   const [error, setError] = useState(null);  // État pour gérer les erreurs
+  const navigate = useNavigate();  // Hook pour la navigation
 
   useEffect(() => {
     // Fonction pour récupérer les pizzas depuis l'API
@@ -37,6 +39,11 @@ const PizzaList = () => {
     return <p>Erreur: {error}</p>;  // Si une erreur survient, afficher un message d'erreur
   }
 
+  const handleDetailClick = (pizzaId) => {
+    // Rediriger vers la page de détails de la pizza
+    navigate(`/pizzas/${pizzaId}`);
+  };
+
   return (
     <section>
       <h2>Liste des Pizzas</h2>
@@ -50,7 +57,9 @@ const PizzaList = () => {
             </div>
             <div className="right">
               <p><strong>Prix: {pizza.prix}€</strong></p>
-              <button className="add-to-cart">Ajouter au panier</button>
+              <button className="add-to-cart" onClick={() => handleDetailClick(pizza.id)}>
+                Détail
+              </button>
             </div>
           </div>
         ))}

@@ -4,42 +4,50 @@ import AddPizza from './components/AddPizza';
 import PizzaList from './components/PizzaList';
 import Login from './components/Login';
 import Register from './components/Register';
-import CommentList from './components/CommList';  // Import du composant CommentList
-import AddIngredient from './components/AddIngredient'; // Import du composant AddIngredient
-import IngredientList from './components/IngredientList'; // Import du composant IngredientList
+import CommentList from './components/CommList';
+import AddIngredient from './components/AddIngredient';
+import IngredientList from './components/IngredientList';
+import CommendeList from './components/CommendeList';
+import PizzaDetails from './components/PizzaDetails';
+import PanierCommande from './components/PanierCommande';
+
 import "./App.css";
 
 function App() {
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
+  const [panier, setPanier] = useState(() => JSON.parse(localStorage.getItem("panier")) || []); // Gérer le panier ici
+  const [error, setError] = useState(null);
 
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));  // Récupérer l'utilisateur stocké
-  const [error, setError] = useState(null); // État pour gérer les erreurs
-
+  // Fonction de connexion
   const login = (username, role) => {
     const newUser = { username, role };
     setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser)); // Sauvegarder l'utilisateur dans le localStorage
+    localStorage.setItem('user', JSON.stringify(newUser));
   };
 
+  // Fonction de déconnexion
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user'); // Retirer l'utilisateur du localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('commandeId');  // Supprimer commandeId lors de la déconnexion
   };
 
   return (
     <div className="App">
-      <h1>Gestion des Pizzas</h1>
+      <header className="header">
+        <Link to="/panier">🧺</Link>
+      </header>
       <nav>
         <Link to="/">Liste des pizzas</Link>
         {user && user.role === 'admin' && (
           <>
-            | <Link to="/ajouter-pizza">Ajouter une pizza</Link> |
-            <Link to="/ajouter-ingredient">Ajouter un ingrédient</Link> |
-            <Link to="/ingredients">Liste des ingrédients</Link>
+            | <Link to="/ajouter-pizza">Ajouter une pizza</Link>
+            | <Link to="/ajouter-ingredient">Ajouter un ingrédient</Link>
+            | <Link to="/ingredients">Liste des ingrédients</Link>
+            | <Link to="/commendes">Liste des commandes</Link>
           </>
         )}
-        |
-        {/* Ajouter le lien pour les commentaires */}
-        <Link to="/commentaires">Commentaires</Link>
+        | <Link to="/commentaires">Liste des commentaires</Link>
 
         {user ? (
           <>
@@ -47,15 +55,19 @@ function App() {
           </>
         ) : (
           <>
-            | <Link to="/login">Se connecter</Link> |
-            <Link to="/register">S'inscrire</Link>
+            | <Link to="/login">Se connecter</Link>
+            | <Link to="/register">S'inscrire</Link>
           </>
         )}
       </nav>
 
-      {error && <p>{error}</p>} {/* Affichage des erreurs d'API */}
+      {error && <p className="error">{error}</p>}
 
       <Routes>
+        <Route path="/" element={<PizzaList />} />
+        <Route path="/panier" element={<PanierCommande panier={panier} setPanier={setPanier} />} />
+
+        {/* Routes sécurisées pour les admins */}
         <Route
           path="/ajouter-pizza"
           element={user && user.role === 'admin' ? <AddPizza /> : <Navigate to="/" />}
@@ -68,20 +80,21 @@ function App() {
           path="/ingredients"
           element={user && user.role === 'admin' ? <IngredientList /> : <Navigate to="/" />}
         />
-        <Route path="/" element={<PizzaList />} />
         <Route
-          path="/login"
-          element={user ? <Navigate to="/" /> : <Login login={login} />}
-        />
-        <Route
-          path="/register"
-          element={user ? <Navigate to="/" /> : <Register />}
+          path="/commendes"
+          element={user && user.role === 'admin' ? <CommendeList /> : <Navigate to="/" />}
         />
 
-        {/* Ajouter la route pour afficher les commentaires */}
+        {/* Routes d'authentification */}
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login login={login} />} />
+        <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+
+        {/* Route pour les commentaires */}
         <Route path="/commentaires" element={<CommentList />} />
-      </Routes>
 
+        {/* Route pour afficher les détails d'une pizza */}
+        <Route path="/pizzas/:id" element={<PizzaDetails />} />
+      </Routes>
     </div>
   );
 }
