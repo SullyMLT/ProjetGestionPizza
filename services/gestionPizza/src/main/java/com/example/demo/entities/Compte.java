@@ -15,6 +15,8 @@ public class Compte {
 
     private String username;
     private String password;
+    private String role;
+    private boolean activer;
 
     @OneToMany(mappedBy = "compte", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Commande> commandes;

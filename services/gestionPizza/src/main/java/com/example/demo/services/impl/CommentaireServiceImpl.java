@@ -3,6 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.entities.Commentaire;
 import com.example.demo.dtos.CommentaireDto;
 import com.example.demo.mappers.CommentaireMapper;
+import com.example.demo.mappers.impl.CommentaireMapperImpl;
 import com.example.demo.repositories.CommentaireRepository;
 import com.example.demo.services.CommentaireService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,11 @@ public class CommentaireServiceImpl implements CommentaireService {
     @Autowired
     private CommentaireRepository commentaireRepository;
 
-    @Autowired
-    private CommentaireMapper commentaireMapper;
+    private final CommentaireMapperImpl commentaireMapperImpl = new CommentaireMapperImpl();
 
     @Override
     public void addCommentaire(CommentaireDto commentaireDto) {
-        Commentaire commentaire = this.commentaireMapper.toEntity(commentaireDto);
+        Commentaire commentaire = this.commentaireMapperImpl.toEntity(commentaireDto);
         commentaireRepository.save(commentaire);
     }
 
@@ -35,7 +35,7 @@ public class CommentaireServiceImpl implements CommentaireService {
     @Override
     public CommentaireDto getCommentaire(long id) {
         Optional<Commentaire> optionalCom = commentaireRepository.findById(Math.toIntExact(id));
-        return optionalCom.isPresent() ? this.commentaireMapper.toDto(optionalCom.get()) : null;
+        return optionalCom.isPresent() ? this.commentaireMapperImpl.toDto(optionalCom.get()) : null;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CommentaireServiceImpl implements CommentaireService {
         List<CommentaireDto> commentaireDtos = new ArrayList<>();
 
         for (Commentaire com : commentaires){
-            commentaireDtos.add(this.commentaireMapper.toDto(com));
+            commentaireDtos.add(this.commentaireMapperImpl.toDto(com));
         }
         return commentaireDtos;
     }

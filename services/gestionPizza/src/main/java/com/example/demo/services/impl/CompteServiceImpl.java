@@ -4,7 +4,7 @@ import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.CompteDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
-import com.example.demo.mappers.CompteMapper;
+import com.example.demo.mappers.impl.CompteMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.repositories.CompteRepository;
 import com.example.demo.services.CompteService;
@@ -24,14 +24,13 @@ public class CompteServiceImpl implements CompteService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    @Autowired
-    private CompteMapper compteMapper;
+    private final CompteMapperImpl compteMapperImpl = new CompteMapperImpl();
 
     @Override
     public CompteDto createCompte(CompteDto compteDto) {
-        Compte compte = this.compteMapper.toEntity(compteDto);
+        Compte compte = this.compteMapperImpl.toEntity(compteDto);
         Compte savedCompte = compteRepository.save(compte);
-        return this.compteMapper.toDto(savedCompte);
+        return this.compteMapperImpl.toDto(savedCompte);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CompteServiceImpl implements CompteService {
             }
             existingCompte.setCommandes(commandes);
             Compte updatedCompte = compteRepository.save(existingCompte);
-            return this.compteMapper.toDto(updatedCompte);
+            return this.compteMapperImpl.toDto(updatedCompte);
         } else {
             System.out.println("problème updateCompte");
             return null;
@@ -66,7 +65,7 @@ public class CompteServiceImpl implements CompteService {
     public CompteDto getCompteById(long id) {
         Optional<Compte> optionalCompte = compteRepository.findById((int) id);
         if (optionalCompte.isPresent()) {
-            return this.compteMapper.toDto(optionalCompte.get());
+            return this.compteMapperImpl.toDto(optionalCompte.get());
         } else {
             System.out.println("problème getByIdCompte");
             return null;
@@ -82,7 +81,7 @@ public class CompteServiceImpl implements CompteService {
             return null;
         } else {
             for (Compte compte : comptes) {
-                compteDtos.add(this.compteMapper.toDto(compte));
+                compteDtos.add(this.compteMapperImpl.toDto(compte));
             }
             return compteDtos;
         }

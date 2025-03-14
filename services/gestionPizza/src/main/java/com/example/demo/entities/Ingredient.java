@@ -16,7 +16,7 @@ public class Ingredient {
     private String name;
     private String description;
     private String pathPhoto;
-    private double prix;
+    private float prix;
 
     @ManyToMany(mappedBy = "ingredients")
     private List<PizzaCommande> optionnels;

@@ -8,5 +8,5 @@ import java.util.List;
 public class StandardDto {
     private long id;
     private List<IngredientDto> ingredients;
-    private PizzaDto pizza;
+    private long pizzaId;
 }

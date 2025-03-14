@@ -8,5 +8,5 @@ public class IngredientDto {
     private String name;
     private String description;
     private String pathPhoto;
-    private double prix;
+    private float prix;
 }

@@ -47,23 +47,25 @@ public class DataInitializer implements CommandLineRunner {
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
         ingredient1.setPathPhoto("path1.jpg");
-        ingredient1.setPrix(10.0);
+        ingredient1.setPrix(10.0f);
         ingredientRepository.save(ingredient1);
 
         Ingredient ingredient2 = new Ingredient();
         ingredient2.setName("Crême fraiche");
         ingredient2.setDescription("Description 2");
         ingredient2.setPathPhoto("/pizza-1498148703.jpg");
-        ingredient2.setPrix(20.0);
+        ingredient2.setPrix(20.0f);
         ingredientRepository.save(ingredient2);
 
         // Create Standards
         Standard standard1 = new Standard();
         standard1.setIngredients(Arrays.asList(ingredient1, ingredient2));
-        standardRepository.save(standard1);
+
 
         Standard standard2 = new Standard();
         standard2.setIngredients(Arrays.asList(ingredient1));
+
+        standardRepository.save(standard1);
         standardRepository.save(standard2);
 
         // Create Pizzas
@@ -82,6 +84,13 @@ public class DataInitializer implements CommandLineRunner {
         pizza2.setPrix(25.0f);
         pizza2.setStandard(standard2);
         pizzaRepository.save(pizza2);
+
+        standard1.setPizza(pizza1);
+        standard2.setPizza(pizza2);
+        standardRepository.save(standard1);
+        standardRepository.save(standard2);
+
+
 
         // Create Commandes
         Commande commande1 = new Commande();

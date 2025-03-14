@@ -17,7 +17,7 @@ public class PizzaCommande {
     @JoinColumn(name = "commande_id", nullable = false)
     private Commande commande;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pizza_id", nullable = false)
     private Pizza pizza;
 
@@ -28,5 +28,4 @@ public class PizzaCommande {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> ingredients;
-
 }

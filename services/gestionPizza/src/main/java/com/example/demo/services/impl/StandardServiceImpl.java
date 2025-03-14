@@ -1,8 +1,10 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.StandardDto;
+import com.example.demo.entities.Pizza;
 import com.example.demo.entities.Standard;
-import com.example.demo.mappers.StandardMapper;
+import com.example.demo.mappers.impl.StandardMapperImpl;
+import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.repositories.StandardRepository;
 import com.example.demo.services.StandardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,15 @@ public class StandardServiceImpl implements StandardService {
     private StandardRepository standardRepository;
 
     @Autowired
-    private StandardMapper standardMapper;
+    private PizzaRepository pizzaRepository;
+
+    private final StandardMapperImpl standardMapperImpl = new StandardMapperImpl();
 
     @Override
     public StandardDto addStandard(StandardDto standardDto) {
-        Standard standard = standardMapper.toEntity(standardDto);
+        Standard standard = standardMapperImpl.toEntity(standardDto);
         Standard savedStandard = standardRepository.save(standard);
-        return standardMapper.toDto(savedStandard);
+        return standardMapperImpl.toDto(savedStandard);
     }
 
     @Override
@@ -37,13 +41,13 @@ public class StandardServiceImpl implements StandardService {
     public StandardDto updateStandard(long id, StandardDto standardDto) {
         Optional<Standard> optionalStandard = standardRepository.findById(id);
         if (optionalStandard.isPresent()) {
-            Standard standardToUpdate = standardMapper.toEntity(standardDto);
+            Standard standardToUpdate = standardMapperImpl.toEntity(standardDto);
             Standard standardUpdated = optionalStandard.get();
             standardUpdated.setIngredients(standardToUpdate.getIngredients());
             standardUpdated.setPizza(standardToUpdate.getPizza());
 
             Standard savedStandard = standardRepository.save(standardUpdated);
-            return standardMapper.toDto(savedStandard);
+            return standardMapperImpl.toDto(savedStandard);
         }
         return null;
     }
@@ -51,7 +55,7 @@ public class StandardServiceImpl implements StandardService {
     @Override
     public StandardDto getStandardById(long id) {
         Optional<Standard> optionalStandard = standardRepository.findById(id);
-        return optionalStandard.isPresent() ? standardMapper.toDto(optionalStandard.get()) : null;
+        return optionalStandard.isPresent() ? standardMapperImpl.toDto(optionalStandard.get()) : null;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class StandardServiceImpl implements StandardService {
         List<Standard> standards = standardRepository.findAll();
         List<StandardDto> standardDtos = new ArrayList<>();
         for (Standard standard : standards) {
-            standardDtos.add(standardMapper.toDto(standard));
+            standardDtos.add(standardMapperImpl.toDto(standard));
         }
         return standardDtos;
     }

@@ -2,7 +2,7 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dtos.PizzaDto;
 import com.example.demo.entities.Pizza;
-import com.example.demo.mappers.PizzaMapper;
+import com.example.demo.mappers.impl.PizzaMapperImpl;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.services.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,14 @@ public class PizzaServiceImpl implements PizzaService {
     @Autowired
     private PizzaRepository pizzaRepository;
 
-    @Autowired
-    private PizzaMapper pizzaMapper;
+    private final PizzaMapperImpl pizzaMapperImpl = new PizzaMapperImpl();
 
     @Override
     public List<PizzaDto> getAllPizzas() {
         List<Pizza> pizzas = pizzaRepository.findAll();
         List<PizzaDto> pizzasDto = new ArrayList<PizzaDto>();
         for (Pizza pizza : pizzas) {
-            pizzasDto.add(this.pizzaMapper.toDto(pizza));
+            pizzasDto.add(this.pizzaMapperImpl.toDto(pizza));
         }
         return pizzasDto;
     }
@@ -34,15 +33,15 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public PizzaDto getPizzaById(Long id) {
         Optional<Pizza> pizza = pizzaRepository.findById(Math.toIntExact(id));
-        return pizza.isPresent() ? this.pizzaMapper.toDto(pizza.get()) : null;
+        return pizza.isPresent() ? this.pizzaMapperImpl.toDto(pizza.get()) : null;
     }
 
     @Override
     public PizzaDto addPizza(PizzaDto pizzaDto) {
-        Pizza pizza = this.pizzaMapper.toEntity(pizzaDto);
+        Pizza pizza = this.pizzaMapperImpl.toEntity(pizzaDto);
 
         Pizza piz = pizzaRepository.save(pizza);
-        return this.pizzaMapper.toDto(piz);
+        return this.pizzaMapperImpl.toDto(piz);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class PizzaServiceImpl implements PizzaService {
         Optional <Pizza> pizza = this.pizzaRepository.findById(Math.toIntExact(id));
         if (pizza.isPresent()) {
             // information sur l'entity à mettre à jour
-            Pizza piz = this.pizzaMapper.toEntity(pizzaDto);
+            Pizza piz = this.pizzaMapperImpl.toEntity(pizzaDto);
             // entity to update
             Pizza p = pizza.get();
             // mise à jour des données
@@ -61,7 +60,7 @@ public class PizzaServiceImpl implements PizzaService {
             p.setStandard(piz.getStandard());
 
             Pizza savedPizza = pizzaRepository.save(p);
-            return this.pizzaMapper.toDto(savedPizza);
+            return this.pizzaMapperImpl.toDto(savedPizza);
         } else {
             return null;
         }

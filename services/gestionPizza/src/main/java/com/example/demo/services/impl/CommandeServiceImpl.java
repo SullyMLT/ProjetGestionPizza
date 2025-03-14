@@ -3,6 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.dtos.CommandeDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.mappers.CommandeMapper;
+import com.example.demo.mappers.impl.CommandeMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.services.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,13 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    @Autowired
-    private CommandeMapper commandeMapper;
+    private final CommandeMapperImpl commandeMapperImpl = new CommandeMapperImpl();
 
     @Override
     public CommandeDto addCommande(CommandeDto commandeDto) {
-        Commande commande = this.commandeMapper.toEntity(commandeDto);
+        Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
         Commande savedCommande = commandeRepository.save(commande);
-        return this.commandeMapper.toDto(savedCommande);
+        return this.commandeMapperImpl.toDto(savedCommande);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CommandeServiceImpl implements CommandeService {
             return null;
         } else {
             for (Commande commande : commandes) {
-                commandeDtos.add(this.commandeMapper.toDto(commande));
+                commandeDtos.add(this.commandeMapperImpl.toDto(commande));
             }
             return commandeDtos;
         }
@@ -47,7 +47,7 @@ public class CommandeServiceImpl implements CommandeService {
     public CommandeDto getCommandeById(Long id) {
         Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(id));
         if (optionalCommande.isPresent()) {
-            return this.commandeMapper.toDto(optionalCommande.get());
+            return this.commandeMapperImpl.toDto(optionalCommande.get());
         } else {
             System.out.println("get commandeById failed");
             return null;
@@ -59,14 +59,14 @@ public class CommandeServiceImpl implements CommandeService {
         Optional<Commande> optionalCommande = this.commandeRepository.findById(Math.toIntExact(id));
         if (optionalCommande.isPresent()) {
             Commande commande = optionalCommande.get();
-            Commande commandeToUpdate = this.commandeMapper.toEntity(commandeDto);
+            Commande commandeToUpdate = this.commandeMapperImpl.toEntity(commandeDto);
             commande.setDate(commandeToUpdate.getDate());
             commande.setDescription(commandeToUpdate.getDescription());
             commande.setPrix(commandeToUpdate.getPrix());
             commande.setValidation(commandeToUpdate.getValidation());
 
             Commande updatedCommande = commandeRepository.save(commande);
-            return this.commandeMapper.toDto(updatedCommande);
+            return this.commandeMapperImpl.toDto(updatedCommande);
         } else {
             System.out.println("update commande failed");
             return null;

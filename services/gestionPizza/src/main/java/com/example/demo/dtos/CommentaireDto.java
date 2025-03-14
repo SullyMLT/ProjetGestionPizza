@@ -7,8 +7,8 @@ import java.util.Date;
 public class CommentaireDto {
     private long id;
     private String description;
-    private Date date;
-    private int pizzaOrigine;
+    private String date;
+    private long pizzaOrigine;
     private int note;
 
 }

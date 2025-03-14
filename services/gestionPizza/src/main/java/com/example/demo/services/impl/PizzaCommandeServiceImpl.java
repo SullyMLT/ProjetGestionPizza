@@ -2,10 +2,8 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.*;
-import com.example.demo.mappers.CommandeMapper;
-import com.example.demo.mappers.PizzaCommandeMapper;
+import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.*;
-import com.example.demo.services.CommandeService;
 import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,20 +18,13 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Autowired
     private PizzaCommandeRepository pizzaCommandeRepository;
 
-    @Autowired
-    private PizzaCommandeMapper pizzaCommandeMapper;
-
-    @Autowired
-    private CommandeService commandeService;
-
-    @Autowired
-    private CommandeMapper commandeMapper;
+    private final PizzaCommandeMapperImpl pizzaCommandeMapperImpl = new PizzaCommandeMapperImpl();
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
-        PizzaCommande pizzaCommande = pizzaCommandeMapper.toEntity(pizzaCommandeDto);
+        PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
         PizzaCommande savedPizzaCommande = pizzaCommandeRepository.save(pizzaCommande);
-        return pizzaCommandeMapper.toDto(savedPizzaCommande);
+        return pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
     }
 
     @Override
@@ -42,7 +33,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         if (!pizzaCommande.isPresent()) {
             return null;
         }
-        return pizzaCommandeMapper.toDto(pizzaCommande.get());
+        return pizzaCommandeMapperImpl.toDto(pizzaCommande.get());
 
     }
 
@@ -52,7 +43,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         List<PizzaCommandeDto> pizzaCommandeDtos = new ArrayList<>();
         for (PizzaCommande pizzaCommande : pizzaCommandes) {
             // Map entity to DTO
-            pizzaCommandeDtos.add(this.pizzaCommandeMapper.toDto(pizzaCommande));
+            pizzaCommandeDtos.add(this.pizzaCommandeMapperImpl.toDto(pizzaCommande));
         }
         return pizzaCommandeDtos;
     }
