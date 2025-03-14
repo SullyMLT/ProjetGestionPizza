@@ -26,27 +26,13 @@ public class CommandeMapperImpl implements CommandeMapper {
         commandeDto.setDescription(commande.getDescription());
         commandeDto.setDate(commande.getDate());
         List<PizzaCommandeDto> pizCom = new ArrayList<>();
-        if (commande.getPizzasPersonnalisees() != null) {
-            for (PizzaCommande pizzaCommande : commande.getPizzasPersonnalisees()) {
-
-                PizzaCommandeDto pizzaCommandeDto = new PizzaCommandeDto();
-                pizzaCommandeDto.setId(pizzaCommande.getId());
-                PizzaDto pizDto = new PizzaDto();
-                pizDto.setId(pizzaCommande.getPizza().getId());
-                pizDto.setNom(pizzaCommande.getPizza().getNom());
-                pizDto.setDescription(pizzaCommande.getPizza().getDescription());
-                pizDto.setPhoto(pizzaCommande.getPizza().getPhoto());
-                pizDto.setPrix(pizzaCommande.getPizza().getPrix());
-                pizzaCommandeDto.setPizzaDto(pizDto);
-                List<IngredientDto> ingreDto = new ArrayList<>();
-                for (Ingredient ingredient : pizzaCommande.getIngredients()) {
-                    IngredientDto ingredientDto = new IngredientMapperImpl().toDto(ingredient);
-                    ingreDto.add(ingredientDto);
-                }
-                pizzaCommandeDto.setIngredients(ingreDto);
+        if (commande.getPizzasCommandes() != null) {
+            for (PizzaCommande pizzaCommande : commande.getPizzasCommandes()) {
+                PizzaCommandeDto pizzaCommandeDto = new PizzaCommandeMapperImpl().toDto(pizzaCommande);
+                pizCom.add(pizzaCommandeDto);
             }
         }
-        commandeDto.setPizzasPersonnalisees(pizCom);
+        commandeDto.setPizzasCommandes(pizCom);
         return commandeDto;
     }
 
@@ -61,13 +47,13 @@ public class CommandeMapperImpl implements CommandeMapper {
         commande.setDescription(commandeDto.getDescription());
         commande.setDate(commandeDto.getDate());
         List<PizzaCommande> pizCom = new ArrayList<>();
-        if (commandeDto.getPizzasPersonnalisees() != null) {
-            for (PizzaCommandeDto pizzaCommandeDto : commandeDto.getPizzasPersonnalisees()) {
+        if (commandeDto.getPizzasCommandes() != null) {
+            for (PizzaCommandeDto pizzaCommandeDto : commandeDto.getPizzasCommandes()) {
                 PizzaCommande pizzaCommande = new PizzaCommandeMapperImpl().toEntity(pizzaCommandeDto);
                 pizCom.add(pizzaCommande);
             }
         }
-        commande.setPizzasPersonnalisees(pizCom);
+        commande.setPizzasCommandes(pizCom);
         return new Commande();
     }
 }

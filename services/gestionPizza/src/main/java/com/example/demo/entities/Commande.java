@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,5 +24,5 @@ public class Commande {
     private Compte compte;
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PizzaCommande> pizzasPersonnalisees;
+    private List<PizzaCommande> pizzasCommandes;
 }

@@ -10,6 +10,9 @@ import com.example.demo.repositories.CommandeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
 
@@ -21,10 +24,12 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
         pizzaCommandeDto.setId(pizzaCommande.getId());
         pizzaCommandeDto.setCommandeId(pizzaCommande.getCommande().getId());
         pizzaCommandeDto.setPizzaDto(new PizzaMapperImpl().toDto(pizzaCommande.getPizza()));
+        List<IngredientDto> ingreDto = new ArrayList<>();
         for (Ingredient ingredient : pizzaCommande.getIngredients()) {
             IngredientDto ingredientDto = new IngredientMapperImpl().toDto(ingredient);
-            pizzaCommandeDto.getIngredients().add(ingredientDto);
+            ingreDto.add(ingredientDto);
         }
+        pizzaCommandeDto.setIngredients(ingreDto);
         return pizzaCommandeDto;
     }
     public PizzaCommande toEntity(PizzaCommandeDto pizzaCommandeDto){
@@ -33,10 +38,12 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
         Commande com = commandeRepository.findById((int) pizzaCommandeDto.getCommandeId()).get();
         pizzaCommande.setCommande(com);
         pizzaCommande.setPizza(new PizzaMapperImpl().toEntity(pizzaCommandeDto.getPizzaDto()));
+        List<Ingredient> ingre = new ArrayList<>();
         for (IngredientDto ingredientDto : pizzaCommandeDto.getIngredients()) {
             Ingredient ingredient = new IngredientMapperImpl().toEntity(ingredientDto);
-            pizzaCommande.getIngredients().add(ingredient);
+            ingre.add(ingredient);
         }
+        pizzaCommande.setIngredients(ingre);
         return pizzaCommande;
     }
 }
