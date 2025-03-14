@@ -2,8 +2,10 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.*;
+import com.example.demo.mappers.CommandeMapper;
 import com.example.demo.mappers.PizzaCommandeMapper;
 import com.example.demo.repositories.*;
+import com.example.demo.services.CommandeService;
 import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,12 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Autowired
     private PizzaCommandeMapper pizzaCommandeMapper;
 
+    @Autowired
+    private CommandeService commandeService;
+
+    @Autowired
+    private CommandeMapper commandeMapper;
+
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
         PizzaCommande pizzaCommande = pizzaCommandeMapper.toEntity(pizzaCommandeDto);
@@ -31,7 +39,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Override
     public PizzaCommandeDto getPizzaCommandeById(long id) {
         Optional<PizzaCommande> pizzaCommande = pizzaCommandeRepository.findById(id);
-        return pizzaCommande.isPresent() ? pizzaCommandeMapper.toDto(pizzaCommande.get()) : null;
+        if (!pizzaCommande.isPresent()) {
+            return null;
+        }
+        return pizzaCommandeMapper.toDto(pizzaCommande.get());
 
     }
 

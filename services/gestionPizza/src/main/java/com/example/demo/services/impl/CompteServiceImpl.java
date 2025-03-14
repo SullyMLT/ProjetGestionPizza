@@ -1,5 +1,6 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.CompteDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
@@ -41,8 +42,8 @@ public class CompteServiceImpl implements CompteService {
             existingCompte.setUsername(compteDto.getUsername());
             existingCompte.setPassword(compteDto.getPassword());
             List<Commande> commandes = new ArrayList<>();
-            for (Long commandeId : compteDto.getCommandeIds()) {
-                Optional<Commande> com = commandeRepository.findById(Math.toIntExact(commandeId));
+            for (CommandeDto commandeDto : compteDto.getCommandeIds()) {
+                Optional<Commande> com = commandeRepository.findById(Math.toIntExact(commandeDto.getId()));
                 if (com.isPresent()) {
                     commandes.add(com.get());
                 }

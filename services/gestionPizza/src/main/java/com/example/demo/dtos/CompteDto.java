@@ -8,5 +8,5 @@ public class CompteDto {
     private long id;
     private String username;
     private String password;
-    private List<Long> commandeIds;
+    private List<CommandeDto> commandeIds;
 }

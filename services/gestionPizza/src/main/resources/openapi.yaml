@@ -76,6 +76,49 @@ paths:
         '204':
           description: Pizza supprimée
 
+  /pizzas/{id}/ingredients:
+    get:
+      summary: Récupérer les ingredients d'une pizza
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Détails des ingredients d'une pizza
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+    post:
+      summary: Ajouter un ingredient à la pizza
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        '201':
+          description: ingredient lié à la pizza
+
+  /pizzas/{id}/ingredients/{idIngredient}:
+    delete:
+      summary: Supprimer un ingredient d'une pizza
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: ingredient supprimée
+
   /ingredients:
     get:
       summary: Récupérer la liste des ingrédients
@@ -99,6 +142,42 @@ paths:
       responses:
         '201':
           description: Ingrédient ajouté
+
+  /ingredients/{id}:
+    get:
+      summary: Récupérer l'ingrédient via sont id
+      responses:
+        '200':
+          description: l'ingredient
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+
+    put:
+      summary: mise à jour de l'ingrédient via sont id
+      responses:
+        '200':
+          description: l'ingredient
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+    delete:
+      summary: suppression de l'ingrédient via sont id
+      responses:
+        '200':
+          description: l'ingredient
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
 
   /commandes:
     get:
