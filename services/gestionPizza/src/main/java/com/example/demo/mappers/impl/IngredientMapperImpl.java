@@ -15,6 +15,7 @@ public class IngredientMapperImpl implements IngredientMapper {
         ingredientDto.setName(ingredient.getName());
         ingredientDto.setPrix(ingredient.getPrix());
         ingredientDto.setDescription(ingredient.getDescription());
+        ingredientDto.setPhoto(ingredient.getPhoto());
         return ingredientDto;
     }
     @Override
@@ -24,6 +25,7 @@ public class IngredientMapperImpl implements IngredientMapper {
         ingredient.setName(ingredientDto.getName());
         ingredient.setPrix(ingredientDto.getPrix());
         ingredient.setDescription(ingredientDto.getDescription());
+        ingredient.setPhoto(ingredientDto.getPhoto());
         return ingredient;
     }
 }
