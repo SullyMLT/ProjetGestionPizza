@@ -49,13 +49,13 @@ public class CompteController {
     }
 
     @PostMapping("/connexion")
-    public ResponseEntity<String> connexion(@RequestBody AuthRequest authRequest) {
-        boolean isAuth = compteServiceImpl.connexion(authRequest.getUsername(), authRequest.getPassword());
+    public ResponseEntity<CompteDto> connexion(@RequestBody AuthRequest authRequest) {
+        CompteDto isAuth = compteServiceImpl.connexion(authRequest.getUsername(), authRequest.getPassword());
 
-        if (isAuth) {
-            return ResponseEntity.ok("Connexion réussie");
+        if (isAuth.getId()>-1) {
+            return ResponseEntity.ok(isAuth);
         } else {
-            return ResponseEntity.status(401).body("Échec de la connexion !");
+            return ResponseEntity.status(401).body(isAuth);
         }
     }
 

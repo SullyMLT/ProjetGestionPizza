@@ -89,13 +89,15 @@ public class CompteServiceImpl implements CompteService {
     }
 
     @Override
-    public Boolean connexion(String username, String password) {
+    public CompteDto connexion(String username, String password) {
         List<Compte> comptes = this.compteRepository.findAll();
         for (Compte compte : comptes) {
             if (compte.getUsername().equals(username) && compte.getPassword().equals(password)) {
-                return true;
+                return compteMapperImpl.toDto(compte);
             }
         }
-        return false;
+        CompteDto compteDto = new CompteDto();
+        compteDto.setId(-1);
+        return compteDto;
     }
 }

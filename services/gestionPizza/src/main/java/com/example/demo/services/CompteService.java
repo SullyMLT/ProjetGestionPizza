@@ -9,5 +9,5 @@ public interface CompteService {
     void deleteCompte(long id);
     CompteDto getCompteById(long id);
     List<CompteDto> getAllComptes();
-    Boolean connexion(String username, String password);
+    CompteDto connexion(String username, String password);
 }
