@@ -57,7 +57,14 @@ public class StandardServiceImpl implements StandardService {
             Standard standardToUpdate = standardMapperImpl.toEntity(standardDto);
             Standard standardUpdated = optionalStandard.get();
             standardUpdated.setIngredients(standardToUpdate.getIngredients());
-            standardUpdated.setPizza(standardToUpdate.getPizza());
+            Pizza pizza = standardToUpdate.getPizza();
+            float prix = 0;
+            for (Ingredient ingredient : standardToUpdate.getIngredients()) {
+                prix += ingredient.getPrix();
+            }
+            pizza.setPrix(prix);
+            pizzaServiceImpl.updatePizza(pizza.getId(), pizzaMapperImpl.toDto(pizza));
+            standardUpdated.setPizza(pizza);
 
             Standard savedStandard = standardRepository.save(standardUpdated);
             return standardMapperImpl.toDto(savedStandard);
