@@ -49,7 +49,7 @@ public class IngredientServiceImpl implements IngredientService {
             // conversion de la donnée à mettre à jour en entité
             ingredientUpdated.setName(ingredientToUpdate.getName());
             ingredientUpdated.setDescription(ingredientToUpdate.getDescription());
-            ingredientUpdated.setPathPhoto(ingredientToUpdate.getPathPhoto());
+            ingredientUpdated.setPhoto(ingredientToUpdate.getPhoto());
             ingredientUpdated.setPrix(ingredientToUpdate.getPrix());
 
             // sauvegarde des données

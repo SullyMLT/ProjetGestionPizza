@@ -32,7 +32,7 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
         PizzaCommandeDto pizzaCommandeDto = new PizzaCommandeDto();
         pizzaCommandeDto.setId(pizzaCommande.getId());
         pizzaCommandeDto.setCommandeId(pizzaCommande.getCommandeId());
-        pizzaCommandeDto.setPizzaDto(pizzaMapper.toDto(pizzaCommande.getPizza()));
+        pizzaCommandeDto.setPizza(pizzaMapper.toDto(pizzaCommande.getPizza()));
         List<IngredientDto> ingreDto = new ArrayList<>();
         for (Ingredient ingredient : pizzaCommande.getIngredients()) {
             ingreDto.add(ingredientMapper.toDto(ingredient));
@@ -48,7 +48,7 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
         pizzaCommande.setId(pizzaCommandeDto.getId());
         pizzaCommande.setCommandeId(pizzaCommandeDto.getCommandeId());
 
-        pizzaCommande.setPizza(pizzaMapper.toEntity(pizzaCommandeDto.getPizzaDto()));
+        pizzaCommande.setPizza(pizzaMapper.toEntity(pizzaCommandeDto.getPizza()));
 
         List<Ingredient> ingredients = new ArrayList<>();
         for (IngredientDto ingredientDto : pizzaCommandeDto.getIngredients()) {

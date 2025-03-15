@@ -7,6 +7,6 @@ import java.util.List;
 public class PizzaCommandeDto {
     private long id;
     private long commandeId;
-    private PizzaDto pizzaDto;
+    private PizzaDto pizza;
     private List<IngredientDto> ingredients;
 }

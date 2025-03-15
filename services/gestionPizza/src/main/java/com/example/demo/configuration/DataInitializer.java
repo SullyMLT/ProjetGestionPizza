@@ -61,14 +61,14 @@ public class DataInitializer implements CommandLineRunner {
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
-        ingredient1.setPathPhoto("path1.jpg");
+        ingredient1.setPhoto("path1.jpg");
         ingredient1.setPrix(10.0f);
         ingredient1 = ingredientServiceImpl.addIngredient(ingredient1);
 
         IngredientDto ingredient2 = new IngredientDto();
         ingredient2.setName("Crême fraiche");
         ingredient2.setDescription("Description 2");
-        ingredient2.setPathPhoto("/pizza-1498148703.jpg");
+        ingredient2.setPhoto("/pizza-1498148703.jpg");
         ingredient2.setPrix(20.0f);
         ingredient2 = ingredientServiceImpl.addIngredient(ingredient2);
 
