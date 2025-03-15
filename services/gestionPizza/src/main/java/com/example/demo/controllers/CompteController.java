@@ -1,7 +1,8 @@
 package com.example.demo.controllers;
 
+import com.example.demo.auth.AuthRequest;
 import com.example.demo.dtos.CompteDto;
-import com.example.demo.services.CompteService;
+import com.example.demo.services.impl.CompteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +14,17 @@ import java.util.List;
 public class CompteController {
 
     @Autowired
-    private CompteService compteService;
+    private CompteServiceImpl compteServiceImpl;
 
     @PostMapping
     public ResponseEntity<CompteDto> createCompte(@RequestBody CompteDto compteDto) {
-        CompteDto createdCompte = compteService.createCompte(compteDto);
+        CompteDto createdCompte = compteServiceImpl.createCompte(compteDto);
         return ResponseEntity.ok(createdCompte);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CompteDto> updateCompte(@PathVariable long id, @RequestBody CompteDto compteDto) {
-        CompteDto updatedCompte = compteService.updateCompte(id, compteDto);
+        CompteDto updatedCompte = compteServiceImpl.updateCompte(id, compteDto);
         if (updatedCompte != null) {
             return ResponseEntity.ok(updatedCompte);
         } else {
@@ -33,13 +34,13 @@ public class CompteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCompte(@PathVariable long id) {
-        compteService.deleteCompte(id);
+        compteServiceImpl.deleteCompte(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CompteDto> getCompteById(@PathVariable long id) {
-        CompteDto compteDto = compteService.getCompteById(id);
+        CompteDto compteDto = compteServiceImpl.getCompteById(id);
         if (compteDto != null) {
             return ResponseEntity.ok(compteDto);
         } else {
@@ -47,9 +48,20 @@ public class CompteController {
         }
     }
 
+    @PostMapping("/connexion")
+    public ResponseEntity<String> connexion(@RequestBody AuthRequest authRequest) {
+        boolean isAuth = compteServiceImpl.connexion(authRequest.getUsername(), authRequest.getPassword());
+
+        if (isAuth) {
+            return ResponseEntity.ok("Connexion réussie");
+        } else {
+            return ResponseEntity.status(401).body("Échec de la connexion !");
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<CompteDto>> getAllComptes() {
-        List<CompteDto> compteDtos = compteService.getAllComptes();
+        List<CompteDto> compteDtos = compteServiceImpl.getAllComptes();
         if (compteDtos != null && !compteDtos.isEmpty()) {
             return ResponseEntity.ok(compteDtos);
         } else {

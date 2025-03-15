@@ -17,10 +17,4 @@ public class Ingredient {
     private String description;
     private String pathPhoto;
     private float prix;
-
-    @ManyToMany(mappedBy = "ingredients")
-    private List<PizzaCommande> optionnels;
-
-    @ManyToMany(mappedBy = "ingredients")
-    private List<Standard> standards;
 }

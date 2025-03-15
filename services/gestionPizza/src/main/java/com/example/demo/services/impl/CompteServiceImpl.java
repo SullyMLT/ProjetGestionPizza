@@ -86,4 +86,15 @@ public class CompteServiceImpl implements CompteService {
             return compteDtos;
         }
     }
+
+    @Override
+    public Boolean connexion(String username, String password) {
+        List<Compte> comptes = this.compteRepository.findAll();
+        for (Compte compte : comptes) {
+            if (compte.getUsername().equals(username) && compte.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,12 +1,16 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.StandardDto;
+import com.example.demo.entities.Pizza;
+import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.services.StandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/standards")
@@ -15,8 +19,23 @@ public class StandardController {
     @Autowired
     private StandardService standardService;
 
+    @Autowired
+    private PizzaRepository pizzaRepository;
+
     @PostMapping
     public ResponseEntity<StandardDto> addStandard(@RequestBody StandardDto standardDto) {
+        Optional<Pizza> optionalPizza = pizzaRepository.findById((int)standardDto.getPizzaId());
+        if (optionalPizza.isPresent()) {
+            float price = 0f;
+            for (IngredientDto ingredient : standardDto.getIngredients()) {
+                price += ingredient.getPrix();
+            }
+            if (price > 0 ) {
+                Pizza piz = optionalPizza.get();
+                piz.setPrix(price);
+                pizzaRepository.save(piz);
+            }
+        }
         StandardDto createdStandard = standardService.addStandard(standardDto);
         return ResponseEntity.status(201).body(createdStandard);
     }
