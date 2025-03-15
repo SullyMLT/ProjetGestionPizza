@@ -18,7 +18,8 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    private final IngredientMapperImpl ingredientMapperImpl = new IngredientMapperImpl();
+    @Autowired
+    private IngredientMapperImpl ingredientMapperImpl;
 
     @Override
     public IngredientDto addIngredient(IngredientDto ingredientDto) {

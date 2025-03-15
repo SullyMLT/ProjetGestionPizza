@@ -1,21 +1,15 @@
 package com.example.demo.mappers.impl;
 
 import com.example.demo.dtos.PizzaDto;
+import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Pizza;
-import com.example.demo.entities.Standard;
 import com.example.demo.mappers.PizzaMapper;
-import com.example.demo.mappers.StandardMapper;
-import com.example.demo.repositories.StandardRepository;
+import com.example.demo.services.impl.StandardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class PizzaMapperImpl implements PizzaMapper {
-
-    @Autowired
-    private StandardRepository standardRepository;
 
     public PizzaDto toDto(Pizza pizza){
         PizzaDto pizzaDto = new PizzaDto();
@@ -24,7 +18,6 @@ public class PizzaMapperImpl implements PizzaMapper {
         pizzaDto.setPrix(pizza.getPrix());
         pizzaDto.setDescription(pizza.getDescription());
         pizzaDto.setPhoto(pizza.getPhoto());
-        pizzaDto.setStandardId(pizza.getStandard().getId());
         return pizzaDto;
     }
     public Pizza toEntity(PizzaDto pizzaDto) {
@@ -34,12 +27,6 @@ public class PizzaMapperImpl implements PizzaMapper {
         pizza.setPrix(pizzaDto.getPrix());
         pizza.setDescription(pizzaDto.getDescription());
         pizza.setPhoto(pizzaDto.getPhoto());
-        Optional<Standard> pizzaOptional = standardRepository.findById(pizzaDto.getStandardId());
-        if (pizzaOptional.isPresent()) {
-            pizza.setStandard(pizzaOptional.get());
-        }else{
-            pizza.setStandard(null);
-        }
         return pizza;
     }
 }

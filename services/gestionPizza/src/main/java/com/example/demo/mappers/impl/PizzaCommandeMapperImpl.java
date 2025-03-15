@@ -6,44 +6,56 @@ import com.example.demo.entities.Commande;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.PizzaCommande;
 import com.example.demo.mappers.PizzaCommandeMapper;
+import com.example.demo.mappers.PizzaMapper;
+import com.example.demo.mappers.IngredientMapper;
 import com.example.demo.repositories.CommandeRepository;
+import com.example.demo.services.impl.CommandeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
 
     @Autowired
-    private CommandeRepository commandeRepository;
+    private PizzaMapper pizzaMapper;
+    @Autowired
+    private IngredientMapper ingredientMapper;
+    @Autowired
+    private CommandeServiceImpl commandeServiceImpl;
 
-    public PizzaCommandeDto toDto(PizzaCommande pizzaCommande){
+    @Override
+    public PizzaCommandeDto toDto(PizzaCommande pizzaCommande) {
         PizzaCommandeDto pizzaCommandeDto = new PizzaCommandeDto();
         pizzaCommandeDto.setId(pizzaCommande.getId());
-        pizzaCommandeDto.setCommandeId(pizzaCommande.getCommande().getId());
-        pizzaCommandeDto.setPizzaDto(new PizzaMapperImpl().toDto(pizzaCommande.getPizza()));
+        pizzaCommandeDto.setCommandeId(pizzaCommande.getCommandeId());
+        pizzaCommandeDto.setPizzaDto(pizzaMapper.toDto(pizzaCommande.getPizza()));
         List<IngredientDto> ingreDto = new ArrayList<>();
         for (Ingredient ingredient : pizzaCommande.getIngredients()) {
-            IngredientDto ingredientDto = new IngredientMapperImpl().toDto(ingredient);
-            ingreDto.add(ingredientDto);
+            ingreDto.add(ingredientMapper.toDto(ingredient));
         }
         pizzaCommandeDto.setIngredients(ingreDto);
+
         return pizzaCommandeDto;
     }
-    public PizzaCommande toEntity(PizzaCommandeDto pizzaCommandeDto){
+
+    @Override
+    public PizzaCommande toEntity(PizzaCommandeDto pizzaCommandeDto) {
         PizzaCommande pizzaCommande = new PizzaCommande();
         pizzaCommande.setId(pizzaCommandeDto.getId());
-        Commande com = commandeRepository.findById((int) pizzaCommandeDto.getCommandeId()).get();
-        pizzaCommande.setCommande(com);
-        pizzaCommande.setPizza(new PizzaMapperImpl().toEntity(pizzaCommandeDto.getPizzaDto()));
-        List<Ingredient> ingre = new ArrayList<>();
+        pizzaCommande.setCommandeId(pizzaCommandeDto.getCommandeId());
+
+        pizzaCommande.setPizza(pizzaMapper.toEntity(pizzaCommandeDto.getPizzaDto()));
+
+        List<Ingredient> ingredients = new ArrayList<>();
         for (IngredientDto ingredientDto : pizzaCommandeDto.getIngredients()) {
-            Ingredient ingredient = new IngredientMapperImpl().toEntity(ingredientDto);
-            ingre.add(ingredient);
+            ingredients.add(ingredientMapper.toEntity(ingredientDto));
         }
-        pizzaCommande.setIngredients(ingre);
+        pizzaCommande.setIngredients(ingredients);
+
         return pizzaCommande;
     }
 }

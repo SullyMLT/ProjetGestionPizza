@@ -17,12 +17,21 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
 
     @Autowired
     private PizzaCommandeRepository pizzaCommandeRepository;
-
-    private final PizzaCommandeMapperImpl pizzaCommandeMapperImpl = new PizzaCommandeMapperImpl();
+    @Autowired
+    private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
         PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
+        Pizza pizza = pizzaCommande.getPizza();
+        float prix = 0;
+        if (pizzaCommande.getIngredients() != null) {
+            for (Ingredient ingre : pizzaCommande.getIngredients()) {
+                prix += ingre.getPrix();
+            }
+            pizza.setPrix(prix);
+        }
+        pizzaCommande.setPizza(pizza);
         PizzaCommande savedPizzaCommande = pizzaCommandeRepository.save(pizzaCommande);
         return pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
     }
@@ -34,7 +43,6 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
             return null;
         }
         return pizzaCommandeMapperImpl.toDto(pizzaCommande.get());
-
     }
 
     @Override

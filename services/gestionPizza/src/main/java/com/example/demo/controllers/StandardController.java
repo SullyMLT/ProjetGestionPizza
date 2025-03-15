@@ -24,16 +24,15 @@ public class StandardController {
 
     @PostMapping
     public ResponseEntity<StandardDto> addStandard(@RequestBody StandardDto standardDto) {
-        Optional<Pizza> optionalPizza = pizzaRepository.findById((int)standardDto.getPizzaId());
-        if (optionalPizza.isPresent()) {
+        Pizza pizza = standardDto.getPizza();
+        if (pizza != null) {
             float price = 0f;
             for (IngredientDto ingredient : standardDto.getIngredients()) {
                 price += ingredient.getPrix();
             }
             if (price > 0 ) {
-                Pizza piz = optionalPizza.get();
-                piz.setPrix(price);
-                pizzaRepository.save(piz);
+                pizza.setPrix(price);
+                pizzaRepository.save(pizza);
             }
         }
         StandardDto createdStandard = standardService.addStandard(standardDto);

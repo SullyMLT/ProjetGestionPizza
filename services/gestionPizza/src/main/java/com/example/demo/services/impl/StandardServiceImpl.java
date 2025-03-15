@@ -1,12 +1,16 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.PizzaDto;
 import com.example.demo.dtos.StandardDto;
+import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
 import com.example.demo.entities.Standard;
+import com.example.demo.mappers.impl.PizzaMapperImpl;
 import com.example.demo.mappers.impl.StandardMapperImpl;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.repositories.StandardRepository;
 import com.example.demo.services.StandardService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +23,24 @@ public class StandardServiceImpl implements StandardService {
 
     @Autowired
     private StandardRepository standardRepository;
-
     @Autowired
-    private PizzaRepository pizzaRepository;
-
-    private final StandardMapperImpl standardMapperImpl = new StandardMapperImpl();
+    private StandardMapperImpl standardMapperImpl;
+    @Autowired
+    private PizzaServiceImpl pizzaServiceImpl;
+    @Autowired
+    private PizzaMapperImpl pizzaMapperImpl;
 
     @Override
     public StandardDto addStandard(StandardDto standardDto) {
         Standard standard = standardMapperImpl.toEntity(standardDto);
+        Pizza pizza = standard.getPizza();
+        float prix = 0;
+        for (Ingredient ingredient : standard.getIngredients()) {
+            prix += ingredient.getPrix();
+        }
+        pizza.setPrix(prix);
+        PizzaDto pizzaDto = pizzaMapperImpl.toDto(pizza);
+        pizzaServiceImpl.updatePizza(pizzaDto.getId(), pizzaDto);
         Standard savedStandard = standardRepository.save(standard);
         return standardMapperImpl.toDto(savedStandard);
     }
@@ -53,6 +66,7 @@ public class StandardServiceImpl implements StandardService {
     }
 
     @Override
+    @Transactional
     public StandardDto getStandardById(long id) {
         Optional<Standard> optionalStandard = standardRepository.findById(id);
         return optionalStandard.isPresent() ? standardMapperImpl.toDto(optionalStandard.get()) : null;

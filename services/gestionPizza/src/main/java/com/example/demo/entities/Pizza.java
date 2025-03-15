@@ -18,7 +18,4 @@ public class Pizza {
     private String photo;
     private float prix;
 
-    @ManyToOne
-    @JoinTable(name = "standard_id")
-    private Standard standard;
 }

@@ -1,6 +1,7 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.PizzaDto;
+import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
 import com.example.demo.mappers.impl.PizzaMapperImpl;
 import com.example.demo.repositories.PizzaRepository;
@@ -17,12 +18,12 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Autowired
     private PizzaRepository pizzaRepository;
-
-    private final PizzaMapperImpl pizzaMapperImpl = new PizzaMapperImpl();
+    @Autowired
+    private PizzaMapperImpl pizzaMapperImpl;
 
     @Override
     public List<PizzaDto> getAllPizzas() {
-        List<Pizza> pizzas = pizzaRepository.findAll();
+        List<Pizza> pizzas = this.pizzaRepository.findAll();
         List<PizzaDto> pizzasDto = new ArrayList<PizzaDto>();
         for (Pizza pizza : pizzas) {
             pizzasDto.add(this.pizzaMapperImpl.toDto(pizza));
@@ -32,15 +33,14 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public PizzaDto getPizzaById(Long id) {
-        Optional<Pizza> pizza = pizzaRepository.findById(Math.toIntExact(id));
+        Optional<Pizza> pizza = this.pizzaRepository.findById(Math.toIntExact(id));
         return pizza.isPresent() ? this.pizzaMapperImpl.toDto(pizza.get()) : null;
     }
 
     @Override
     public PizzaDto addPizza(PizzaDto pizzaDto) {
         Pizza pizza = this.pizzaMapperImpl.toEntity(pizzaDto);
-
-        Pizza piz = pizzaRepository.save(pizza);
+        Pizza piz = this.pizzaRepository.save(pizza);
         return this.pizzaMapperImpl.toDto(piz);
     }
 
@@ -57,9 +57,8 @@ public class PizzaServiceImpl implements PizzaService {
             p.setDescription(piz.getDescription());
             p.setPhoto(piz.getPhoto());
             p.setPrix(piz.getPrix());
-            p.setStandard(piz.getStandard());
 
-            Pizza savedPizza = pizzaRepository.save(p);
+            Pizza savedPizza = this.pizzaRepository.save(p);
             return this.pizzaMapperImpl.toDto(savedPizza);
         } else {
             return null;
@@ -68,6 +67,6 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public void deletePizza(Long id) {
-        pizzaRepository.deleteById(Math.toIntExact(id));
+        this.pizzaRepository.deleteById(Math.toIntExact(id));
     }
 }

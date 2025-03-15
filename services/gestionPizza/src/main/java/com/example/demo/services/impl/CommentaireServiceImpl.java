@@ -19,7 +19,8 @@ public class CommentaireServiceImpl implements CommentaireService {
     @Autowired
     private CommentaireRepository commentaireRepository;
 
-    private final CommentaireMapperImpl commentaireMapperImpl = new CommentaireMapperImpl();
+    @Autowired
+    private CommentaireMapperImpl commentaireMapperImpl;
 
     @Override
     public void addCommentaire(CommentaireDto commentaireDto) {

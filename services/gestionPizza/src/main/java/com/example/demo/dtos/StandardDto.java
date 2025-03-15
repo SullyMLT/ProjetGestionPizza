@@ -1,6 +1,7 @@
 package com.example.demo.dtos;
 
 
+import com.example.demo.entities.Pizza;
 import lombok.Data;
 import java.util.List;
 
@@ -8,5 +9,5 @@ import java.util.List;
 public class StandardDto {
     private long id;
     private List<IngredientDto> ingredients;
-    private long pizzaId;
+    private Pizza pizza;
 }

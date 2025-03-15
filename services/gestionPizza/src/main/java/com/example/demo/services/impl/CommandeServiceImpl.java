@@ -18,7 +18,8 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    private final CommandeMapperImpl commandeMapperImpl = new CommandeMapperImpl();
+    @Autowired
+    private CommandeMapperImpl commandeMapperImpl;
 
     @Override
     public CommandeDto addCommande(CommandeDto commandeDto) {

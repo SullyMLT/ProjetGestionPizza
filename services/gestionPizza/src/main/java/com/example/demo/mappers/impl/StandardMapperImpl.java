@@ -8,6 +8,8 @@ import com.example.demo.entities.Pizza;
 import com.example.demo.entities.Standard;
 import com.example.demo.mappers.StandardMapper;
 import com.example.demo.services.impl.IngredientServiceImpl;
+import com.example.demo.services.impl.PizzaServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,24 +17,31 @@ import java.util.List;
 
 @Component
 public class StandardMapperImpl implements StandardMapper {
+
+    @Autowired
+    private IngredientMapperImpl ingredientMapperImpl;
+
+    @Autowired
+    private PizzaServiceImpl PizzaServiceImpl;
+
+    @Autowired
+    private PizzaMapperImpl pizzaMapperImpl;
+
     public StandardDto toDto(Standard standard) {
         StandardDto standardDto = new StandardDto();
         standardDto.setId(standard.getId());
         List<IngredientDto> ingredientDtos = new ArrayList<>();
         if (standard.getIngredients() != null) {
             for (Ingredient ingredient : standard.getIngredients()) {
-                IngredientDto ingredientDto = new IngredientMapperImpl().toDto(ingredient);
+                IngredientDto ingredientDto = ingredientMapperImpl.toDto(ingredient);
                 ingredientDtos.add(ingredientDto);
             }
         }
         standardDto.setIngredients(ingredientDtos);
 
         if (standard.getPizza() != null) {
-            standardDto.setPizzaId(standard.getPizza().getId());
-        }else{
-            standardDto.setPizzaId(444);
+            standardDto.setPizza(standard.getPizza());
         }
-
 
         return standardDto;
     }
@@ -42,16 +51,15 @@ public class StandardMapperImpl implements StandardMapper {
         List<Ingredient> ingredients = new ArrayList<>();
         if (standardDto.getIngredients() != null) {
             for (IngredientDto ingredientDto : standardDto.getIngredients()) {
-                Ingredient ingredient = new IngredientMapperImpl().toEntity(ingredientDto);
+                Ingredient ingredient = ingredientMapperImpl.toEntity(ingredientDto);
                 ingredients.add(ingredient);
             }
         }
         standard.setIngredients(ingredients);
-        if (standardDto.getPizzaId() != 0) {
-            long pizzaDtoId = standardDto.getPizzaId();
-            PizzaDto pizzaDto = new PizzaDto();
-            pizzaDto.setId(pizzaDtoId);
-            Pizza pizza = new PizzaMapperImpl().toEntity(pizzaDto);
+        if (standardDto.getPizza() != null) {
+            long pizzaDtoId = standardDto.getPizza().getId();
+            PizzaDto pizzaDto = this.PizzaServiceImpl.getPizzaById(pizzaDtoId);
+            Pizza pizza = pizzaMapperImpl.toEntity(pizzaDto);
             standard.setPizza(pizza);
         }
         return standard;

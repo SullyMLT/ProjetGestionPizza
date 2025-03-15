@@ -13,9 +13,7 @@ public class PizzaCommande {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "commande_id", nullable = false)
-    private Commande commande;
+    private long commandeId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pizza_id", nullable = false)

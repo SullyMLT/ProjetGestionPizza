@@ -10,6 +10,4 @@ public class PizzaDto {
     private String description;
     private String photo;
     private float prix;
-    private long standardId;
-
 }

@@ -24,7 +24,8 @@ public class CompteServiceImpl implements CompteService {
     @Autowired
     private CommandeRepository commandeRepository;
 
-    private final CompteMapperImpl compteMapperImpl = new CompteMapperImpl();
+    @Autowired
+    private CompteMapperImpl compteMapperImpl;
 
     @Override
     public CompteDto createCompte(CompteDto compteDto) {
