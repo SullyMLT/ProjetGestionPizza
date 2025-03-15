@@ -40,7 +40,7 @@ public class StandardMapperImpl implements StandardMapper {
         standardDto.setIngredients(ingredientDtos);
 
         if (standard.getPizza() != null) {
-            standardDto.setPizza(standard.getPizza());
+            standardDto.setPizza(pizzaMapperImpl.toDto(standard.getPizza()));
         }
 
         return standardDto;

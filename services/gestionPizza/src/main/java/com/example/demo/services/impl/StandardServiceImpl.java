@@ -73,10 +73,21 @@ public class StandardServiceImpl implements StandardService {
     }
 
     @Override
-    @Transactional
     public StandardDto getStandardById(long id) {
         Optional<Standard> optionalStandard = standardRepository.findById(id);
         return optionalStandard.isPresent() ? standardMapperImpl.toDto(optionalStandard.get()) : null;
+    }
+
+    @Override
+    public StandardDto getStandardByPizzaId(long id) {
+        PizzaDto pizzaDto = pizzaServiceImpl.getPizzaById(id);
+        List<StandardDto> standardDto = this.getAllStandards();
+        for (StandardDto standard : standardDto) {
+            if (standard.getPizza().equals(pizzaDto)) {
+                return standard;
+            }
+        }
+        return null;
     }
 
     @Override

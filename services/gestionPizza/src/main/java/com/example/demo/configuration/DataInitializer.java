@@ -92,7 +92,7 @@ public class DataInitializer implements CommandLineRunner {
         pizza1.setPhoto("/Pepperoni_Pizza_Beauty_1200x1200.webp");
         pizza1 = pizzaServiceImpl.addPizza(pizza1);
 
-        standard1.setPizza(pizzaMapper.toEntity(pizza1));
+        standard1.setPizza(pizza1);
         standard1 = standardServiceImpl.addStandard(standard1);
 
         PizzaDto pizza2 = new PizzaDto();
@@ -101,7 +101,7 @@ public class DataInitializer implements CommandLineRunner {
         pizza2.setPhoto("/pizza-1498148703.jpg");
         pizza2 = pizzaServiceImpl.addPizza(pizza2);
 
-        standard2.setPizza(pizzaMapper.toEntity(pizza2));
+        standard2.setPizza(pizza2);
         standard2 = standardServiceImpl.addStandard(standard2);
 
         // Create Commandes
