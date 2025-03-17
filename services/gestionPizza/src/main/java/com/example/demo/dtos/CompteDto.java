@@ -10,5 +10,5 @@ public class CompteDto {
     private String password;
     private String role;
     private boolean activer;
-    private List<CommandeDto> commandeIds;
+    private List<CommandeDto> commandes;
 }

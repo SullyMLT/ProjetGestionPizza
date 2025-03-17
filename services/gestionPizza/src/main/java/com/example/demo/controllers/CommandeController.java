@@ -29,8 +29,14 @@ public class CommandeController {
     }
 
     @PostMapping
-    public ResponseEntity<CommandeDto> createCommande(@RequestBody CommandeDto commandeDto) {
-        CommandeDto createdCommande = commandeServiceImpl.addCommande(commandeDto);
+    public ResponseEntity<CommandeDto> createCommande(@RequestBody CommandeDto commandeDto, long compteId) {
+        CommandeDto createdCommande = commandeServiceImpl.addCommande(commandeDto, compteId);
         return ResponseEntity.status(201).body(createdCommande);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CommandeDto> validateCommande(@PathVariable Long id) {
+        CommandeDto commandeDto = commandeServiceImpl.validateCommande(id);
+        return ResponseEntity.ok(commandeDto);
     }
 }

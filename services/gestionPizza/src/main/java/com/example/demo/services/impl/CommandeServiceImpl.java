@@ -1,8 +1,11 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.CommandeDto;
+import com.example.demo.dtos.CompteDto;
 import com.example.demo.entities.Commande;
+import com.example.demo.entities.Compte;
 import com.example.demo.mappers.impl.CommandeMapperImpl;
+import com.example.demo.mappers.impl.CompteMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.services.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,24 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeMapperImpl commandeMapperImpl;
 
+    @Autowired
+    private CompteServiceImpl compteServiceImpl;
+
+    @Autowired
+    private CompteMapperImpl compteMapperImpl;
+
     @Override
-    public CommandeDto addCommande(CommandeDto commandeDto) {
+    public CommandeDto addCommande(CommandeDto commandeDto, long compteId) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
         Commande savedCommande = commandeRepository.save(commande);
+        CompteDto compte = compteServiceImpl.getCompteById(compteId);
+        Compte compteEntity = compteMapperImpl.toEntity(compte);
+        if (compteEntity.getCommandes() == null) {
+            compteEntity.setCommandes(new ArrayList<>());
+        }
+        compteEntity.getCommandes().add(savedCommande);
+        CompteDto updatedCompte = compteMapperImpl.toDto(compteEntity);
+        compteServiceImpl.updateCompte(compteId, updatedCompte);
         return this.commandeMapperImpl.toDto(savedCommande);
     }
 
@@ -53,7 +70,6 @@ public class CommandeServiceImpl implements CommandeService {
             return null;
         }
     }
-
     @Override
     public CommandeDto updateCommande(Long id, CommandeDto commandeDto) {
         Optional<Commande> optionalCommande = this.commandeRepository.findById(Math.toIntExact(id));
@@ -63,12 +79,26 @@ public class CommandeServiceImpl implements CommandeService {
             commande.setDate(commandeToUpdate.getDate());
             commande.setDescription(commandeToUpdate.getDescription());
             commande.setPrix(commandeToUpdate.getPrix());
-            commande.setValidation(commandeToUpdate.getValidation());
+            commande.setValidation(commandeToUpdate.isValidation());
 
             Commande updatedCommande = commandeRepository.save(commande);
             return this.commandeMapperImpl.toDto(updatedCommande);
         } else {
             System.out.println("update commande failed");
+            return null;
+        }
+    }
+
+    @Override
+    public CommandeDto validateCommande(long commandeId) {
+        Optional<Commande> optionalCommande = this.commandeRepository.findById(Math.toIntExact(commandeId));
+        if (optionalCommande.isPresent()) {
+            Commande commande = optionalCommande.get();
+            commande.setValidation(true);
+            Commande updatedCommande = commandeRepository.save(commande);
+            return this.commandeMapperImpl.toDto(updatedCommande);
+        } else {
+            System.out.println("problème sur la validation de la commande : "+ commandeId);
             return null;
         }
     }

@@ -7,7 +7,7 @@ import java.util.List;
 public class CommandeDto {
     private long id;
     private String description;
-    private int validation;
+    private boolean validation;
     private String date;
     private float prix;
 }

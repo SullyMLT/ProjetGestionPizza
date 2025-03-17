@@ -18,6 +18,7 @@ public class Compte {
     private String role;
     private boolean activer;
 
-    @OneToMany(mappedBy = "compte", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "compte_id")
     private List<Commande> commandes;
 }

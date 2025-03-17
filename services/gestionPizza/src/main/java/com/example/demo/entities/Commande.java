@@ -15,12 +15,7 @@ public class Commande {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String description;
-    private int validation;
+    private boolean validation;
     private String date;
     private float prix;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "compte_id", nullable = true)
-    private Compte compte;
-
 }

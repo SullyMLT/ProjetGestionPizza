@@ -25,6 +25,7 @@ public class CommandeMapperImpl implements CommandeMapper {
         commandeDto.setPrix(commande.getPrix());
         commandeDto.setDescription(commande.getDescription());
         commandeDto.setDate(commande.getDate());
+        commandeDto.setValidation(commande.isValidation());
         return commandeDto;
     }
 
@@ -38,6 +39,7 @@ public class CommandeMapperImpl implements CommandeMapper {
         commande.setPrix(commandeDto.getPrix());
         commande.setDescription(commandeDto.getDescription());
         commande.setDate(commandeDto.getDate());
-        return new Commande();
+        commande.setValidation(commandeDto.isValidation());
+        return commande;
     }
 }

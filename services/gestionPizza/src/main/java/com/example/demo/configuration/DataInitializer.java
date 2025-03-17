@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -25,6 +27,8 @@ public class DataInitializer implements CommandLineRunner {
     private final CommandeMapperImpl commandeMapper;
     private final PizzaCommandeMapperImpl pizzaCommandeMapper;
     private final CommentaireMapperImpl commentaireMapper;
+    private final CompteServiceImpl compteServiceImpl;
+    private final CompteMapperImpl compteMapperImpl;
 
     @Autowired
     public DataInitializer(
@@ -39,7 +43,8 @@ public class DataInitializer implements CommandLineRunner {
             PizzaMapperImpl pizzaMapper,
             CommandeMapperImpl commandeMapper,
             PizzaCommandeMapperImpl pizzaCommandeMapper,
-            CommentaireMapperImpl commentaireMapper) {
+            CommentaireMapperImpl commentaireMapper, CompteServiceImpl compteServiceImpl,
+            CompteMapperImpl compteMapperImpl) {
         this.ingredientServiceImpl = ingredientServiceImpl;
         this.pizzaServiceImpl = pizzaServiceImpl;
         this.standardServiceImpl = standardServiceImpl;
@@ -52,6 +57,8 @@ public class DataInitializer implements CommandLineRunner {
         this.commandeMapper = commandeMapper;
         this.pizzaCommandeMapper = pizzaCommandeMapper;
         this.commentaireMapper = commentaireMapper;
+        this.compteServiceImpl = compteServiceImpl;
+        this.compteMapperImpl = compteMapperImpl;
     }
 
     @Override
@@ -104,18 +111,29 @@ public class DataInitializer implements CommandLineRunner {
         standard2.setPizza(pizza2);
         standard2 = standardServiceImpl.addStandard(standard2);
 
+        Compte compte1 = new Compte();
+        compte1.setUsername("admin");
+        compte1.setPassword("admin");
+        compte1.setRole("admin");
+        compte1.setActiver(true);
+        List<Commande> commandes = new ArrayList<>();
+        compte1.setCommandes(commandes);
+        CompteDto savedCompteDto1 = compteServiceImpl.createCompte(compteMapperImpl.toDto(compte1));
+
+
         // Create Commandes
         Commande commande1 = new Commande();
         commande1.setDescription("Commande 1");
-        commande1.setValidation(1);
+        commande1.setValidation(false);
         commande1.setDate("2023-10-01");
-        commande1.setPrix(40.0f);
+        commande1.setPrix(0);
         CommandeDto commandeDto1 = commandeMapper.toDto(commande1);
-        CommandeDto savedCommandeDto1 = commandeServiceImpl.addCommande(commandeDto1);
+        CommandeDto savedCommandeDto1 = commandeServiceImpl.addCommande(commandeDto1, savedCompteDto1.getId());
 
         // Create PizzaCommandes
         PizzaCommande pizzaCommande1 = new PizzaCommande();
         pizzaCommande1.setCommandeId(commandeMapper.toEntity(savedCommandeDto1).getId());
+        System.out.println("CommandeId: "+ commandeMapper.toEntity(savedCommandeDto1).getId());
         pizzaCommande1.setPizza(pizzaMapper.toEntity(pizza1));
         pizzaCommande1.setIngredients(Arrays.asList(ingredientEntity1, ingredientEntity2));
         pizzaCommandeServiceImpl.createPizzaCommande(pizzaCommandeMapper.toDto(pizzaCommande1));

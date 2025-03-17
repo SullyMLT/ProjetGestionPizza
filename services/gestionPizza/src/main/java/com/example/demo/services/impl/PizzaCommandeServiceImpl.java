@@ -1,7 +1,9 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.*;
+import com.example.demo.mappers.impl.CommandeMapperImpl;
 import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.*;
 import com.example.demo.services.PizzaCommandeService;
@@ -19,6 +21,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     private PizzaCommandeRepository pizzaCommandeRepository;
     @Autowired
     private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
+    @Autowired
+    private CommandeServiceImpl commandeServiceImpl;
+    @Autowired
+    private CommandeMapperImpl commandeMapperImpl;
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
@@ -33,6 +39,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         }
         pizzaCommande.setPizza(pizza);
         PizzaCommande savedPizzaCommande = pizzaCommandeRepository.save(pizzaCommande);
+        CommandeDto commandeDto = commandeServiceImpl.getCommandeById(pizzaCommande.getCommandeId());
+        Commande commande = commandeMapperImpl.toEntity(commandeDto);
+        commande.setPrix(commande.getPrix() + pizza.getPrix());
+        commandeServiceImpl.updateCommande(pizzaCommande.getCommandeId(), commandeMapperImpl.toDto(commande));
         return pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
     }
 
