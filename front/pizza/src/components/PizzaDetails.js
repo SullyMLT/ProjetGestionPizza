@@ -22,7 +22,7 @@ const PizzaDetails = ({ panier, setPanier }) => {
         setPizza(pizzaData); // Mettre à jour les détails de la pizza
 
         // Récupérer les ingrédients standards associés à cette pizza
-        const standardResponse = await fetch(`http://172.28.133.124:8080/standards/${pizzaData.standardId}`);
+        const standardResponse = await fetch(`http://172.28.133.124:8080/standards/pizza/${id}`);
         if (!standardResponse.ok) {
           throw new Error('Erreur lors de la récupération des ingrédients standards');
         }
@@ -79,7 +79,6 @@ const PizzaDetails = ({ panier, setPanier }) => {
         validation: 0,
         date: new Date().toISOString(), // Date de la commande
         prix: pizza.prix, // Prix de la pizza (peut-être ajouté à la commande après)
-        pizzasCommandes: [], // Liste des pizzas de cette commande
       };
       currentPanier.push(newCommande); // Ajouter la commande vide au panier
     }
@@ -91,12 +90,9 @@ const PizzaDetails = ({ panier, setPanier }) => {
       ingredients: selectedIngredients,
     };
 
-    // Ajouter la pizza personnalisée à la commande existante
-    currentPanier[0].pizzasCommandes.push(pizzaCommande);
 
     // Mettre à jour le panier dans le localStorage
     localStorage.setItem("panier", JSON.stringify(currentPanier));
-    setPanier(currentPanier); // Mettre à jour l'état du panier
   };
 
   if (loading) {

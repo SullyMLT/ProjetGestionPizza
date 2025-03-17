@@ -18,19 +18,7 @@ function App() {
   const [panier, setPanier] = useState(() => JSON.parse(localStorage.getItem("panier")) || []); // Gérer le panier ici
   const [error, setError] = useState(null);
 
-  // Fonction de connexion
-  const login = (username, role) => {
-    const newUser = { username, role };
-    setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
-  };
 
-  // Fonction de déconnexion
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('commandeId');  // Supprimer commandeId lors de la déconnexion
-  };
 
   return (
     <div className="App">

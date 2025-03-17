@@ -1,17 +1,30 @@
-const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const privateKey = 'zjerYhe+7V';
 
-const isAdmin = async (req, res, next) => {
-  const userId = req.userId; // Récupérer l'ID de l'utilisateur connecté (par le token)
+const verifyToken = (req, res, next) => {
+  const token = req.header('Authorization')?.split(' ')[1]; // Extraire le token depuis les headers
+
+  if (!token) {
+    return res.status(403).json({ message: 'Token manquant' });
+  }
 
   try {
-    const user = await User.findById(userId);
-    //if (!user || user.role !== 'admin') {
-      //return res.status(403).json({ message: 'Accès interdit : vous devez être un admin' });
-    //}
-    next(); // Si l'utilisateur est un admin, on passe à la route suivante
+    const decoded = jwt.verify(token, privateKey); // Vérifier le token avec la clé privée
+    req.user = decoded.data; // Ajouter les données de l'utilisateur à la requête
+    next();
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la vérification de l\'admin', error });
+    return res.status(400).json({ message: 'Token invalide' });
   }
 };
 
-module.exports = isAdmin;
+// Middleware pour vérifier le rôle d'un utilisateur
+const checkRole = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      return res.status(403).json({ message: 'Accès interdit: rôle insuffisant' });
+    }
+    next();
+  };
+};
+
+module.exports = { verifyToken, checkRole };

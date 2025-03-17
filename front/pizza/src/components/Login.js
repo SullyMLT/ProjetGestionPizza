@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; // Utilisation de l'export nommé
+import { loginUser } from './api';
 
-const Login = ({ login }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,22 +10,11 @@ const Login = ({ login }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post('http://localhost:3100/auth/login', {
-        username,
-        password,
-      });
-
-      const { token } = response.data;
-      localStorage.setItem('token', token); // Stocke le token dans le localStorage
-
-      // Décoder le token pour récupérer l'utilisateur et son rôle
-      const decodedToken = jwtDecode(token); // Décoder le token
-      login(decodedToken.data.ident, decodedToken.data.role); // Sauvegarder l'utilisateur avec son rôle
-
-      navigate('/'); // Rediriger après la connexion
-    } catch (error) {
+      const token = await loginUser(username, password);
+      localStorage.setItem('token', token); // Enregistre le token dans le localStorage
+      navigate('/'); // Redirige vers la page principale après la connexion
+    } catch (err) {
       setError('Utilisateur ou mot de passe incorrect');
     }
   };
@@ -37,21 +25,11 @@ const Login = ({ login }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Nom d'utilisateur</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
         </div>
         <div>
           <label>Mot de passe</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
         <button type="submit">Se connecter</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
