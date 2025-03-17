@@ -8,6 +8,6 @@ public interface CommandeService {
     public CommandeDto addCommande(CommandeDto commandeDto, long compteId);
     public CommandeDto getCommandeById(Long id);
     public List<CommandeDto> getAllCommandes();
-    CommandeDto updateCommande(Long id, CommandeDto commandeDto);
+    CommandeDto updateCommande(Long id, float prix);
     CommandeDto validateCommande(long id);
 }

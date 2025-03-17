@@ -42,7 +42,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         CommandeDto commandeDto = commandeServiceImpl.getCommandeById(pizzaCommande.getCommandeId());
         Commande commande = commandeMapperImpl.toEntity(commandeDto);
         commande.setPrix(commande.getPrix() + pizza.getPrix());
-        commandeServiceImpl.updateCommande(pizzaCommande.getCommandeId(), commandeMapperImpl.toDto(commande));
+        commandeServiceImpl.updateCommande(pizzaCommande.getCommandeId(), commande.getPrix());
         return pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
     }
 
@@ -60,7 +60,6 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
         List<PizzaCommandeDto> pizzaCommandeDtos = new ArrayList<>();
         for (PizzaCommande pizzaCommande : pizzaCommandes) {
-            // Map entity to DTO
             pizzaCommandeDtos.add(this.pizzaCommandeMapperImpl.toDto(pizzaCommande));
         }
         return pizzaCommandeDtos;
@@ -69,5 +68,18 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Override
     public void deletePizzaCommande(long id) {
         pizzaCommandeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<PizzaCommandeDto> getPizzaCommandeByCommandeId(long commandeId) {
+        List<PizzaCommandeDto> pizzaCommandeDtos = this.getAllPizzaCommandes();
+
+        for (PizzaCommandeDto pizzaCommande : pizzaCommandeDtos) {
+            if (pizzaCommande.getCommandeId() != commandeId) {
+                pizzaCommandeDtos.remove(pizzaCommande);
+            }
+        }
+
+        return pizzaCommandeDtos;
     }
 }

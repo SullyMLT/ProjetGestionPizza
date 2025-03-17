@@ -33,12 +33,17 @@ public class CommandeServiceImpl implements CommandeService {
     @Override
     public CommandeDto addCommande(CommandeDto commandeDto, long compteId) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
-        Commande savedCommande = commandeRepository.save(commande);
         CompteDto compte = compteServiceImpl.getCompteById(compteId);
         Compte compteEntity = compteMapperImpl.toEntity(compte);
         if (compteEntity.getCommandes() == null) {
             compteEntity.setCommandes(new ArrayList<>());
         }
+        for (Commande c : compteEntity.getCommandes()) {
+            if (!c.isValidation()) {
+                return null;
+            }
+        }
+        Commande savedCommande = commandeRepository.save(commande);
         compteEntity.getCommandes().add(savedCommande);
         CompteDto updatedCompte = compteMapperImpl.toDto(compteEntity);
         compteServiceImpl.updateCompte(compteId, updatedCompte);
@@ -71,16 +76,11 @@ public class CommandeServiceImpl implements CommandeService {
         }
     }
     @Override
-    public CommandeDto updateCommande(Long id, CommandeDto commandeDto) {
+    public CommandeDto updateCommande(Long id, float prix) {
         Optional<Commande> optionalCommande = this.commandeRepository.findById(Math.toIntExact(id));
         if (optionalCommande.isPresent()) {
             Commande commande = optionalCommande.get();
-            Commande commandeToUpdate = this.commandeMapperImpl.toEntity(commandeDto);
-            commande.setDate(commandeToUpdate.getDate());
-            commande.setDescription(commandeToUpdate.getDescription());
-            commande.setPrix(commandeToUpdate.getPrix());
-            commande.setValidation(commandeToUpdate.isValidation());
-
+            commande.setPrix(prix);
             Commande updatedCommande = commandeRepository.save(commande);
             return this.commandeMapperImpl.toDto(updatedCommande);
         } else {

@@ -18,7 +18,7 @@ public class Compte {
     private String role;
     private boolean activer;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "compte_id")
     private List<Commande> commandes;
 }

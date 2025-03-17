@@ -8,4 +8,5 @@ public interface PizzaCommandeService {
     PizzaCommandeDto getPizzaCommandeById(long id);
     List<PizzaCommandeDto> getAllPizzaCommandes();
     void deletePizzaCommande(long id);
+    List<PizzaCommandeDto> getPizzaCommandeByCommandeId(long id);
 }

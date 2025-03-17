@@ -63,7 +63,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+/*
         // Create Ingredients
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
@@ -145,5 +145,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
+    */
+
     }
 }

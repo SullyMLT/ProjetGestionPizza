@@ -42,4 +42,10 @@ public class PizzaCommandeController {
         pizzaCommandeService.deletePizzaCommande(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/commande/{commandeId}")
+    public ResponseEntity<List<PizzaCommandeDto>> getPizzaCommandeByCommandeId(@PathVariable long commandeId) {
+        List<PizzaCommandeDto> pizzaCommandes = pizzaCommandeService.getPizzaCommandeByCommandeId(commandeId);
+        return ResponseEntity.ok(pizzaCommandes);
+    }
 }

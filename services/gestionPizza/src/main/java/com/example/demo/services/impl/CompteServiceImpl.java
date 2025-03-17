@@ -31,6 +31,15 @@ public class CompteServiceImpl implements CompteService {
     public CompteDto createCompte(CompteDto compteDto) {
         Compte compte = this.compteMapperImpl.toEntity(compteDto);
         compte.setCommandes(new ArrayList<>());
+        List<CompteDto> compteDtos = this.getAllComptes();
+        if (compteDtos != null) {
+            for (CompteDto c : compteDtos) {
+                if (c.getUsername().equals(compteDto.getUsername())) {
+                    return null;
+                }
+            }
+        }
+
         Compte savedCompte = compteRepository.save(compte);
         return this.compteMapperImpl.toDto(savedCompte);
     }

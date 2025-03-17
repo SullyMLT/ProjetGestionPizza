@@ -34,7 +34,7 @@ public class CommandeController {
         return ResponseEntity.status(201).body(createdCommande);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/validation/{id}")
     public ResponseEntity<CommandeDto> validateCommande(@PathVariable Long id) {
         CommandeDto commandeDto = commandeServiceImpl.validateCommande(id);
         return ResponseEntity.ok(commandeDto);
