@@ -69,9 +69,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-       //Statistique stats = new Statistique();
-        //statistiqueRepository.save(stats);
-        // Create Ingredients
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");

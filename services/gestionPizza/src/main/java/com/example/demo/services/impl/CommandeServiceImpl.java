@@ -7,9 +7,9 @@ import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
 import com.example.demo.mappers.impl.CommandeMapperImpl;
 import com.example.demo.mappers.impl.CompteMapperImpl;
-import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.services.CommandeService;
+import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +29,12 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CompteMapperImpl compteMapperImpl;
     @Autowired
+    private PizzaCommandeService pizzaCommandeService;
+    @Autowired
     private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
-    public CommandeDto addCommande(CommandeDto commandeDto, long compteId) {
+    public CommandeDto addCommande(CommandeDto commandeDto, Long compteId) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
         CompteDto compte = compteServiceImpl.getCompteById(compteId);
         Compte compteEntity = compteMapperImpl.toEntity(compte);
@@ -97,7 +99,10 @@ public class CommandeServiceImpl implements CommandeService {
             Commande commande = optionalCommande.get();
             commande.setValidation(true);
             Commande updatedCommande = commandeRepository.save(commande);
-
+            List<PizzaCommandeDto> pizzaCommandeDtos = new ArrayList<>();
+            pizzaCommandeDtos = pizzaCommandeService.getPizzaCommandeByCommandeId(updatedCommande.getId());
+            System.out.println(pizzaCommandeDtos);
+            this.statistiqueServiceImpl.updateStatistiqueList(pizzaCommandeDtos);
             return this.commandeMapperImpl.toDto(updatedCommande);
         } else {
             System.out.println("problème sur la validation de la commande : "+ commandeId);

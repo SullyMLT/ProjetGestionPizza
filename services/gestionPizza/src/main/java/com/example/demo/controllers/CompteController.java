@@ -55,7 +55,7 @@ public class CompteController {
         if (isAuth.getId() != -1) {
             return ResponseEntity.ok(isAuth);
         } else {
-            return ResponseEntity.status(401).body(isAuth);
+            return null;
         }
     }
 

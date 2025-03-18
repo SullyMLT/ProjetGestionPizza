@@ -3,9 +3,6 @@ package com.example.demo.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Data
 @Table(name = "Commande")

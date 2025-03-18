@@ -8,6 +8,7 @@ import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.*;
 import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,11 +23,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Autowired
     private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
     @Autowired
+    @Lazy
     private CommandeServiceImpl commandeServiceImpl;
     @Autowired
     private CommandeMapperImpl commandeMapperImpl;
-    @Autowired
-    private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
@@ -46,7 +46,6 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         commande.setPrix(commande.getPrix() + pizza.getPrix());
         commandeServiceImpl.updateCommande(pizzaCommande.getCommandeId(), commande.getPrix());
         PizzaCommandeDto pizzaComDto = pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
-        statistiqueServiceImpl.updateStatistique(pizzaComDto);
         return pizzaComDto;
     }
 

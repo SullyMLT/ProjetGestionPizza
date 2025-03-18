@@ -24,8 +24,6 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
     private PizzaMapper pizzaMapper;
     @Autowired
     private IngredientMapper ingredientMapper;
-    @Autowired
-    private CommandeServiceImpl commandeServiceImpl;
 
     @Override
     public PizzaCommandeDto toDto(PizzaCommande pizzaCommande) {

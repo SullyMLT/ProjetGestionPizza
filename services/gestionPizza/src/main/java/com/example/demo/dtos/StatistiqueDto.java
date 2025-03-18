@@ -6,7 +6,7 @@ import java.util.Map;
 
 @Data
 public class StatistiqueDto {
-    private long id;
-    private Map<Long, Integer> statPizza;
-    private Map<Long, Integer> statIngredient;
+    private String id;
+    private Map<String, Integer> statPizza;
+    private Map<String, Integer> statIngredient;
 }
