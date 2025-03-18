@@ -30,6 +30,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
+        System.out.println(pizzaCommandeDto);
         PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
         Pizza pizza = pizzaCommande.getPizza();
         float prix = 0;
@@ -50,7 +51,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     }
 
     @Override
-    public PizzaCommandeDto getPizzaCommandeById(long id) {
+    public PizzaCommandeDto getPizzaCommandeById(Long id) {
         Optional<PizzaCommande> pizzaCommande = pizzaCommandeRepository.findById(id);
         if (!pizzaCommande.isPresent()) {
             return null;
@@ -69,12 +70,17 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     }
 
     @Override
-    public void deletePizzaCommande(long id) {
+    public boolean deletePizzaCommande(Long id) {
         pizzaCommandeRepository.deleteById(id);
+        if (pizzaCommandeRepository.findById(id).isPresent()) {
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override
-    public List<PizzaCommandeDto> getPizzaCommandeByCommandeId(long commandeId) {
+    public List<PizzaCommandeDto> getPizzaCommandeByCommandeId(Long commandeId) {
         List<PizzaCommandeDto> pizzaCommandeDtos = this.getAllPizzaCommandes();
 
         for (PizzaCommandeDto pizzaCommande : pizzaCommandeDtos) {

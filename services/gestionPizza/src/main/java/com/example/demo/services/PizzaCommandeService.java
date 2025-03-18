@@ -8,8 +8,8 @@ import java.util.List;
 @Service
 public interface PizzaCommandeService {
     PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommande);
-    PizzaCommandeDto getPizzaCommandeById(long id);
+    PizzaCommandeDto getPizzaCommandeById(Long id);
     List<PizzaCommandeDto> getAllPizzaCommandes();
-    void deletePizzaCommande(long id);
-    List<PizzaCommandeDto> getPizzaCommandeByCommandeId(long id);
+    boolean deletePizzaCommande(Long id);
+    List<PizzaCommandeDto> getPizzaCommandeByCommandeId(Long id);
 }

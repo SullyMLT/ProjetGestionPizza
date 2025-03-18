@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface CompteService {
     CompteDto createCompte(CompteDto compteDto);
-    CompteDto updateCompte(long id, CompteDto compteDto);
-    void deleteCompte(long id);
-    CompteDto getCompteById(long id);
+    CompteDto updateCompte(Long id, CompteDto compteDto);
+    void deleteCompte(Long id);
+    CompteDto getCompteById(Long id);
     List<CompteDto> getAllComptes();
     CompteDto connexion(String username, String password);
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class CommandeDto {
-    private long id;
+    private Long id;
     private String description;
     private boolean validation;
     private String date;

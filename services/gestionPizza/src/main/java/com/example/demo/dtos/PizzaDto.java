@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 public class PizzaDto {
-    private long id;
+
+    private Long id;
     private String nom;
     private String description;
     private String photo;

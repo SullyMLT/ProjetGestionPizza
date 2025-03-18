@@ -32,14 +32,14 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void deleteIngredient(long id) {
-        ingredientRepository.deleteById((int) id);
+    public void deleteIngredient(Long id) {
+        ingredientRepository.deleteById(Math.toIntExact(id));
     }
 
     @Override
-    public IngredientDto updateIngredient(long id, IngredientDto ingredientDto) {
+    public IngredientDto updateIngredient(Long id, IngredientDto ingredientDto) {
 
-        Optional<Ingredient> optionalIngredient = this.ingredientRepository.findById((int) id);
+        Optional<Ingredient> optionalIngredient = this.ingredientRepository.findById(Math.toIntExact(id));
 
         if (optionalIngredient.isPresent()) {
             // donnée à mettre à jour sur la base
@@ -61,8 +61,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public IngredientDto getIngredientById(long id) {
-        Optional<Ingredient> optionalIngredient = ingredientRepository.findById((int) id);
+    public IngredientDto getIngredientById(Long id) {
+        Optional<Ingredient> optionalIngredient = ingredientRepository.findById(Math.toIntExact(id));
         return optionalIngredient.isPresent() ? this.ingredientMapperImpl.toDto(optionalIngredient.get()): null;
     }
 

@@ -45,8 +45,8 @@ public class CompteServiceImpl implements CompteService {
     }
 
     @Override
-    public CompteDto updateCompte(long id, CompteDto compteDto) {
-        Optional<Compte> optionalCompte = this.compteRepository.findById((int) id);
+    public CompteDto updateCompte(Long id, CompteDto compteDto) {
+        Optional<Compte> optionalCompte = this.compteRepository.findById(Math.toIntExact(id));
         if (optionalCompte.isPresent()) {
             Compte existingCompte = optionalCompte.get();
             existingCompte.setUsername(compteDto.getUsername());
@@ -71,13 +71,13 @@ public class CompteServiceImpl implements CompteService {
     }
 
     @Override
-    public void deleteCompte(long id) {
-        compteRepository.deleteById((int) id);
+    public void deleteCompte(Long id) {
+        compteRepository.deleteById(Math.toIntExact(id));
     }
 
     @Override
-    public CompteDto getCompteById(long id) {
-        Optional<Compte> optionalCompte = compteRepository.findById((int) id);
+    public CompteDto getCompteById(Long id) {
+        Optional<Compte> optionalCompte = compteRepository.findById(Math.toIntExact(id));
         if (optionalCompte.isPresent()) {
             return this.compteMapperImpl.toDto(optionalCompte.get());
         } else {
@@ -110,7 +110,7 @@ public class CompteServiceImpl implements CompteService {
             }
         }
         CompteDto compteDto = new CompteDto();
-        compteDto.setId(-1);
+        compteDto.setId(-1L);
         return compteDto;
     }
 }

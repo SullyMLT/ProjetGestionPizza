@@ -38,9 +38,8 @@ public class PizzaCommandeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePizzaCommande(@PathVariable long id) {
-        pizzaCommandeService.deletePizzaCommande(id);
-        return ResponseEntity.noContent().build();
+    public boolean deletePizzaCommande(@PathVariable long id) {
+        return pizzaCommandeService.deletePizzaCommande(id);
     }
 
     @GetMapping("/commande/{commandeId}")

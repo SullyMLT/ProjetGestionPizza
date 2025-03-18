@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface StandardService {
     StandardDto addStandard(StandardDto standardDto);
-    void deleteStandard(long id);
-    StandardDto updateStandard(long id, StandardDto standardDto);
-    StandardDto getStandardById(long id);
-    StandardDto getStandardByPizzaId(long id);
+    void deleteStandard(Long id);
+    StandardDto updateStandard(Long id, StandardDto standardDto);
+    StandardDto getStandardById(Long id);
+    StandardDto getStandardByPizzaId(Long id);
     List<StandardDto> getAllStandards();
 }

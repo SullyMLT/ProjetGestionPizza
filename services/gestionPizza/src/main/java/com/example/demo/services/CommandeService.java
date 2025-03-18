@@ -9,5 +9,5 @@ public interface CommandeService {
     CommandeDto getCommandeById(Long id);
     List<CommandeDto> getAllCommandes();
     CommandeDto updateCommande(Long id, float prix);
-    CommandeDto validateCommande(long id);
+    CommandeDto validateCommande(Long id);
 }

@@ -29,7 +29,7 @@ public class CommandeController {
     }
 
     @PostMapping
-    public ResponseEntity<CommandeDto> createCommande(@RequestBody CommandeDto commandeDto, long compteId) {
+    public ResponseEntity<CommandeDto> createCommande(@RequestBody CommandeDto commandeDto, Long compteId) {
         CommandeDto createdCommande = commandeServiceImpl.addCommande(commandeDto, compteId);
         return ResponseEntity.status(201).body(createdCommande);
     }

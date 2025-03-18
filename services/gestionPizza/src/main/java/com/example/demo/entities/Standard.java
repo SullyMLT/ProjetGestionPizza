@@ -12,7 +12,7 @@ public class Standard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToMany
     @JoinTable(

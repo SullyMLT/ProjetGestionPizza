@@ -29,12 +29,12 @@ public class CommentaireServiceImpl implements CommentaireService {
     }
 
     @Override
-    public void deleteCommentaire(long id) {
+    public void deleteCommentaire(Long id) {
         commentaireRepository.deleteById(Math.toIntExact(id));
     }
 
     @Override
-    public CommentaireDto getCommentaire(long id) {
+    public CommentaireDto getCommentaire(Long id) {
         Optional<Commentaire> optionalCom = commentaireRepository.findById(Math.toIntExact(id));
         return optionalCom.isPresent() ? this.commentaireMapperImpl.toDto(optionalCom.get()) : null;
     }

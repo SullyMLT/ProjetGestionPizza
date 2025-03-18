@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class StandardDto {
-    private long id;
+    private Long id;
     private List<IngredientDto> ingredients;
     private PizzaDto pizza;
 }

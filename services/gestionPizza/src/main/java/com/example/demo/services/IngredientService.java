@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface IngredientService {
     IngredientDto addIngredient(IngredientDto ingredientDto);
-    void deleteIngredient(long id);
-    IngredientDto updateIngredient(long id, IngredientDto ingredientDto);
-    IngredientDto getIngredientById(long id);
+    void deleteIngredient(Long id);
+    IngredientDto updateIngredient(Long id, IngredientDto ingredientDto);
+    IngredientDto getIngredientById(Long id);
     List<IngredientDto> getAllIngredients();
 }

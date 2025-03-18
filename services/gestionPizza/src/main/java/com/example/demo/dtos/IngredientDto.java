@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class IngredientDto {
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private String photo;

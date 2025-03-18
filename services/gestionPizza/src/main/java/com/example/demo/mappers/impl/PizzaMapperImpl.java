@@ -22,7 +22,9 @@ public class PizzaMapperImpl implements PizzaMapper {
     }
     public Pizza toEntity(PizzaDto pizzaDto) {
         Pizza pizza = new Pizza();
-        pizza.setId(pizzaDto.getId());
+        if (pizzaDto.getId() != null) {
+            pizza.setId(pizzaDto.getId());
+        }
         pizza.setNom(pizzaDto.getNom());
         pizza.setPrix(pizzaDto.getPrix());
         pizza.setDescription(pizzaDto.getDescription());

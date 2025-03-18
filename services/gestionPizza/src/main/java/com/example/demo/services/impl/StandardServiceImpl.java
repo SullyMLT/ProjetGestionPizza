@@ -46,12 +46,12 @@ public class StandardServiceImpl implements StandardService {
     }
 
     @Override
-    public void deleteStandard(long id) {
+    public void deleteStandard(Long id) {
         standardRepository.deleteById(id);
     }
 
     @Override
-    public StandardDto updateStandard(long id, StandardDto standardDto) {
+    public StandardDto updateStandard(Long id, StandardDto standardDto) {
         Optional<Standard> optionalStandard = standardRepository.findById(id);
         if (optionalStandard.isPresent()) {
             Standard standardToUpdate = standardMapperImpl.toEntity(standardDto);
@@ -73,13 +73,13 @@ public class StandardServiceImpl implements StandardService {
     }
 
     @Override
-    public StandardDto getStandardById(long id) {
+    public StandardDto getStandardById(Long id) {
         Optional<Standard> optionalStandard = standardRepository.findById(id);
         return optionalStandard.isPresent() ? standardMapperImpl.toDto(optionalStandard.get()) : null;
     }
 
     @Override
-    public StandardDto getStandardByPizzaId(long id) {
+    public StandardDto getStandardByPizzaId(Long id) {
         PizzaDto pizzaDto = pizzaServiceImpl.getPizzaById(id);
         List<StandardDto> standardDto = this.getAllStandards();
         for (StandardDto standard : standardDto) {

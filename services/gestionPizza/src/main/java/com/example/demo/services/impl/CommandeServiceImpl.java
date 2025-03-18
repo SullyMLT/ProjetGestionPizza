@@ -43,7 +43,7 @@ public class CommandeServiceImpl implements CommandeService {
         }
         for (Commande c : compteEntity.getCommandes()) {
             if (!c.isValidation()) {
-                return null;
+                return commandeMapperImpl.toDto(c);
             }
         }
         Commande savedCommande = commandeRepository.save(commande);
@@ -93,7 +93,7 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     @Override
-    public CommandeDto validateCommande(long commandeId) {
+    public CommandeDto validateCommande(Long commandeId) {
         Optional<Commande> optionalCommande = this.commandeRepository.findById(Math.toIntExact(commandeId));
         if (optionalCommande.isPresent()) {
             Commande commande = optionalCommande.get();

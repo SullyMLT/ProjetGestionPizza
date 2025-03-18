@@ -21,6 +21,9 @@ public class IngredientMapperImpl implements IngredientMapper {
     @Override
     public Ingredient toEntity(IngredientDto ingredientDto) {
         Ingredient ingredient = new Ingredient();
+        if (ingredientDto.getId() != null){
+            ingredient.setId(ingredientDto.getId());
+        }
         ingredient.setId(ingredientDto.getId());
         ingredient.setName(ingredientDto.getName());
         ingredient.setPrix(ingredientDto.getPrix());
