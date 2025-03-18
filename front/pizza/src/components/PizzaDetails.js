@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Importer useParams
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-const PizzaDetails = ({ panier, setPanier }) => {
+const PizzaDetails = ({ userID }) => {
   const { id } = useParams(); // Récupérer l'ID de la pizza depuis l'URL
-  const [pizza, setPizza] = useState(null);
-  const [ingredients, setIngredients] = useState([]); // Tous les ingrédients disponibles
-  const [standardIngredients, setStandardIngredients] = useState([]); // Ingrédients standards pour cette pizza
-  const [selectedIngredients, setSelectedIngredients] = useState([]); // Ingrédients sélectionnés par l'utilisateur
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [pizza, setPizza] = useState(null); // Détails de la pizza
+  const [ingredients, setIngredients] = useState([]); // Liste d'ingrédients
+  const [standardIngredients, setStandardIngredients] = useState([]); // Ingrédients standards pour la pizza
+  const [selectedIngredients, setSelectedIngredients] = useState([]); // Ingrédients sélectionnés par l'utilisateur (objets complets)
+  const [loading, setLoading] = useState(true); // État de chargement
+  const [error, setError] = useState(null); // Gestion des erreurs
 
+  const token = localStorage.getItem('token'); // Récupère le token du localStorage
+
+  // Récupérer les détails de la pizza et les ingrédients
   useEffect(() => {
-    // Récupérer les détails de la pizza
     const fetchPizzaDetails = async () => {
       try {
         const pizzaResponse = await fetch(`http://172.28.133.124:8080/pizzas/${id}`);
@@ -27,12 +30,11 @@ const PizzaDetails = ({ panier, setPanier }) => {
           throw new Error('Erreur lors de la récupération des ingrédients standards');
         }
         const standardData = await standardResponse.json();
-        setStandardIngredients(standardData.ingredients); // Ingrédients standards
-
+        setStandardIngredients(standardData.ingredients); // Mettre à jour les ingrédients standards
       } catch (error) {
-        setError(error.message); // Gérer l'erreur
+        setError(error.message);
       } finally {
-        setLoading(false); // Fin du chargement
+        setLoading(false);
       }
     };
 
@@ -44,55 +46,74 @@ const PizzaDetails = ({ panier, setPanier }) => {
           throw new Error('Erreur lors de la récupération de tous les ingrédients');
         }
         const allIngredientsData = await ingredientsResponse.json();
-        setIngredients(allIngredientsData); // Mettre à jour la liste d'ingrédients
+        setIngredients(allIngredientsData);
       } catch (error) {
-        setError(error.message); // Gérer l'erreur
+        setError(error.message);
       }
     };
 
-    fetchPizzaDetails(); // Appeler la fonction pour récupérer les détails de la pizza
-    fetchAllIngredients(); // Appeler la fonction pour récupérer tous les ingrédients
-  }, [id]); // Le composant se met à jour avec un nouvel ID de pizza
+    fetchPizzaDetails();
+    fetchAllIngredients();
+  }, [id]);
 
   // Fonction pour gérer le changement d'état des ingrédients
-  const handleCheckboxChange = (ingredientId, checked) => {
+  const handleCheckboxChange = (ingredient, checked) => {
     if (checked) {
-      setSelectedIngredients((prevSelected) => [...prevSelected, ingredientId]);
+      // Ajouter l'objet complet de l'ingrédient dans selectedIngredients
+      setSelectedIngredients(prevSelected => [...prevSelected, ingredient]);
     } else {
-      setSelectedIngredients((prevSelected) =>
-        prevSelected.filter((id) => id !== ingredientId)
-      );
+      // Retirer l'objet complet de l'ingrédient de selectedIngredients
+      setSelectedIngredients(prevSelected => prevSelected.filter(i => i.id !== ingredient.id));
     }
+    console.log(selectedIngredients);
   };
 
-  // Fonction pour ajouter la pizza au panier
-  const handleAddToCart = () => {
+  // Ajouter la pizza à la commande
+  const handleAddToCart = async () => {
     if (!pizza) return;
-
-    // Vérification du panier dans le localStorage
-    let currentPanier = JSON.parse(localStorage.getItem("panier")) || [];
-
-    // Si le panier est vide, on crée une nouvelle commande
-    if (currentPanier.length === 0) {
-      const newCommande = {
-        description: 'Commande en cours',
-        validation: 0,
-        date: new Date().toISOString(), // Date de la commande
-        prix: pizza.prix, // Prix de la pizza (peut-être ajouté à la commande après)
-      };
-      currentPanier.push(newCommande); // Ajouter la commande vide au panier
-    }
-
-    // Créer une pizza personnalisée avec les ingrédients sélectionnés
-    const pizzaCommande = {
-      commandeId: currentPanier[0].id, // Assigner la pizza à la première commande (si on n'a qu'une seule commande)
-      pizzaDto: pizza,
-      ingredients: selectedIngredients,
+    console.log('Create commande');
+    const newCommande = {
+      description: "Commande en cours",
+      validation: false,
+      date: new Date().toISOString(),
+      prix: 0
     };
 
+    try {
+      // Créer la commande sur le serveur
+      const createCommandeResponse = await axios.post('http://172.28.133.124:8080/commandes', newCommande,{params : {compteId : userID}});
+      const commandeId = createCommandeResponse.data.id;
 
-    // Mettre à jour le panier dans le localStorage
-    localStorage.setItem("panier", JSON.stringify(currentPanier));
+      // Ajouter la pizza à la commande existante
+      const pizzaCommande = {
+        commandeId : commandeId,
+        pizza: pizza,
+        ingredients: selectedIngredients,
+      };
+      console.log(pizzaCommande);
+
+      try {
+        const addPizzaResponse = await fetch('http://172.28.133.124:8080/pizzaCommandes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(pizzaCommande),
+        });
+
+        if (!addPizzaResponse.ok) {
+          throw new Error('Erreur lors de l\'ajout de la pizza à la commande');
+        }
+
+        alert('Pizza ajoutée à la commande !');
+      } catch (error) {
+        alert('Erreur lors de l\'ajout au panier');
+      }
+    } catch (error) {
+      console.error("Erreur lors de la création de la commande", error);
+      return;
+    }
   };
 
   if (loading) {
@@ -100,7 +121,7 @@ const PizzaDetails = ({ panier, setPanier }) => {
   }
 
   if (error) {
-    return <p>Erreur: {error}</p>;
+    return <p>{error}</p>;
   }
 
   if (!pizza) {
@@ -120,7 +141,7 @@ const PizzaDetails = ({ panier, setPanier }) => {
           const isStandard = standardIngredients.some(
             (standardIngredient) => standardIngredient.id === ingredient.id
           );
-          const isChecked = selectedIngredients.includes(ingredient.id) || isStandard;
+          const isChecked = selectedIngredients.some(i => i.id === ingredient.id) || isStandard;
 
           return (
             <li key={ingredient.id}>
@@ -128,7 +149,7 @@ const PizzaDetails = ({ panier, setPanier }) => {
                 <input
                   type="checkbox"
                   checked={isChecked} // Si c'est un ingrédient standard, coché par défaut
-                  onChange={(e) => handleCheckboxChange(ingredient.id, e.target.checked)}
+                  onChange={(e) => handleCheckboxChange(ingredient, e.target.checked)}
                 />
                 {ingredient.name}
               </label>

@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
-const { verifyToken } = require('../middleware/authMiddleware');
+const { verifyToken } = require('../middleware/isAdmin');
 const router = express.Router();
 const privateKey = 'zjerYhe+7V';
 
@@ -14,9 +14,8 @@ router.post('/login', async (req, res) => {
 
   try {
     // Appeler l'API Spring Boot pour authentifier l'utilisateur
+    console.log('tentative');
     const response = await axios.post(`${apiBaseUrl}/connexion`, { username, password });
-
-    if (response.status === 200) {
       const user = response.data;
       // Créer un token JWT pour l'utilisateur
       const token = jwt.sign(
@@ -24,11 +23,12 @@ router.post('/login', async (req, res) => {
         privateKey,
         { expiresIn: '1h' }
       );
+      if(user.id === -1){
+        res.status(401).json({ message: 'Utilisateur/Mot de passe incorrect' });
+      }else{
+        res.json({ message: 'Connexion réussie', token });
+      }
 
-      res.json({ message: 'Connexion réussie', token });
-    } else {
-      res.status(401).json({ message: 'Utilisateur/Mot de passe incorrect' });
-    }
   } catch (error) {
     console.error('Erreur serveur:', error);
     res.status(500).json({ message: 'Erreur lors de la connexion', error });
