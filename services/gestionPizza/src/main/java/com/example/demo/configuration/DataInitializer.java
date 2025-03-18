@@ -3,6 +3,7 @@ package com.example.demo.configuration;
 import com.example.demo.dtos.*;
 import com.example.demo.entities.*;
 import com.example.demo.mappers.impl.*;
+import com.example.demo.repositories.StatistiqueRepository;
 import com.example.demo.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -29,6 +31,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CommentaireMapperImpl commentaireMapper;
     private final CompteServiceImpl compteServiceImpl;
     private final CompteMapperImpl compteMapperImpl;
+    private final StatistiqueRepository statistiqueRepository;
 
     @Autowired
     public DataInitializer(
@@ -44,7 +47,8 @@ public class DataInitializer implements CommandLineRunner {
             CommandeMapperImpl commandeMapper,
             PizzaCommandeMapperImpl pizzaCommandeMapper,
             CommentaireMapperImpl commentaireMapper, CompteServiceImpl compteServiceImpl,
-            CompteMapperImpl compteMapperImpl) {
+            CompteMapperImpl compteMapperImpl,
+            StatistiqueRepository statistiqueRepository) {
         this.ingredientServiceImpl = ingredientServiceImpl;
         this.pizzaServiceImpl = pizzaServiceImpl;
         this.standardServiceImpl = standardServiceImpl;
@@ -59,11 +63,14 @@ public class DataInitializer implements CommandLineRunner {
         this.commentaireMapper = commentaireMapper;
         this.compteServiceImpl = compteServiceImpl;
         this.compteMapperImpl = compteMapperImpl;
+        this.statistiqueRepository = statistiqueRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-/*
+
+       //Statistique stats = new Statistique();
+        //statistiqueRepository.save(stats);
         // Create Ingredients
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
@@ -145,7 +152,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
-    */
 
     }
+
 }

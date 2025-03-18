@@ -25,6 +25,8 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     private CommandeServiceImpl commandeServiceImpl;
     @Autowired
     private CommandeMapperImpl commandeMapperImpl;
+    @Autowired
+    private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
@@ -43,7 +45,9 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         Commande commande = commandeMapperImpl.toEntity(commandeDto);
         commande.setPrix(commande.getPrix() + pizza.getPrix());
         commandeServiceImpl.updateCommande(pizzaCommande.getCommandeId(), commande.getPrix());
-        return pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
+        PizzaCommandeDto pizzaComDto = pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
+        statistiqueServiceImpl.updateStatistique(pizzaComDto);
+        return pizzaComDto;
     }
 
     @Override

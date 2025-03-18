@@ -2,10 +2,12 @@ package com.example.demo.services.impl;
 
 import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.CompteDto;
+import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
 import com.example.demo.mappers.impl.CommandeMapperImpl;
 import com.example.demo.mappers.impl.CompteMapperImpl;
+import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.services.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +22,14 @@ public class CommandeServiceImpl implements CommandeService {
 
     @Autowired
     private CommandeRepository commandeRepository;
-
     @Autowired
     private CommandeMapperImpl commandeMapperImpl;
-
     @Autowired
     private CompteServiceImpl compteServiceImpl;
-
     @Autowired
     private CompteMapperImpl compteMapperImpl;
+    @Autowired
+    private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
     public CommandeDto addCommande(CommandeDto commandeDto, long compteId) {
@@ -55,13 +56,13 @@ public class CommandeServiceImpl implements CommandeService {
         List<Commande> commandes = this.commandeRepository.findAll();
         List<CommandeDto> commandeDtos = new ArrayList<>();
 
-        if (commandes.isEmpty()) {
-            return null;
-        } else {
+        if (!commandes.isEmpty()) {
             for (Commande commande : commandes) {
                 commandeDtos.add(this.commandeMapperImpl.toDto(commande));
             }
             return commandeDtos;
+        } else {
+            return null;
         }
     }
 
@@ -96,6 +97,7 @@ public class CommandeServiceImpl implements CommandeService {
             Commande commande = optionalCommande.get();
             commande.setValidation(true);
             Commande updatedCommande = commandeRepository.save(commande);
+
             return this.commandeMapperImpl.toDto(updatedCommande);
         } else {
             System.out.println("problème sur la validation de la commande : "+ commandeId);
