@@ -10,5 +10,5 @@ public class CommentaireDto {
     private String date;
     private Long pizzaOrigine;
     private int note;
-
+    private Long compteId;
 }

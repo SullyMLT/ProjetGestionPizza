@@ -14,6 +14,7 @@ public class CommentaireMapperImpl implements CommentaireMapper {
         commentaireDto.setDate(commentaire.getDate());
         commentaireDto.setPizzaOrigine(commentaire.getPizzaOrigine());
         commentaireDto.setNote(commentaire.getNote());
+        commentaireDto.setCompteId(commentaire.getCompteId());
 
         return commentaireDto;
     }
@@ -24,6 +25,7 @@ public class CommentaireMapperImpl implements CommentaireMapper {
         commentaire.setDate(commentaireDto.getDate());
         commentaire.setPizzaOrigine(commentaireDto.getPizzaOrigine());
         commentaire.setNote(commentaireDto.getNote());
+        commentaire.setCompteId(commentaireDto.getCompteId());
 
         return commentaire;
     }

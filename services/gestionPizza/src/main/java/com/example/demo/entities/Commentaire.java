@@ -15,4 +15,5 @@ public class Commentaire {
     private String date;
     private long pizzaOrigine;
     private int note;
+    private Long compteId;
 }
