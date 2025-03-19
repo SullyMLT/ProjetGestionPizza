@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "../App.css";
 
+import { url_host } from '../config/config.js';
+
+const url = url_host;
+
 function AddPizza({ addPizza }) {
   const [pizza, setPizza] = useState({
     nom: "",
@@ -23,7 +27,7 @@ function AddPizza({ addPizza }) {
     }
 
     try {
-      const response = await fetch("http://172.28.133.124:8080/pizzas", {
+      const response = await fetch(url+"/pizzas", {
         method: "POST",
         headers: {"Content-Type": "application/json",},
         body: JSON.stringify(pizza),

@@ -1,6 +1,8 @@
 // src/components/IngredientList.js
 import React, { useEffect, useState } from 'react';
-const url = 'http://172.28.133.124:8080/ingredients';
+import { url_host } from '../config/config.js';
+
+const url = url_host+'/ingredients';
 const IngredientList = () => {
   const [ingredients, setIngredients] = useState([]);
 

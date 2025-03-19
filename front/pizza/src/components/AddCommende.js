@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "../App.css";
 
+import { url_host } from '../config/config.js';
+
+const url = url_host;
+
 function AddIngredient({ addIngredient }) {
   const [ingredient, setIngredient] = useState({
     name: "",
@@ -23,7 +27,7 @@ function AddIngredient({ addIngredient }) {
     }
 
     try {
-      const response = await fetch("http://172.28.133.124:8080/ingredients", {
+      const response = await fetch(url +"/ingredients", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

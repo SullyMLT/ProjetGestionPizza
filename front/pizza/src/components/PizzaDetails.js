@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+import { url_host } from '../config/config.js';
+
+const url = url_host;
+
 const PizzaDetails = ({ userID }) => {
   const { id } = useParams(); // Récupérer l'ID de la pizza depuis l'URL
   const [pizza, setPizza] = useState(null); // Détails de la pizza
@@ -17,7 +21,7 @@ const PizzaDetails = ({ userID }) => {
   useEffect(() => {
     const fetchPizzaDetails = async () => {
       try {
-        const pizzaResponse = await fetch(`http://172.28.133.124:8080/pizzas/${id}`);
+        const pizzaResponse = await fetch(url+`/pizzas/${id}`);
         if (!pizzaResponse.ok) {
           throw new Error('Erreur lors de la récupération des détails de la pizza');
         }
@@ -25,7 +29,7 @@ const PizzaDetails = ({ userID }) => {
         setPizza(pizzaData); // Mettre à jour les détails de la pizza
 
         // Récupérer les ingrédients standards associés à cette pizza
-        const standardResponse = await fetch(`http://172.28.133.124:8080/standards/pizza/${id}`);
+        const standardResponse = await fetch(url+`/standards/pizza/${id}`);
         if (!standardResponse.ok) {
           throw new Error('Erreur lors de la récupération des ingrédients standards');
         }
@@ -41,7 +45,7 @@ const PizzaDetails = ({ userID }) => {
     // Récupérer tous les ingrédients disponibles
     const fetchAllIngredients = async () => {
       try {
-        const ingredientsResponse = await fetch('http://172.28.133.124:8080/ingredients');
+        const ingredientsResponse = await fetch(url+'/ingredients');
         if (!ingredientsResponse.ok) {
           throw new Error('Erreur lors de la récupération de tous les ingrédients');
         }
@@ -81,7 +85,7 @@ const PizzaDetails = ({ userID }) => {
 
     try {
       // Créer la commande sur le serveur
-      const createCommandeResponse = await axios.post('http://172.28.133.124:8080/commandes', newCommande,{params : {compteId : userID}});
+      const createCommandeResponse = await axios.post(url+'/commandes', newCommande,{params : {compteId : userID}});
       const commandeId = createCommandeResponse.data.id;
 
       // Ajouter la pizza à la commande existante
@@ -93,7 +97,7 @@ const PizzaDetails = ({ userID }) => {
       console.log(pizzaCommande);
 
       try {
-        const addPizzaResponse = await fetch('http://172.28.133.124:8080/pizzaCommandes', {
+        const addPizzaResponse = await fetch(url+'/pizzaCommandes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

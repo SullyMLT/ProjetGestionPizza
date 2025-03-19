@@ -17,7 +17,7 @@ const PizzaDetails = ({ commande, setCommande }) => {
   useEffect(() => {
     const fetchPizzaDetails = async () => {
       try {
-        const pizzaResponse = await fetch(`http://172.28.133.124:8080/pizzas/${id}`);
+        const pizzaResponse = await fetch(`http://localhost:8080/pizzas/${id}`);
         if (!pizzaResponse.ok) {
           throw new Error('Erreur lors de la récupération des détails de la pizza');
         }
@@ -25,7 +25,7 @@ const PizzaDetails = ({ commande, setCommande }) => {
         setPizza(pizzaData); // Mettre à jour les détails de la pizza
 
         // Récupérer les ingrédients standards associés à cette pizza
-        const standardResponse = await fetch(`http://172.28.133.124:8080/standards/pizza/${id}`);
+        const standardResponse = await fetch(`http://localhost:8080/standards/pizza/${id}`);
         if (!standardResponse.ok) {
           throw new Error('Erreur lors de la récupération des ingrédients standards');
         }
@@ -41,7 +41,7 @@ const PizzaDetails = ({ commande, setCommande }) => {
     // Récupérer tous les ingrédients disponibles
     const fetchAllIngredients = async () => {
       try {
-        const ingredientsResponse = await fetch('http://172.28.133.124:8080/ingredients');
+        const ingredientsResponse = await fetch('http://localhost:8080/ingredients');
         if (!ingredientsResponse.ok) {
           throw new Error('Erreur lors de la récupération de tous les ingrédients');
         }
@@ -84,7 +84,7 @@ const PizzaDetails = ({ commande, setCommande }) => {
 
       try {
         // Créer la commande sur le serveur
-        const createCommandeResponse = await axios.post('http://172.28.133.124:8080/commandes', newCommande);
+        const createCommandeResponse = await axios.post('http://localhost:8080/commandes', newCommande);
 
         // Assigner l'ID de la commande à l'objet commande
         commandeId = createCommandeResponse.data.id;
@@ -103,7 +103,7 @@ const PizzaDetails = ({ commande, setCommande }) => {
     };
 
     try {
-      const addPizzaResponse = await fetch('http://172.28.133.124:8080/pizzaCommandes', {
+      const addPizzaResponse = await fetch('http://localhost:8080/pizzaCommandes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

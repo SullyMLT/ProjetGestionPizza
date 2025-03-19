@@ -8,4 +8,5 @@ public interface CommentaireService {
     void deleteCommentaire(Long id);
     CommentaireDto getCommentaire(Long id);
     List<CommentaireDto> getCommentaires();
+    List<CommentaireDto> getCommentairesByPizzaId(Long pizzaId);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,5 +49,20 @@ public class CommentaireServiceImpl implements CommentaireService {
             commentaireDtos.add(this.commentaireMapperImpl.toDto(com));
         }
         return commentaireDtos;
+    }
+
+    @Override
+    public List<CommentaireDto> getCommentairesByPizzaId(Long pizzaId) {
+        List<CommentaireDto> comDto = getCommentaires();
+        if (!comDto.isEmpty()){
+            for (CommentaireDto com : comDto){
+                if (!Objects.equals(com.getPizzaOrigine(), pizzaId)){
+                    comDto.remove(com);
+                }
+            }
+            return comDto;
+        }else{
+            return null;
+        }
     }
 }

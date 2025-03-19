@@ -5,6 +5,7 @@ const commentaireController = require('./routes/commentaireController');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
 const cors = require('cors');
+const configUrl = require('config/config')
 
 const PORT = 3100;
 
@@ -22,9 +23,9 @@ app.get("/", (req, res) => {
 const mongoURI = "mongodb://localhost:27017/e22100765";  // Remplace par le nom de ta base de données
 
 // Connexion à MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+/*mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie'))
-  .catch(err => console.error('Erreur de connexion MongoDB:', err));
+  .catch(err => console.error('Erreur de connexion MongoDB:', err));*/
 
 // Démarrage du serveur
 app.listen(PORT, () => {

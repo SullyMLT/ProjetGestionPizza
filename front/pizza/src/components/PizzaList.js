@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';  // Importer useNavigate
 import "../App.css";
 
 // URL de l'API
-const url = 'http://172.28.133.124:8080/pizzas';
+import { url_host } from '../config/config.js';
+
+const url = url_host +'/pizzas';
+
 
 const PizzaList = () => {
   const [pizzas, setPizzas] = useState([]);  // État pour les pizzas

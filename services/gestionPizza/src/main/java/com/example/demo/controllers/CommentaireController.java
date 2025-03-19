@@ -26,6 +26,11 @@ public class CommentaireController {
         return new ResponseEntity<>(commentaireServiceImpl.getCommentaire(id), HttpStatus.OK);
     }
 
+    @GetMapping("/pizza/{id}")
+    public ResponseEntity<List<CommentaireDto>> getCommentaireByPizzaId(@PathVariable Long id) {
+        return new ResponseEntity<>(commentaireServiceImpl.getCommentairesByPizzaId(id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<CommentaireDto> createCommentaire(@RequestBody CommentaireDto commentaireDto, Long compteId) {
         commentaireServiceImpl.addCommentaire(commentaireDto, compteId);

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import "../App.css";
 
 // URL de l'API
-const url = 'http://172.28.133.124:8080/commandes';
+import { url_host } from '../config/config.js';
+
+const url = url_host+'/commandes';
 
 const CommentList = () => {
   const [commendes, setCommendes] = useState([]);  // État pour les commentaires
