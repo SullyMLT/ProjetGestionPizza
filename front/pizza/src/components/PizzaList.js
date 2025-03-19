@@ -7,6 +7,7 @@ import { url_host } from '../config/config.js';
 
 const url = url_host +'/pizzas';
 
+const token = localStorage.getItem('token');
 
 const PizzaList = () => {
   const [pizzas, setPizzas] = useState([]);  // État pour les pizzas
@@ -60,9 +61,10 @@ const PizzaList = () => {
             </div>
             <div className="right">
               <p><strong>Prix: {pizza.prix}€</strong></p>
+              {token ? (
               <button className="add-to-cart" onClick={() => handleDetailClick(pizza.id)}>
                 Détail
-              </button>
+              </button>) : (<></>)}
             </div>
           </div>
         ))}

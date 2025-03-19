@@ -1,6 +1,7 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.IngredientDto;
+import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.mappers.impl.IngredientMapperImpl;
 import com.example.demo.repositories.IngredientRepository;
@@ -17,9 +18,10 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Autowired
     private IngredientRepository ingredientRepository;
-
     @Autowired
     private IngredientMapperImpl ingredientMapperImpl;
+    @Autowired
+    private StandardServiceImpl standardServiceImpl;
 
     @Override
     public IngredientDto addIngredient(IngredientDto ingredientDto) {
@@ -33,7 +35,17 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public void deleteIngredient(Long id) {
-        ingredientRepository.deleteById(Math.toIntExact(id));
+        IngredientDto ingredientDto = getIngredientById(id);
+        List<StandardDto> standardDto = standardServiceImpl.getAllStandards();
+        if (ingredientDto != null) {
+            for (StandardDto standard : standardDto) {
+                if (standard.getIngredients().contains(ingredientDto)) {
+                    standard.getIngredients().remove(ingredientDto);
+                    standardServiceImpl.updateStandard(standard.getId(), standard);
+                }
+            }
+            ingredientRepository.deleteById(Math.toIntExact(id));
+        }
     }
 
     @Override

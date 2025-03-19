@@ -80,14 +80,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PizzaList />} />
         <Route path="/panier" element={<PanierCommande />} />
-        <Route  path="/pizzas/:id"
-                 element={token ? (
-                   <PizzaDetails
-                     userID={user ? user.id : null}
-                   />
-                 ) : (
-                   <Navigate to="/" />
-                 )}/>
+        <Route  path="/pizzas/:id" element={token ? (<PizzaDetails userID={user ? user.id : null}/>) : (<Navigate to="/" />)}/>
         <Route path="/login" element={<Login refreshUser={refreshUser} />} />
         <Route path="/register" element={<Register />} />
 
