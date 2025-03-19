@@ -71,6 +71,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
 
     @Override
     public boolean deletePizzaCommande(Long id) {
+        PizzaCommandeDto pizzaComDto = this.getPizzaCommandeById(id);
+        pizzaComDto.setPizza(null);
+        pizzaComDto.setIngredients(null);
+        this.pizzaCommandeRepository.save(this.pizzaCommandeMapperImpl.toEntity(pizzaComDto));
         pizzaCommandeRepository.deleteById(id);
         if (pizzaCommandeRepository.findById(id).isPresent()) {
             return false;

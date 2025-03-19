@@ -30,10 +30,14 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
         PizzaCommandeDto pizzaCommandeDto = new PizzaCommandeDto();
         pizzaCommandeDto.setId(pizzaCommande.getId());
         pizzaCommandeDto.setCommandeId(pizzaCommande.getCommandeId());
-        pizzaCommandeDto.setPizza(pizzaMapper.toDto(pizzaCommande.getPizza()));
+        if (pizzaCommande.getPizza() != null) {
+            pizzaCommandeDto.setPizza(pizzaMapper.toDto(pizzaCommande.getPizza()));
+        }
         List<IngredientDto> ingreDto = new ArrayList<>();
-        for (Ingredient ingredient : pizzaCommande.getIngredients()) {
-            ingreDto.add(ingredientMapper.toDto(ingredient));
+        if (pizzaCommande.getIngredients() != null) {
+            for (Ingredient ingredient : pizzaCommande.getIngredients()) {
+                ingreDto.add(ingredientMapper.toDto(ingredient));
+            }
         }
         pizzaCommandeDto.setIngredients(ingreDto);
 
@@ -45,13 +49,17 @@ public class PizzaCommandeMapperImpl implements PizzaCommandeMapper {
         PizzaCommande pizzaCommande = new PizzaCommande();
         pizzaCommande.setId(pizzaCommandeDto.getId());
         pizzaCommande.setCommandeId(pizzaCommandeDto.getCommandeId());
-
-        pizzaCommande.setPizza(pizzaMapper.toEntity(pizzaCommandeDto.getPizza()));
+        if (pizzaCommandeDto.getPizza() != null) {
+            pizzaCommande.setPizza(pizzaMapper.toEntity(pizzaCommandeDto.getPizza()));
+        }
 
         List<Ingredient> ingredients = new ArrayList<>();
-        for (IngredientDto ingredientDto : pizzaCommandeDto.getIngredients()) {
-            ingredients.add(ingredientMapper.toEntity(ingredientDto));
+        if (pizzaCommandeDto.getIngredients() != null) {
+            for (IngredientDto ingredientDto : pizzaCommandeDto.getIngredients()) {
+                ingredients.add(ingredientMapper.toEntity(ingredientDto));
+            }
         }
+
         pizzaCommande.setIngredients(ingredients);
 
         return pizzaCommande;

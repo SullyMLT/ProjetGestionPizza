@@ -23,7 +23,7 @@ public class CommentaireServiceImpl implements CommentaireService {
     private CommentaireMapperImpl commentaireMapperImpl;
 
     @Override
-    public void addCommentaire(CommentaireDto commentaireDto) {
+    public void addCommentaire(CommentaireDto commentaireDto, Long compteId) {
         Commentaire commentaire = this.commentaireMapperImpl.toEntity(commentaireDto);
         commentaireRepository.save(commentaire);
     }

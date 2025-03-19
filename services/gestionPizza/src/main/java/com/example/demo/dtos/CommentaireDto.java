@@ -8,7 +8,7 @@ public class CommentaireDto {
     private Long id;
     private String description;
     private String date;
-    private long pizzaOrigine;
+    private Long pizzaOrigine;
     private int note;
 
 }

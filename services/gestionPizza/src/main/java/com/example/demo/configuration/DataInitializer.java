@@ -68,8 +68,8 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        /*IngredientDto ingredient1 = new IngredientDto();
+/*
+        IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
         ingredient1.setPhoto("path1.jpg");
@@ -148,8 +148,10 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setDate("2023-10-01");
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
-        commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
+        commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1), compte1.getId());
+
 */
+
     }
 
 }

@@ -92,6 +92,8 @@ public class CommandeServiceImpl implements CommandeService {
         }
     }
 
+
+
     @Override
     public CommandeDto validateCommande(Long commandeId) {
         Optional<Commande> optionalCommande = this.commandeRepository.findById(Math.toIntExact(commandeId));

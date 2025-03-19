@@ -27,8 +27,8 @@ public class CommentaireController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentaireDto> createCommentaire(@RequestBody CommentaireDto commentaireDto) {
-        commentaireServiceImpl.addCommentaire(commentaireDto);
+    public ResponseEntity<CommentaireDto> createCommentaire(@RequestBody CommentaireDto commentaireDto, Long compteId) {
+        commentaireServiceImpl.addCommentaire(commentaireDto, compteId);
         return ResponseEntity.ok(commentaireDto);
     }
 
