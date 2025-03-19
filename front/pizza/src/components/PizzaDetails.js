@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import { url_host } from '../config/config.js';
+import CommentairePizza from "./CommentairePizza";
 
+import { url_host } from '../config/config.js';
 const url = url_host;
 
 const PizzaDetails = ({ userID }) => {
@@ -60,6 +61,7 @@ const PizzaDetails = ({ userID }) => {
     fetchAllIngredients();
   }, [id]);
 
+  
   // Fonction pour gérer le changement d'état des ingrédients
   const handleCheckboxChange = (ingredient, checked) => {
     if (checked) {
@@ -131,7 +133,7 @@ const PizzaDetails = ({ userID }) => {
   if (!pizza) {
     return null;
   }
-
+  console.log("id pizza origine : "+id);
   return (
     <div className="pizza-details">
       <h3>Détails de la pizza : {pizza.nom}</h3>
@@ -163,7 +165,10 @@ const PizzaDetails = ({ userID }) => {
       </ul>
 
       <button onClick={handleAddToCart}>Ajouter au panier</button>
+      
+      <CommentairePizza pizzaId={id} />
     </div>
+
   );
 };
 

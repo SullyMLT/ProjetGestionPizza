@@ -7,11 +7,11 @@ import PizzaDetails from './components/PizzaDetails';
 import PanierCommande from './components/PanierCommande';
 import Login from './components/Login';
 import Register from './components/Register';
-import CommentList from './components/CommList';
 import AddPizza from './components/AddPizza';
 import AddIngredient from './components/AddIngredient';
 import IngredientList from './components/IngredientList';
 import CommendeList from './components/CommendeList';
+import CommentairesListeAdmin from "./components/CommentaireListeAdmin";
 
 import './App.css';
 
@@ -90,13 +90,14 @@ function App() {
                  )}/>
         <Route path="/login" element={<Login refreshUser={refreshUser} />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/commentaires" element={<CommentList />} />
 
         {/* Admin routes */}
         <Route path="/ajouter-pizza" element={user?.role === 'admin' ? <AddPizza /> : <Navigate to="/" />} />
         <Route path="/ajouter-ingredient" element={user?.role === 'admin' ? <AddIngredient /> : <Navigate to="/" />} />
         <Route path="/ingredients" element={user?.role === 'admin' ? <IngredientList /> : <Navigate to="/" />} />
         <Route path="/commendes" element={user?.role === 'admin' ? <CommendeList /> : <Navigate to="/" />} />
+        <Route path="/commentaires" element={user?.role === 'admin' ? <CommentairesListeAdmin /> : <Navigate to="/" />} />
+        
       </Routes>
     </div>
   );

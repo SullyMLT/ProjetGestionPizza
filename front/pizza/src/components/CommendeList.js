@@ -41,7 +41,7 @@ const CommentList = () => {
 
   return (
     <section>
-      <h2>Liste des Commentaires</h2>
+      <h2>Liste des Commandes : </h2>
       <div className="comment-container">
         {commendes.map(commende => (
           <div key={commende._id} className="comment-tile">
