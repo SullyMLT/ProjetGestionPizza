@@ -1,21 +1,12 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.CommandeDto;
-import com.example.demo.dtos.IngredientDto;
-import com.example.demo.dtos.PizzaCommandeDto;
-import com.example.demo.dtos.PizzaDto;
 import com.example.demo.entities.Commande;
-import com.example.demo.entities.Ingredient;
-import com.example.demo.entities.PizzaCommande;
-import com.example.demo.mappers.CommandeMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
-public class CommandeMapperImpl implements CommandeMapper {
-    @Override
+public class CommandeMapperImpl {
+
     public CommandeDto toDto(Commande commande){
         if (commande == null) {
             return null;
@@ -26,10 +17,10 @@ public class CommandeMapperImpl implements CommandeMapper {
         commandeDto.setDescription(commande.getDescription());
         commandeDto.setDate(commande.getDate());
         commandeDto.setValidation(commande.isValidation());
+        commandeDto.setCompteId(commande.getCompteId());
         return commandeDto;
     }
 
-    @Override
     public Commande toEntity(CommandeDto commandeDto){
         if (commandeDto == null) {
             return null;
@@ -40,6 +31,7 @@ public class CommandeMapperImpl implements CommandeMapper {
         commande.setDescription(commandeDto.getDescription());
         commande.setDate(commandeDto.getDate());
         commande.setValidation(commandeDto.isValidation());
+        commande.setCompteId(commandeDto.getCompteId());
         return commande;
     }
 }

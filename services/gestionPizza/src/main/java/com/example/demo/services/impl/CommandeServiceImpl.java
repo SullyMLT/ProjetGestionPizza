@@ -5,8 +5,8 @@ import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
 import com.example.demo.entities.PizzaCommande;
-import com.example.demo.mappers.impl.CommandeMapperImpl;
-import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
+import com.example.demo.mappers.CommandeMapperImpl;
+import com.example.demo.mappers.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.repositories.CompteRepository;
 import com.example.demo.repositories.PizzaCommandeRepository;
@@ -38,19 +38,15 @@ public class CommandeServiceImpl implements CommandeService {
     @Override
     public CommandeDto addCommande(CommandeDto commandeDto, Long compteId) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
-        Optional<Compte> compteEntity = this.compteRepository.findById(Math.toIntExact(compteId));
-        Compte compte = compteEntity.get();
-        if (compte.getCommandes() == null) {
-            compte.setCommandes(new ArrayList<>());
-        }
-        for (Commande c : compte.getCommandes()) {
-            if (!c.isValidation()) {
-                return commandeMapperImpl.toDto(c);
+        List<Commande> commandes = this.commandeRepository.findAll();
+        if (commandes.isEmpty()) {
+            for (Commande c : commandes) {
+                if (c.getCompteId().equals(compteId) && !c.isValidation()) {
+                    return this.commandeMapperImpl.toDto(c);
+                }
             }
         }
         Commande savedCommande = commandeRepository.save(commande);
-        compte.getCommandes().add(savedCommande);
-        this.compteRepository.save(compte);
         return this.commandeMapperImpl.toDto(savedCommande);
     }
 

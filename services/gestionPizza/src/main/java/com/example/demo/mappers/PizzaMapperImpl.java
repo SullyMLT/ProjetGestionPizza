@@ -1,15 +1,11 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.PizzaDto;
-import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Pizza;
-import com.example.demo.mappers.PizzaMapper;
-import com.example.demo.services.impl.StandardServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PizzaMapperImpl implements PizzaMapper {
+public class PizzaMapperImpl {
 
     public PizzaDto toDto(Pizza pizza){
         PizzaDto pizzaDto = new PizzaDto();
@@ -21,6 +17,7 @@ public class PizzaMapperImpl implements PizzaMapper {
         pizzaDto.setActiver(pizza.isActiver());
         return pizzaDto;
     }
+
     public Pizza toEntity(PizzaDto pizzaDto) {
         Pizza pizza = new Pizza();
         if (pizzaDto.getId() != null) {

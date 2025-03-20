@@ -1,10 +1,9 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.PizzaDto;
-import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
 import com.example.demo.entities.Standard;
-import com.example.demo.mappers.impl.PizzaMapperImpl;
+import com.example.demo.mappers.PizzaMapperImpl;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.repositories.StandardRepository;
 import com.example.demo.services.PizzaService;
