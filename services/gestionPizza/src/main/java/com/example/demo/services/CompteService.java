@@ -10,7 +10,7 @@ public interface CompteService {
     void deleteCompte(Long id);
     CompteDto getCompteById(Long id);
     List<CompteDto> getAllComptes();
-    CompteDto connexion(String username, String password);
+    CompteDto connexion(String username);
 
     String getUsernameByCompteId(Long compteId);
 }
