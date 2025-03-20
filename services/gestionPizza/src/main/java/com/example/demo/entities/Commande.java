@@ -15,4 +15,5 @@ public class Commande {
     private boolean validation;
     private String date;
     private float prix;
+    private Long compteId;
 }

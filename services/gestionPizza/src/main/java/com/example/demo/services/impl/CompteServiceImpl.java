@@ -28,7 +28,6 @@ public class CompteServiceImpl implements CompteService {
     @Override
     public CompteDto createCompte(CompteDto compteDto) {
         Compte compte = this.compteMapperImpl.toEntity(compteDto);
-        compte.setCommandes(new ArrayList<>());
         List<CompteDto> compteDtos = this.getAllComptes();
         if (compteDtos != null) {
             for (CompteDto c : compteDtos) {
@@ -52,17 +51,6 @@ public class CompteServiceImpl implements CompteService {
             Compte existingCompte = optionalCompte.get();
             existingCompte.setUsername(compteDto.getUsername());
             existingCompte.setPassword(compteDto.getPassword());
-            List<Commande> commandes = new ArrayList<>();
-            if (compteDto.getCommandes() == null) {
-                compteDto.setCommandes(new ArrayList<>());
-            }
-            for (CommandeDto commandeDto : compteDto.getCommandes()) {
-                Optional<Commande> com = commandeRepository.findById(Math.toIntExact(commandeDto.getId()));
-                if (com.isPresent()) {
-                    commandes.add(com.get());
-                }
-            }
-            existingCompte.setCommandes(commandes);
             Compte updatedCompte = compteRepository.save(existingCompte);
             return this.compteMapperImpl.toDto(updatedCompte);
         } else {

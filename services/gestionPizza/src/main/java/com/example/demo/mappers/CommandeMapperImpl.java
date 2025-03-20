@@ -17,6 +17,7 @@ public class CommandeMapperImpl {
         commandeDto.setDescription(commande.getDescription());
         commandeDto.setDate(commande.getDate());
         commandeDto.setValidation(commande.isValidation());
+        commandeDto.setCompteId(commande.getCompteId());
         return commandeDto;
     }
 
@@ -30,6 +31,7 @@ public class CommandeMapperImpl {
         commande.setDescription(commandeDto.getDescription());
         commande.setDate(commandeDto.getDate());
         commande.setValidation(commandeDto.isValidation());
+        commande.setCompteId(commandeDto.getCompteId());
         return commande;
     }
 }

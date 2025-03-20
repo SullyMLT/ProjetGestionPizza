@@ -24,14 +24,6 @@ public class CompteMapperImpl {
         compteDto.setPassword(compte.getPassword());
         compteDto.setRole(compte.getRole());
         compteDto.setActiver(compte.isActiver());
-        List<CommandeDto> commandesDto = new ArrayList<>();
-        if (compte.getCommandes() != null) {
-            for (Commande commande : compte.getCommandes()) {
-                CommandeDto commandeDto = commandeMapperImpl.toDto(commande);
-                commandesDto.add(commandeDto);
-            }
-        }
-        compteDto.setCommandes(commandesDto);
         return compteDto;
     }
 
@@ -43,15 +35,6 @@ public class CompteMapperImpl {
         compte.setPassword(compteDto.getPassword());
         compte.setRole(compteDto.getRole());
         compte.setActiver(compteDto.isActiver());
-        List<Commande> commandes = new ArrayList<>();
-        if (compteDto.getCommandes() != null) {
-            for (CommandeDto commandeDto : compteDto.getCommandes()) {
-                Commande commande = commandeMapperImpl.toEntity(commandeDto);
-                commandes.add(commande);
-            }
-        }
-        compte.setCommandes(commandes);
-
         return compte;
     }
 }
