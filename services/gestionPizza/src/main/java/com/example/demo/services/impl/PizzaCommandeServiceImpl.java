@@ -35,11 +35,13 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
         Pizza pizza = pizzaCommande.getPizza();
         float prix = 0;
-        if (pizzaCommande.getIngredients() != null) {
+        if (!pizzaCommande.getIngredients().isEmpty()) {
             for (Ingredient ingre : pizzaCommande.getIngredients()) {
                 prix += ingre.getPrix();
             }
             pizza.setPrix(prix);
+        }else{
+            pizza.setPrix(5f);
         }
         pizzaCommande.setPizza(pizza);
         PizzaCommande savedPizzaCommande = pizzaCommandeRepository.save(pizzaCommande);
