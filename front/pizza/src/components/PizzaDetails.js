@@ -68,6 +68,7 @@ const PizzaDetails = ({ userID }) => {
       validation: false,
       date: new Date().toISOString(),
       prix: '0', // Mettre à jour le prix avec les ingrédients sélectionnés
+      compteId : userID
     };
 
     try {
