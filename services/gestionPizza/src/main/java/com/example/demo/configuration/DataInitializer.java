@@ -68,7 +68,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-/*
+
+
+
         Statistique statistique = new Statistique();
         statistique.setId("1");
         statistique.setStatPizza(new HashMap<>(0));
@@ -130,8 +132,6 @@ public class DataInitializer implements CommandLineRunner {
         compte1.setPassword("$2b$10$EXzevRgyKWKLM0.WZNQ.ru6bgPNqF4U9DTUdgsBB19AkFMyZeIYvW");
         compte1.setRole("admin");
         compte1.setActiver(true);
-        List<Commande> commandes = new ArrayList<>();
-        compte1.setCommandes(commandes);
         CompteDto savedCompteDto1 = compteServiceImpl.createCompte(compteMapperImpl.toDto(compte1));
 
         Compte compteUserDelete = new Compte();
@@ -139,8 +139,6 @@ public class DataInitializer implements CommandLineRunner {
         compteUserDelete.setPassword("userDelete");
         compteUserDelete.setRole("admin");
         compteUserDelete.setActiver(true);
-        List<Commande> commandesUserDelete = new ArrayList<>();
-        compteUserDelete.setCommandes(commandesUserDelete);
         CompteDto savedCompteDtoUserDelete = compteServiceImpl.createCompte(compteMapperImpl.toDto(compteUserDelete));
 
 
@@ -150,6 +148,7 @@ public class DataInitializer implements CommandLineRunner {
         commande1.setValidation(false);
         commande1.setDate("2023-10-01");
         commande1.setPrix(0);
+        commande1.setCompteId(compte1.getId());
         CommandeDto commandeDto1 = commandeMapper.toDto(commande1);
         CommandeDto savedCommandeDto1 = commandeServiceImpl.addCommande(commandeDto1, savedCompteDto1.getId());
 
@@ -170,7 +169,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setCompteId(savedCompteDto1.getId());
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
 
-*/
+
     }
 
 }

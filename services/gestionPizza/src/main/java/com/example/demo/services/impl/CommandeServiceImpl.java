@@ -39,7 +39,7 @@ public class CommandeServiceImpl implements CommandeService {
     public CommandeDto addCommande(CommandeDto commandeDto, Long compteId) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
         List<Commande> commandes = this.commandeRepository.findAll();
-        if (commandes != null) {
+        if (commandes.isEmpty()) {
             for (Commande c : commandes) {
                 if (c.getCompteId().equals(compteId) && !c.isValidation()) {
                     return this.commandeMapperImpl.toDto(c);
