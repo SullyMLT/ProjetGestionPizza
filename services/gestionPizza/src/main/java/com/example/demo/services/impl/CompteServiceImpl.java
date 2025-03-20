@@ -40,6 +40,7 @@ public class CompteServiceImpl implements CompteService {
         if (compte.getRole().equals(null)){
             compte.setRole("client");
         }
+        compte.setActiver(true);
         Compte savedCompte = compteRepository.save(compte);
         return this.compteMapperImpl.toDto(savedCompte);
     }

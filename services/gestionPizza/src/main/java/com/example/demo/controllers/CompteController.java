@@ -69,7 +69,7 @@ public class CompteController {
         }
     }
 
-    @PutMapping("/compte/enable-disable/{id}")
+    @PutMapping("/enable-disable/{id}")
     public ResponseEntity<CompteDto> enableDisableAccount(@RequestParam long id) {
         CompteDto compteDto = this.compteServiceImpl.enableDisableCompte(id);
         return ResponseEntity.ok(compteDto);
