@@ -74,7 +74,7 @@ public class DataInitializer implements CommandLineRunner {
         statistique.setStatPizza(new HashMap<>(0));
         statistique.setStatIngredient(new HashMap<>(0));
         this.statistiqueRepository.save(statistique);
-
+*/
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
@@ -157,7 +157,8 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1), compte1.getId());
-*/
+
+
 
     }
 
