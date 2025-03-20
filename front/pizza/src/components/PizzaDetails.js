@@ -36,6 +36,7 @@ const PizzaDetails = ({ userID }) => {
         }
         const standardData = await standardResponse.json();
         setStandardIngredients(standardData.ingredients); // Mettre à jour les ingrédients standards
+        setSelectedIngredients(standardData.ingredients)
       } catch (error) {
         setError(error.message);
       } finally {
@@ -71,7 +72,7 @@ const PizzaDetails = ({ userID }) => {
       // Retirer l'objet complet de l'ingrédient de selectedIngredients
       setSelectedIngredients(prevSelected => prevSelected.filter(i => i.id !== ingredient.id));
     }
-    console.log(selectedIngredients);
+    setSelectedIngredients(prevSelected => [...prevSelected]);
   };
 
   // Ajouter la pizza à la commande
@@ -147,7 +148,7 @@ const PizzaDetails = ({ userID }) => {
           const isStandard = standardIngredients.some(
             (standardIngredient) => standardIngredient.id === ingredient.id
           );
-          const isChecked = selectedIngredients.some(i => i.id === ingredient.id) || isStandard;
+          const isChecked = selectedIngredients.some(i => i.id === ingredient.id);
 
           return (
             <li key={ingredient.id}>
