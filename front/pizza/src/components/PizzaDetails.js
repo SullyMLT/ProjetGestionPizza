@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import CommentairePizza from "./CommentairePizza";
@@ -11,12 +12,11 @@ const PizzaDetails = ({ userID }) => {
   const { id } = useParams(); // Récupérer l'ID de la pizza depuis l'URL
   const [pizza, setPizza] = useState(null); // Détails de la pizza
   const [ingredients, setIngredients] = useState([]); // Liste d'ingrédients
-  const [standardIngredients, setStandardIngredients] = useState([]); // Ingrédients standards pour la pizza
   const [selectedIngredients, setSelectedIngredients] = useState([]); // Ingrédients sélectionnés par l'utilisateur (objets complets)
   const [loading, setLoading] = useState(true); // État de chargement
   const [error, setError] = useState(null); // Gestion des erreurs
+ const navigate = useNavigate();
 
-  const token = localStorage.getItem('token'); // Récupère le token du localStorage
 
   // Récupérer les détails de la pizza et les ingrédients
   useEffect(() => {
@@ -27,7 +27,7 @@ const PizzaDetails = ({ userID }) => {
 
         // Récupérer les ingrédients standards associés à cette pizza
         const standardResponse = await axios.get(`${url}/standards/pizza/${id}`);
-        setStandardIngredients(standardResponse.data.ingredients); // Mettre à jour les ingrédients standards
+
         setSelectedIngredients(standardResponse.data.ingredients); // Initialiser les ingrédients sélectionnés
       } catch (error) {
         setError(error.message);
@@ -90,6 +90,8 @@ const PizzaDetails = ({ userID }) => {
       }
 
       alert('Pizza ajoutée à la commande !');
+      navigate('/');  // This will take the user to the root path
+      window.location.reload();
     } catch (error) {
       alert('Erreur lors de l\'ajout au panier');
     }
@@ -117,9 +119,7 @@ const PizzaDetails = ({ userID }) => {
       <h4>Ingrédients :</h4>
       <ul>
         {ingredients.map((ingredient) => {
-          const isStandard = standardIngredients.some(
-            (standardIngredient) => standardIngredient.id === ingredient.id
-          );
+
           const isChecked = selectedIngredients.some(i => i.id === ingredient.id);
 
           return (
