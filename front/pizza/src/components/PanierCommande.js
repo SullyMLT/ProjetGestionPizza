@@ -32,7 +32,7 @@ const PanierCommande = ({ userID }) => {
 
       } catch (error) {
         console.error("Erreur lors de la création de la commande", error);
-        setError("E");
+        setError("... Panier Vide (^_^;) ");
       }
     };
 
@@ -75,9 +75,10 @@ const deletePizza = async (pizzaCommandeId) => {
 
   return (
     <div>
-      {error && <p>{error}</p>}
+
 
       <h2>Liste des Pizzas de la Commande</h2>
+      {error && <p>{error}</p>}
       <ul>
         {commandePizzas.map(pizzaCommande => (
           <li key={pizzaCommande.id}>
