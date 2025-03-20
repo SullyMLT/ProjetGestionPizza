@@ -1,0 +1,137 @@
+.add-pizza-form {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    position: relative;
+    padding-bottom: 10px;
+  }
+
+  h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #e74c3c;
+    border-radius: 3px;
+  }
+  
+  .pizza-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .add-pizza-form h2 {
+    color: #2c3e50; /* Noir pour les titres */
+  }
+  
+  .form-group {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    font-size: 16px;
+    color: #34495e;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+  
+  input[type="text"]:focus,
+  input[type="file"]:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+  }
+  
+  .ingredients-checkboxes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .ingredient-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .ingredient-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    order: -1;
+  }
+  
+  .ingredient-item label {
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .image-preview {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .image-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+  }
+  
+  .button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+  }
+  
+  .button:active {
+    transform: translateY(0);
+  }
+  

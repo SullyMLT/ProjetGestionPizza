@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../App.css";
+import "./css/AddIngredient.css";
 
 import { url_host } from '../config/config.js';
 

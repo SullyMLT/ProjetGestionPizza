@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../App.css";
+import "./css/AddPizza.css";
 import { url_host } from '../config/config.js';
 
 const url = url_host;
@@ -152,15 +152,13 @@ function AddPizza() {
           <h2>Ingrédients</h2>
           <div className="ingredients-checkboxes">
             {ingredients.map((ingredient) => (
-              <div key={ingredient.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    value={ingredient.id}
-                    onChange={handleIngredientChange}
-                  />
-                  {ingredient.name}
-                </label>
+              <div key={ingredient.id} className="ingredient-item">
+                <input
+                  type="checkbox"
+                  value={ingredient.id}
+                  onChange={handleIngredientChange}
+                />
+                <label>{ingredient.name}</label>
               </div>
             ))}
           </div>
