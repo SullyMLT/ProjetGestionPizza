@@ -1,0 +1,62 @@
+.ingredient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .ingredient-list-title {
+    color: #d9534f;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .ingredient-list-items {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+  }
+  
+  .ingredient-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .ingredient-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    background-color: #f8f9fa;
+  }
+  
+  .ingredient-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
+    font-weight: bold;
+  }
+  
+  .no-ingredients-message {
+    font-size: 16px;
+    color: #555;
+    font-style: italic;
+    margin-top: 20px;
+  }
+  

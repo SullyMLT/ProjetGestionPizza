@@ -2,25 +2,24 @@ import React, { useState, useEffect } from 'react';
 import "../App.css";
 
 // URL de l'API
-import { url_host } from '../config/config.js';
+const url = 'http://localhost:8080/commandes';
 
-const url = url_host+'/commandes';
+const CommandeList = () => {
 
-const CommentList = () => {
-  const [commendes, setCommendes] = useState([]);  // État pour les commentaires
+  const [commandes, setCommandes] = useState([]);  // État pour les commandes
   const [loading, setLoading] = useState(true);  // État pour savoir si les données sont en cours de chargement
   const [error, setError] = useState(null);  // État pour gérer les erreurs
 
   useEffect(() => {
-    // Fonction pour récupérer les commentaires depuis l'API
-    const fetchCommendes = async () => {
+    // Fonction pour récupérer les commandes depuis l'API
+    const fetchCommandes = async () => {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des commentaires');
+          throw new Error('Erreur lors de la récupération des commandes');
         }
         const data = await response.json();
-        setCommendes(data);  // Mettre à jour l'état des commentaires avec les données récupérées
+        setCommandes(data);  // Mettre à jour l'état des commandes avec les données récupérées
       } catch (error) {
         setError(error.message);  // Si une erreur survient, mettre à jour l'état d'erreur
       } finally {
@@ -28,11 +27,11 @@ const CommentList = () => {
       }
     };
 
-    fetchCommendes();  // Appeler la fonction pour récupérer les commentaires
+    fetchCommandes();  // Appeler la fonction pour récupérer les commandes
   }, []);  // Le tableau vide [] signifie que l'effet se déclenche une seule fois, lors du montage du composant
 
   if (loading) {
-    return <p>Chargement des commentaires...</p>;  // Afficher un message de chargement tant que les données sont en cours de récupération
+    return <p>Chargement des commandes...</p>;  // Afficher un message de chargement tant que les données sont en cours de récupération
   }
 
   if (error) {
@@ -41,18 +40,19 @@ const CommentList = () => {
 
   return (
     <section>
-      <h2>Liste des Commandes : </h2>
-      <div className="comment-container">
-        {commendes.map(commende => (
-          <div key={commende._id} className="comment-tile">
+      <h2>Liste des Commandes</h2>
+      <div className="commande-container">
+        {commandes.map(commande => (
+          <div key={commande.id} className="commande-tile">
             <div className="left">
-              <p>{commende.description}</p>
-              <p>{commende.date}</p>
+
+
+              <p><strong>Date: </strong>{new Date(commande.date).toLocaleDateString()}</p>
             </div>
             <div className="right">
-              <p><strong>Note: {commende.prix}/5</strong></p>
-              <p>Validation : {commende.validation}</p>
-              <p>{new Date(commende.date).toLocaleString()}</p>  {/* Date au format lisible */}
+              <p><strong>Prix: </strong>{commande.prix.toFixed(2)} €</p>  {/* Format prix avec deux décimales */}
+              <p><strong>Validation: </strong>{commande.validation ? 'Validée' : 'Non validée'}</p>
+              <p><strong>Date complète: </strong>{new Date(commande.date).toLocaleString()}</p>  {/* Date au format lisible */}
             </div>
           </div>
         ))}
@@ -61,4 +61,4 @@ const CommentList = () => {
   );
 };
 
-export default CommentList;
+export default CommandeList;

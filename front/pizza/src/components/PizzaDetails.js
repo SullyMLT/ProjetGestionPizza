@@ -130,7 +130,8 @@ const PizzaDetails = ({ userID }) => {
                   checked={isChecked} // Si c'est un ingrédient standard, coché par défaut
                   onChange={(e) => handleCheckboxChange(ingredient, e.target.checked)}
                 />
-                {ingredient.name}
+                {ingredient.name} -
+                {ingredient.prix}€
               </label>
             </li>
           );

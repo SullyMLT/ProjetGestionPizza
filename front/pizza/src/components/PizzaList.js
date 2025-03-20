@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';  // Importer useNavigate
-import "../App.css";
+import "./css/PizzaList.css";
 
 // URL de l'API
 import { url_host } from '../config/config.js';
