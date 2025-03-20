@@ -15,6 +15,7 @@ import IngredientList from './components/IngredientList';
 import CommendeList from './components/CommendeList';
 import CommentairesListeAdmin from "./components/CommentaireListeAdmin";
 import Statistique from "./components/Statistique";
+import CommandeListeCompte from "./components/CommandeListeCompte"
 
 import './App.css';
 
@@ -75,6 +76,7 @@ function App() {
 
         {token ? (
           <>
+            <Link to="/commande">Mes commandes</Link>
             <Link to="/statistique-pizza">Statistique</Link>
             <button onClick={logout}>Se déconnecter</button>
           </>
@@ -88,6 +90,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<PizzaList />} />
+        <Route path="/commande" element={user ? (<CommandeListeCompte compteId={user ? user.id : null}/>) : (<Navigate to="/" />)} />
         <Route path="/panier" element={user ? (<PanierCommande userID={user ? user.id : null}/>) : (<Navigate to="/" />)} />
         <Route  path="/pizzas/:id" element={user ? (<PizzaDetails userID={user ? user.id : null}/>) : (<Navigate to="/" />)}/>
         <Route path="/statistique-pizza" element={<Statistique />} />
