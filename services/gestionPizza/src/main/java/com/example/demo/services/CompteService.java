@@ -11,4 +11,6 @@ public interface CompteService {
     CompteDto getCompteById(Long id);
     List<CompteDto> getAllComptes();
     CompteDto connexion(String username, String password);
+
+    String getUsernameByCompteId(Long compteId);
 }

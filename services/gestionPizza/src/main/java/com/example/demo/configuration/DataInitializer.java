@@ -123,6 +123,8 @@ public class DataInitializer implements CommandLineRunner {
         standard2.setPizza(pizza2);
         standard2 = standardServiceImpl.addStandard(standard2);
 
+        // Compte
+
         Compte compte1 = new Compte();
         compte1.setUsername("admin");
         compte1.setPassword("admin");
@@ -131,6 +133,15 @@ public class DataInitializer implements CommandLineRunner {
         List<Commande> commandes = new ArrayList<>();
         compte1.setCommandes(commandes);
         CompteDto savedCompteDto1 = compteServiceImpl.createCompte(compteMapperImpl.toDto(compte1));
+
+        Compte compteUserDelete = new Compte();
+        compteUserDelete.setUsername("UtilisateurSupprimé");
+        compteUserDelete.setPassword("userDelete");
+        compteUserDelete.setRole("admin");
+        compteUserDelete.setActiver(true);
+        List<Commande> commandesUserDelete = new ArrayList<>();
+        compteUserDelete.setCommandes(commandesUserDelete);
+        CompteDto savedCompteDtoUserDelete = compteServiceImpl.createCompte(compteMapperImpl.toDto(compteUserDelete));
 
 
         // Create Commandes
@@ -156,7 +167,8 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setDate("2023-10-01");
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
-        commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1), compte1.getId());
+        commentaire1.setCompteId(savedCompteDto1.getId());
+        commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
 */
 
     }
