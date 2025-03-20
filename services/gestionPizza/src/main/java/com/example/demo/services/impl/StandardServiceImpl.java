@@ -26,7 +26,7 @@ public class StandardServiceImpl implements StandardService {
     @Autowired
     private StandardMapperImpl standardMapperImpl;
     @Autowired
-    private PizzaServiceImpl pizzaServiceImpl;
+    private PizzaRepository pizzaRepository;
     @Autowired
     private PizzaMapperImpl pizzaMapperImpl;
 
@@ -39,8 +39,7 @@ public class StandardServiceImpl implements StandardService {
             prix += ingredient.getPrix();
         }
         pizza.setPrix(prix);
-        PizzaDto pizzaDto = pizzaMapperImpl.toDto(pizza);
-        pizzaServiceImpl.updatePizza(pizzaDto.getId(), pizzaDto);
+        this.pizzaRepository.save(pizza);
         Standard savedStandard = standardRepository.save(standard);
         return standardMapperImpl.toDto(savedStandard);
     }
@@ -63,7 +62,7 @@ public class StandardServiceImpl implements StandardService {
                 prix += ingredient.getPrix();
             }
             pizza.setPrix(prix);
-            pizzaServiceImpl.updatePizza(pizza.getId(), pizzaMapperImpl.toDto(pizza));
+            this.pizzaRepository.save(pizza);
             standardUpdated.setPizza(pizza);
 
             Standard savedStandard = standardRepository.save(standardUpdated);
@@ -80,10 +79,13 @@ public class StandardServiceImpl implements StandardService {
 
     @Override
     public StandardDto getStandardByPizzaId(Long id) {
-        PizzaDto pizzaDto = pizzaServiceImpl.getPizzaById(id);
+        Optional<Pizza> pizza = this.pizzaRepository.findById(Math.toIntExact(id));
+        if (!pizza.isPresent()) {
+            return null;
+        }
         List<StandardDto> standardDto = this.getAllStandards();
         for (StandardDto standard : standardDto) {
-            if (standard.getPizza().equals(pizzaDto)) {
+            if (standard.getPizza().equals(this.pizzaMapperImpl.toDto(pizza.get()))) {
                 return standard;
             }
         }

@@ -23,9 +23,18 @@ public class StatistiqueServiceImpl implements StatistiqueService {
     private StatistiqueMapper statistiqueMapper;
 
     @Override
-    public StatistiqueDto getStatistique() {
-        Statistique statistique = statistiqueRepository.findById("null").orElse(new Statistique());
+    public StatistiqueDto createStatistique(StatistiqueDto statistiqueDto) {
+        Statistique statistique = this.statistiqueRepository.save(statistiqueMapper.toEntity(statistiqueDto));
+        if (statistique.getId().equals("null")) {
+            statistique.setId("1");
+            statistique = this.statistiqueRepository.save(statistique);
+        }
+        return statistiqueMapper.toDto(statistique);
+    }
 
+    @Override
+    public StatistiqueDto getStatistique() {
+        Statistique statistique = statistiqueRepository.findById("1").orElse(new Statistique());
         return statistiqueMapper.toDto(statistique);
     }
 

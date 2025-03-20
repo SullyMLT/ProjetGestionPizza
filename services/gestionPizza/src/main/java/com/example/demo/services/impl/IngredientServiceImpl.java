@@ -3,8 +3,10 @@ package com.example.demo.services.impl;
 import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
+import com.example.demo.entities.Standard;
 import com.example.demo.mappers.impl.IngredientMapperImpl;
 import com.example.demo.repositories.IngredientRepository;
+import com.example.demo.repositories.StandardRepository;
 import com.example.demo.services.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
     private IngredientMapperImpl ingredientMapperImpl;
     @Autowired
-    private StandardServiceImpl standardServiceImpl;
+    private StandardRepository standardRepository;
 
     @Override
     public IngredientDto addIngredient(IngredientDto ingredientDto) {
@@ -36,12 +38,14 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public void deleteIngredient(Long id) {
         IngredientDto ingredientDto = getIngredientById(id);
-        List<StandardDto> standardDto = standardServiceImpl.getAllStandards();
         if (ingredientDto != null) {
-            for (StandardDto standard : standardDto) {
-                if (standard.getIngredients().contains(ingredientDto)) {
-                    standard.getIngredients().remove(ingredientDto);
-                    standardServiceImpl.updateStandard(standard.getId(), standard);
+            Ingredient ingredient = ingredientMapperImpl.toEntity(ingredientDto);
+            List<Standard> standards = standardRepository.findAll();
+
+            for (Standard standard : standards) {
+                if (standard.getIngredients().contains(ingredient)) {
+                    standard.getIngredients().remove(ingredient);
+                    standardRepository.save(standard);
                 }
             }
             ingredientRepository.deleteById(Math.toIntExact(id));

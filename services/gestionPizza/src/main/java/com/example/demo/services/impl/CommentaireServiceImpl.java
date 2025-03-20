@@ -19,7 +19,6 @@ public class CommentaireServiceImpl implements CommentaireService {
 
     @Autowired
     private CommentaireRepository commentaireRepository;
-
     @Autowired
     private CommentaireMapperImpl commentaireMapperImpl;
 

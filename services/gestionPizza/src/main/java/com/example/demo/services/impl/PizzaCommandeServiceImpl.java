@@ -1,18 +1,16 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.*;
-import com.example.demo.mappers.impl.CommandeMapperImpl;
 import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.*;
 import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,14 +21,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Autowired
     private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
     @Autowired
-    @Lazy
-    private CommandeServiceImpl commandeServiceImpl;
-    @Autowired
-    private CommandeMapperImpl commandeMapperImpl;
+    private CommandeRepository commandeRepository;
 
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
-        System.out.println(pizzaCommandeDto);
         PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
         Pizza pizza = pizzaCommande.getPizza();
         float prix = 0;
@@ -42,10 +36,14 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         }
         pizzaCommande.setPizza(pizza);
         PizzaCommande savedPizzaCommande = pizzaCommandeRepository.save(pizzaCommande);
-        CommandeDto commandeDto = commandeServiceImpl.getCommandeById(pizzaCommande.getCommandeId());
-        Commande commande = commandeMapperImpl.toEntity(commandeDto);
+        Long pizzaComId = pizzaCommande.getCommandeId();
+        Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(pizzaComId));
+        if (optionalCommande.isEmpty()) {
+            return null;
+        }
+        Commande commande = optionalCommande.get();
         commande.setPrix(commande.getPrix() + pizza.getPrix());
-        commandeServiceImpl.updateCommande(pizzaCommande.getCommandeId(), commande.getPrix());
+        commandeRepository.save(commande);
         PizzaCommandeDto pizzaComDto = pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
         return pizzaComDto;
     }
@@ -53,7 +51,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Override
     public PizzaCommandeDto getPizzaCommandeById(Long id) {
         Optional<PizzaCommande> pizzaCommande = pizzaCommandeRepository.findById(id);
-        if (!pizzaCommande.isPresent()) {
+        if (pizzaCommande.isEmpty()) {
             return null;
         }
         return pizzaCommandeMapperImpl.toDto(pizzaCommande.get());
@@ -76,11 +74,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         pizzaComDto.setIngredients(null);
         this.pizzaCommandeRepository.save(this.pizzaCommandeMapperImpl.toEntity(pizzaComDto));
         pizzaCommandeRepository.deleteById(id);
-        if (pizzaCommandeRepository.findById(id).isPresent()) {
-            return false;
-        }else{
-            return true;
-        }
+        return pizzaCommandeRepository.findById(id).isEmpty();
     }
 
     @Override
@@ -88,7 +82,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         List<PizzaCommandeDto> pizzaCommandeDtos = this.getAllPizzaCommandes();
 
         for (PizzaCommandeDto pizzaCommande : pizzaCommandeDtos) {
-            if (pizzaCommande.getCommandeId() != commandeId) {
+            if (!Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
                 pizzaCommandeDtos.remove(pizzaCommande);
             }
         }

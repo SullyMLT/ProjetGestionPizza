@@ -20,10 +20,8 @@ public class CompteServiceImpl implements CompteService {
 
     @Autowired
     private CompteRepository compteRepository;
-
     @Autowired
     private CommandeRepository commandeRepository;
-
     @Autowired
     private CompteMapperImpl compteMapperImpl;
 
@@ -113,4 +111,13 @@ public class CompteServiceImpl implements CompteService {
         compteDto.setId(-1L);
         return compteDto;
     }
+
+    /*@Override
+    public List<CommandeDto> getAllCommandeByCompteId(Long compteId) {
+        CompteDto compteDto = this.compteServiceImpl.getCompteById(compteId);
+        if (compteDto != null) {
+
+        }
+        return null;
+    }*/
 }

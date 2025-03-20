@@ -1,20 +1,22 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.CommandeDto;
-import com.example.demo.dtos.CompteDto;
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
+import com.example.demo.entities.PizzaCommande;
 import com.example.demo.mappers.impl.CommandeMapperImpl;
-import com.example.demo.mappers.impl.CompteMapperImpl;
+import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
+import com.example.demo.repositories.CompteRepository;
+import com.example.demo.repositories.PizzaCommandeRepository;
 import com.example.demo.services.CommandeService;
-import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,31 +27,30 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private CommandeMapperImpl commandeMapperImpl;
     @Autowired
-    private CompteServiceImpl compteServiceImpl;
+    private PizzaCommandeRepository pizzaCommandeRepository;
     @Autowired
-    private CompteMapperImpl compteMapperImpl;
+    private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
     @Autowired
-    private PizzaCommandeService pizzaCommandeService;
+    private CompteRepository compteRepository;
     @Autowired
     private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
     public CommandeDto addCommande(CommandeDto commandeDto, Long compteId) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
-        CompteDto compte = compteServiceImpl.getCompteById(compteId);
-        Compte compteEntity = compteMapperImpl.toEntity(compte);
-        if (compteEntity.getCommandes() == null) {
-            compteEntity.setCommandes(new ArrayList<>());
+        Optional<Compte> compteEntity = this.compteRepository.findById(Math.toIntExact(compteId));
+        Compte compte = compteEntity.get();
+        if (compte.getCommandes() == null) {
+            compte.setCommandes(new ArrayList<>());
         }
-        for (Commande c : compteEntity.getCommandes()) {
+        for (Commande c : compte.getCommandes()) {
             if (!c.isValidation()) {
                 return commandeMapperImpl.toDto(c);
             }
         }
         Commande savedCommande = commandeRepository.save(commande);
-        compteEntity.getCommandes().add(savedCommande);
-        CompteDto updatedCompte = compteMapperImpl.toDto(compteEntity);
-        compteServiceImpl.updateCompte(compteId, updatedCompte);
+        compte.getCommandes().add(savedCommande);
+        this.compteRepository.save(compte);
         return this.commandeMapperImpl.toDto(savedCommande);
     }
 
@@ -101,9 +102,16 @@ public class CommandeServiceImpl implements CommandeService {
             Commande commande = optionalCommande.get();
             commande.setValidation(true);
             Commande updatedCommande = commandeRepository.save(commande);
+            List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
+            for (PizzaCommande pizzaCommande : pizzaCommandes) {
+                if (!Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
+                    pizzaCommandes.remove(pizzaCommande);
+                }
+            }
             List<PizzaCommandeDto> pizzaCommandeDtos = new ArrayList<>();
-            pizzaCommandeDtos = pizzaCommandeService.getPizzaCommandeByCommandeId(updatedCommande.getId());
-            System.out.println(pizzaCommandeDtos);
+            for (PizzaCommande pizzaCommande : pizzaCommandes) {
+                pizzaCommandeDtos.add(this.pizzaCommandeMapperImpl.toDto(pizzaCommande));
+            }
             this.statistiqueServiceImpl.updateStatistiqueList(pizzaCommandeDtos);
             return this.commandeMapperImpl.toDto(updatedCommande);
         } else {
@@ -111,4 +119,6 @@ public class CommandeServiceImpl implements CommandeService {
             return null;
         }
     }
+
+
 }
