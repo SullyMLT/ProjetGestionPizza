@@ -1,0 +1,11 @@
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .chart {
+    width: 45%;
+    text-align: center;
+  }
+  

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
 import PizzaList from './components/PizzaList';
 import PizzaDetails from './components/PizzaDetails';
@@ -12,6 +14,7 @@ import AddIngredient from './components/AddIngredient';
 import IngredientList from './components/IngredientList';
 import CommendeList from './components/CommendeList';
 import CommentairesListeAdmin from "./components/CommentaireListeAdmin";
+import Statistique from "./components/Statistique";
 
 import './App.css';
 
@@ -36,6 +39,8 @@ function App() {
     }
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     refreshUser();  // Rafraîchit les informations de l'utilisateur à chaque changement de token
   }, [token]);
@@ -46,7 +51,8 @@ function App() {
     setToken(null); // Met à jour l'état du token
     setUser(null); // Réinitialiser l'utilisateur
 
-    window.location.reload();  // Recharger la page
+    navigate('/');
+    window.location.reload(); // Recharger la page
   };
 
   return (
@@ -68,7 +74,10 @@ function App() {
 
 
         {token ? (
-          <button onClick={logout}>Se déconnecter</button>
+          <>
+            <Link to="/statistique-pizza">Statistique</Link>
+            <button onClick={logout}>Se déconnecter</button>
+          </>
         ) : (
           <>
             <Link to="/login">Se connecter</Link>
@@ -81,6 +90,7 @@ function App() {
         <Route path="/" element={<PizzaList />} />
         <Route path="/panier" element={user ? (<PanierCommande userID={user ? user.id : null}/>) : (<Navigate to="/" />)} />
         <Route  path="/pizzas/:id" element={user ? (<PizzaDetails userID={user ? user.id : null}/>) : (<Navigate to="/" />)}/>
+        <Route path="/statistique-pizza" element={<Statistique />} />
         <Route path="/login" element={<Login refreshUser={refreshUser} />} />
         <Route path="/register" element={<Register />} />
 
