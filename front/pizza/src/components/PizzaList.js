@@ -32,7 +32,7 @@ const PizzaList = () => {
     };
 
     fetchPizzas();
-  });
+  },[]);
 
   if (loading) {
     return <p>Chargement des pizzas...</p>;

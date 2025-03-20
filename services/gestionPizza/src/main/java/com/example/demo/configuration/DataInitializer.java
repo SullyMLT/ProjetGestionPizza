@@ -70,13 +70,13 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
 
-
+/*
         Statistique statistique = new Statistique();
         statistique.setId("1");
         statistique.setStatPizza(new HashMap<>(0));
         statistique.setStatIngredient(new HashMap<>(0));
         this.statistiqueRepository.save(statistique);
-
+*/
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
