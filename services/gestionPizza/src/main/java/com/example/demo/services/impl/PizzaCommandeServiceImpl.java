@@ -86,6 +86,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         if (commande.isValidation()){
             return false;
         }
+        commande.setPrix(commande.getPrix() - pizzaComDto.getPizza().getPrix());
         Pizza pizzaDel = new Pizza();
         List<IngredientDto> ingreDel = new ArrayList<>();
         pizzaDel = pizzaRepository.save(pizzaDel);
@@ -94,6 +95,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         pizzaComDto.setIngredients(ingreDel);
         this.pizzaCommandeRepository.save(this.pizzaCommandeMapperImpl.toEntity(pizzaComDto));
         pizzaCommandeRepository.deleteById(id);
+        this.commandeRepository.save(commande);
         pizzaRepository.delete(pizzaDel);
         return pizzaCommandeRepository.findById(id).isEmpty();
     }
