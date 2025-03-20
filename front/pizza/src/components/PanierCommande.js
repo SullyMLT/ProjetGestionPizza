@@ -14,7 +14,8 @@ const PanierCommande = ({ userID }) => {
         description: "Commande en cours",
         validation: false,
         date: new Date().toISOString(),
-        prix: 0
+        prix: 0,
+        compteId : userID
       };
 
       try {
@@ -31,7 +32,7 @@ const PanierCommande = ({ userID }) => {
 
       } catch (error) {
         console.error("Erreur lors de la création de la commande", error);
-        setError("Erreur lors de la création de la commande");
+        setError("E");
       }
     };
 

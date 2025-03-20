@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import { url_host } from '../config/config.js';
+
+const url = url_host;
 
 function AddPizza() {
-  const [ingredients, setIngredients] = useState([]); // Liste d'ingrédients
+  const [ingredients, setIngredients] = useState([]);
   const [pizza, setPizza] = useState({
     nom: "",
     description: "",
-    photo: "", // Contiendra le chemin relatif de l'image
-    prix: "0", // Le prix reste toujours fixé à 0
+    photo: "",
+    prix: "0",
   });
-  const [selectedIngredients, setSelectedIngredients] = useState([]); // Ingrédients sélectionnés
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [file, setFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
-  // UseEffect pour récupérer les ingrédients disponibles
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
-        const ingredientsResponse = await fetch('http://localhost:8080/ingredients');
+        const ingredientsResponse = await fetch(url + '/ingredients');
         if (!ingredientsResponse.ok) {
           throw new Error('Erreur lors de la récupération des ingrédients');
         }
@@ -29,111 +33,97 @@ function AddPizza() {
     fetchIngredients();
   }, []);
 
-  // State pour la prévisualisation de l'image
-  const [imagePreview, setImagePreview] = useState("");
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPizza((prevPizza) => ({ ...prevPizza, [name]: value }));
   };
 
-  // Fonction pour gérer le changement de fichier (image)
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Récupère le premier fichier sélectionné
-    if (file) {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
       const reader = new FileReader();
-
-      reader.onloadend = () => {
-        // Prévisualisation de l'image
-        setImagePreview(reader.result);
-
-        // Génération du chemin relatif pour l'image (dans public)
-        const imagePath = `/${pizza.nom}-${new Date().toISOString()}.jpg`; // Génère un nom unique basé sur le nom de la pizza et la date
-        setPizza((prevPizza) => ({
-          ...prevPizza,
-          photo: imagePath, // Mettez à jour le chemin relatif de l'image
-        }));
-      };
-
-      reader.onerror = (error) => {
-        console.error('Erreur lors de la lecture du fichier image:', error);
-        alert("Une erreur est survenue lors de la lecture de l'image.");
-      };
-
-      reader.readAsDataURL(file); // Lire l'image comme base64 pour la prévisualisation
+      reader.onloadend = () => setImagePreview(reader.result);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
-  // Fonction pour gérer la sélection/désélection des ingrédients
   const handleIngredientChange = (e) => {
-    const ingredient = ingredients.find(ing => ing.id === parseInt(e.target.value)); // Trouver l'ingrédient par son ID
-    if (!ingredient) {
-      console.error('Ingrédient non trouvé');
-      return;
-    }
+    const ingredient = ingredients.find(ing => ing.id === parseInt(e.target.value));
+    if (!ingredient) return;
 
-    if (e.target.checked) {
-      // Ajouter l'ingrédient complet à la liste des ingrédients sélectionnés
-      setSelectedIngredients((prevSelected) => [...prevSelected, ingredient]);
-    } else {
-      // Retirer l'ingrédient de la liste des ingrédients sélectionnés
-      setSelectedIngredients((prevSelected) =>
-        prevSelected.filter((ing) => ing.id !== ingredient.id)
-      );
-    }
+    setSelectedIngredients((prevSelected) =>
+      e.target.checked
+        ? [...prevSelected, ingredient]
+        : prevSelected.filter((ing) => ing.id !== ingredient.id)
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Vérifier que tous les champs sont remplis, y compris la photo et les ingrédients
-    if (Object.values(pizza).includes("") || !pizza.photo || selectedIngredients.length === 0) {
-      return alert("Tous les champs doivent être remplis, y compris la photo et les ingrédients.");
+
+
+
+
+    if (!pizza.nom || !pizza.description || !file || selectedIngredients.length === 0) {
+      return alert("Tous les champs doivent être remplis, y compris l'image et les ingrédients.");
     }
 
     try {
+      // 1️⃣ Étape 1 : Envoyer l'image
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const uploadResponse = await fetch('http://localhost:3100/img/upload-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error("Erreur lors du téléchargement de l'image");
+      }
+
+      const { imagePath } = await uploadResponse.json();
+      const updatedPizza = { ...pizza, photo: imagePath };
+
+      // 2️⃣ Étape 2 : Ajouter la pizza avec l'image
       const pizzaResponse = await fetch("http://localhost:8080/pizzas", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pizza),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedPizza),
       });
 
       if (!pizzaResponse.ok) {
         throw new Error("Erreur lors de la création de la pizza");
       }
 
-      // Récupérer l'ID de la pizza nouvellement créée
       const pizzaResponseData = await pizzaResponse.json();
 
-      // Créer un standard avec la pizza et les ingrédients complets
+      // 3️⃣ Étape 3 : Associer la pizza aux ingrédients
       const standardData = {
-        pizza: pizzaResponseData, // Ajouter l'objet pizza entier
-        ingredients: selectedIngredients, // Ajouter les objets des ingrédients sélectionnés
+        pizza: pizzaResponseData,
+        ingredients: selectedIngredients,
       };
-
-      console.log(standardData); // Vérifie si tu as bien les objets des ingrédients
 
       const standardResponse = await fetch("http://localhost:8080/standards", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(standardData),
       });
 
-      if (standardResponse.ok) {
-        alert("Pizza ajoutée avec succès !");
-        setPizza({ nom: "", description: "", photo: "", prix: "0" });
-        setSelectedIngredients([]); // Réinitialiser les ingrédients sélectionnés
-        setImagePreview(""); // Réinitialiser l'aperçu de l'image
-      } else {
+      if (!standardResponse.ok) {
         throw new Error("Erreur lors de la création du standard");
       }
 
+      alert("Pizza ajoutée avec succès !");
+      setPizza({ nom: "", description: "", photo: "", prix: "0" });
+      setSelectedIngredients([]);
+      setImagePreview("");
+      setFile(null);
+
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données :", error);
-      alert(error.message || "Erreur lors de l'ajout de la pizza et du standard");
+      console.error("Erreur lors de l'ajout de la pizza :", error);
+      alert(error.message || "Erreur lors de l'ajout de la pizza");
     }
   };
 
@@ -147,18 +137,17 @@ function AddPizza() {
               {field.charAt(0).toUpperCase() + field.slice(1)}
             </label>
             <input
-              type={field === "prix" ? "number" : "text"}
+              type="text"
               id={field}
               name={field}
               value={pizza[field]}
               onChange={handleChange}
-              placeholder={`Entrez ${field === "prix" ? "le" : "la"} ${field}`}
+              placeholder={`Entrez ${field}`}
               required
             />
           </div>
         ))}
 
-        {/* Afficher les checkboxes pour les ingrédients */}
         <div className="form-group">
           <h2>Ingrédients</h2>
           <div className="ingredients-checkboxes">
@@ -167,11 +156,10 @@ function AddPizza() {
                 <label>
                   <input
                     type="checkbox"
-                    value={ingredient.id} // Valeur est l'ID de l'ingrédient
+                    value={ingredient.id}
                     onChange={handleIngredientChange}
                   />
                   {ingredient.name}
-
                 </label>
               </div>
             ))}
@@ -186,7 +174,6 @@ function AddPizza() {
             name="photo"
             onChange={handleFileChange}
             accept="image/*"
-            required
           />
         </div>
 
@@ -195,11 +182,7 @@ function AddPizza() {
             <img
               src={imagePreview}
               alt="Prévisualisation"
-              style={{
-                maxWidth: '100%',
-                maxHeight: '300px',
-                objectFit: 'contain',
-              }}
+              style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
             />
           </div>
         )}

@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-   console.log('Mot de passe fourni:', password);
+
     // Appeler l'API Spring Boot pour authentifier l'utilisateur
     const response = await axios.post(`${apiBaseUrl}/connexion`, { username, password });
     const user = response.data;
@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Utilisateur/Mot de passe incorrect' });
     }
 
-    console.log('Mot de passe haché:', user.password);
+
 
     // Comparer le mot de passe haché avec celui fourni
     const passwordMatch = await bcrypt.compare(password, user.password);
