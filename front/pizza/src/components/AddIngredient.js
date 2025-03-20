@@ -12,9 +12,9 @@ function AddIngredient({ addIngredient }) {
     prix: "",
   });
 
-  // Etat pour la prévisualisation de l'image
+
   const [imagePreview, setImagePreview] = useState("");
-  const [file, setFile] = useState(null);  // Pour stocker le fichier image sélectionné
+  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +25,7 @@ function AddIngredient({ addIngredient }) {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]; // Récupère le premier fichier sélectionné
     if (selectedFile) {
-      setFile(selectedFile); // Sauvegarde le fichier dans l'état
+      setFile(selectedFile);
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -45,7 +45,7 @@ function AddIngredient({ addIngredient }) {
   // Fonction pour télécharger l'image
   const uploadImage = async (file) => {
     const formData = new FormData();
-    formData.append("image", file); // Ajout du fichier à FormData
+    formData.append("image", file);
 
     try {
 
