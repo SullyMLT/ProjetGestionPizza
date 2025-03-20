@@ -50,8 +50,7 @@ public class CompteController {
 
     @PostMapping("/connexion")
     public ResponseEntity<CompteDto> connexion(@RequestBody AuthRequest authRequest) {
-        CompteDto isAuth = compteServiceImpl.connexion(authRequest.getUsername(), authRequest.getPassword());
-
+        CompteDto isAuth = compteServiceImpl.connexion(authRequest.getUsername());
         if (isAuth.getId() != -1) {
             return ResponseEntity.ok(isAuth);
         } else {

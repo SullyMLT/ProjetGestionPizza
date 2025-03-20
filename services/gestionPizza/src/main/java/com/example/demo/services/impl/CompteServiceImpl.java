@@ -117,7 +117,7 @@ public class CompteServiceImpl implements CompteService {
     }
 
     @Override
-    public CompteDto connexion(String username, String password) {
+    public CompteDto connexion(String username) {
         List<Compte> comptes = this.compteRepository.findAll();
         for (Compte compte : comptes) {
             if (compte.getUsername().equals(username)) {
