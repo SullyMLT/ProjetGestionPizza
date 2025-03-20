@@ -1,8 +1,11 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.PizzaCommandeDto;
+import com.example.demo.dtos.PizzaDto;
 import com.example.demo.entities.*;
 import com.example.demo.mappers.impl.PizzaCommandeMapperImpl;
+import com.example.demo.mappers.impl.PizzaMapperImpl;
 import com.example.demo.repositories.*;
 import com.example.demo.services.PizzaCommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     private PizzaCommandeRepository pizzaCommandeRepository;
     @Autowired
     private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
+    @Autowired
+    private PizzaRepository pizzaRepository;
+    @Autowired
+    private PizzaMapperImpl pizzaMapperImpl;
     @Autowired
     private CommandeRepository commandeRepository;
 
@@ -70,10 +77,24 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Override
     public boolean deletePizzaCommande(Long id) {
         PizzaCommandeDto pizzaComDto = this.getPizzaCommandeById(id);
-        pizzaComDto.setPizza(null);
-        pizzaComDto.setIngredients(null);
+        Long commandeId = pizzaComDto.getCommandeId();
+        Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(commandeId));
+        if (optionalCommande.isEmpty()) {
+            return false;
+        }
+        Commande commande = optionalCommande.get();
+        if (commande.isValidation()){
+            return false;
+        }
+        Pizza pizzaDel = new Pizza();
+        List<IngredientDto> ingreDel = new ArrayList<>();
+        pizzaDel = pizzaRepository.save(pizzaDel);
+        PizzaDto pizzaDelDto = this.pizzaMapperImpl.toDto(pizzaDel);
+        pizzaComDto.setPizza(pizzaDelDto);
+        pizzaComDto.setIngredients(ingreDel);
         this.pizzaCommandeRepository.save(this.pizzaCommandeMapperImpl.toEntity(pizzaComDto));
         pizzaCommandeRepository.deleteById(id);
+        pizzaRepository.delete(pizzaDel);
         return pizzaCommandeRepository.findById(id).isEmpty();
     }
 
