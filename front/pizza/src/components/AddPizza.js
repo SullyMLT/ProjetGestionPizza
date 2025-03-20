@@ -70,7 +70,7 @@ function AddPizza() {
     }
 
     try {
-      // 1️⃣ Étape 1 : Envoyer l'image
+      //Étape 1 : Envoyer l'image
       const formData = new FormData();
       formData.append("image", file);
 
@@ -86,7 +86,7 @@ function AddPizza() {
       const { imagePath } = await uploadResponse.json();
       const updatedPizza = { ...pizza, photo: imagePath };
 
-      // 2️⃣ Étape 2 : Ajouter la pizza avec l'image
+      //Étape 2 : Ajouter la pizza avec l'image
       const pizzaResponse = await fetch("http://localhost:8080/pizzas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -99,7 +99,7 @@ function AddPizza() {
 
       const pizzaResponseData = await pizzaResponse.json();
 
-      // 3️⃣ Étape 3 : Associer la pizza aux ingrédients
+      //Étape 3 : Associer la pizza aux ingrédients
       const standardData = {
         pizza: pizzaResponseData,
         ingredients: selectedIngredients,
