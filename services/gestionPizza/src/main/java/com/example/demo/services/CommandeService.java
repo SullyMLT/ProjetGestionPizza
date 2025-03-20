@@ -5,7 +5,7 @@ import com.example.demo.dtos.CommandeDto;
 import java.util.List;
 
 public interface CommandeService {
-    CommandeDto addCommande(CommandeDto commandeDto, Long compteId);
+    CommandeDto addCommande(CommandeDto commandeDto);
     CommandeDto getCommandeById(Long id);
     List<CommandeDto> getAllCommandes();
     CommandeDto updateCommande(Long id, float prix);

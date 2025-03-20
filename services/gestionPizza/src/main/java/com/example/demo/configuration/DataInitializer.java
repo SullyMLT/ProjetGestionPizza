@@ -69,14 +69,14 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
 /*
+
         Statistique statistique = new Statistique();
         statistique.setId("1");
         statistique.setStatPizza(new HashMap<>(0));
         statistique.setStatIngredient(new HashMap<>(0));
         this.statistiqueRepository.save(statistique);
-
+*/
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
@@ -148,9 +148,9 @@ public class DataInitializer implements CommandLineRunner {
         commande1.setValidation(false);
         commande1.setDate("2023-10-01");
         commande1.setPrix(0);
-        commande1.setCompteId(compte1.getId());
+        commande1.setCompteId(1L);
         CommandeDto commandeDto1 = commandeMapper.toDto(commande1);
-        CommandeDto savedCommandeDto1 = commandeServiceImpl.addCommande(commandeDto1, savedCompteDto1.getId());
+        CommandeDto savedCommandeDto1 = commandeServiceImpl.addCommande(commandeDto1);
 
         // Create PizzaCommandes
         PizzaCommande pizzaCommande1 = new PizzaCommande();
@@ -168,7 +168,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setNote(5);
         commentaire1.setCompteId(savedCompteDto1.getId());
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
-*/
+
 
     }
 
