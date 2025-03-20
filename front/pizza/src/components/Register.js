@@ -10,6 +10,7 @@ function Register() {
     e.preventDefault();
 
     try {
+
       await axios.post('http://localhost:3100/auth/register', { username, password });
       setErrorMessage('');
       alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
