@@ -1,40 +1,110 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { url_host } from '../config/config.js';
+const url = url_host;
 
-const PanierCommande = ({ panier, setPanier }) => {
+const PanierCommande = ({ userID }) => {
   const [error, setError] = useState(null);
+  const [commandePizzas, setCommandePizzas] = useState([]);
+  const [commande, setCommande] = useState(null);
 
-  // Fonction pour vider le panier
-  const viderPanier = () => {
-    setPanier([]);
-    localStorage.removeItem('panier'); // Vider le panier dans localStorage
-  };
+  useEffect(() => {
+    const createCommande = async () => {
+      const newCommande = {
+        description: "Commande en cours",
+        validation: false,
+        date: new Date().toISOString(),
+        prix: 0
+      };
 
-  // Fonction pour supprimer un article spécifique du panier
-  const supprimerDuPanier = (pizzaId) => {
-    const updatedPanier = panier.filter(item => item.id !== pizzaId);
-    setPanier(updatedPanier);
-    localStorage.setItem('panier', JSON.stringify(updatedPanier)); // Met à jour localStorage
+      try {
+        // Créer la commande sur le serveur
+        const createCommandeResponse = await axios.post(url + '/commandes', newCommande, { params: { compteId: userID } });
+        const createdCommande = createCommandeResponse.data;
+
+        // Mettre à jour l'état avec la commande créée
+        setCommande(createdCommande);
+
+        // Récupérer les pizzas de la commande après la création de la commande
+        const commandePizzasResponse = await axios.get(url + `/pizzaCommandes/commande/${createdCommande.id}`);
+        setCommandePizzas(commandePizzasResponse.data || []);
+
+      } catch (error) {
+        console.error("Erreur lors de la création de la commande", error);
+        setError("Erreur lors de la création de la commande");
+      }
+    };
+
+    // Appeler la fonction pour créer la commande lorsque le userID change
+    if (userID) {
+      createCommande();
+    }
+  }, [userID]); // Reexécuter seulement si userID change
+
+// Fonction pour supprimer une pizza de la commande (via PizzaCommande)
+const deletePizza = async (pizzaCommandeId) => {
+  try {
+
+    await axios.delete(url + `/pizzaCommandes/${pizzaCommandeId}`);
+
+    // Mettre à jour l'état en retirant la pizza de la commande
+    setCommandePizzas(commandePizzas.filter(pizzaCommande => pizzaCommande.id !== pizzaCommandeId));
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la pizza de la commande", error);
+    setError("Erreur lors de la suppression de la pizza de la commande");
+  }
+};
+
+  // Fonction pour valider la commande
+  const validateCommande = async () => {
+    if (!commande) {
+      console.error("Commande ID is missing");
+      setError("Commande ID is missing");
+      return;
+    }
+
+    try {
+      await axios.put(url + `/commandes/validation/${commande.id}`);
+      alert('Commande validée avec succès');
+    } catch (error) {
+      console.error("Erreur lors de la validation de la commande", error);
+      setError("Erreur lors de la validation de la commande");
+    }
   };
 
   return (
     <div>
-      {panier.length === 0 ? (
-        <p>Votre panier est vide.</p>
-      ) : (
-        <div>
-          <h3>Panier :</h3>
-          <ul>
-            {panier.map(pizza => (
-              <li key={pizza.id}>
-                <p>{pizza.nom} - {pizza.prix}€</p>
-                <button onClick={() => supprimerDuPanier(pizza.id)}>Supprimer</button>
-              </li>
-            ))}
-          </ul>
-          <button onClick={viderPanier}>Vider le panier</button>
-        </div>
-      )}
-      {error && <p className="error">{error}</p>}
+      {error && <p>{error}</p>}
+
+      <h2>Liste des Pizzas de la Commande</h2>
+      <ul>
+        {commandePizzas.map(pizzaCommande => (
+          <li key={pizzaCommande.id}>
+            <div>
+              <img src={pizzaCommande.pizza.photo} alt={pizzaCommande.pizza.nom} width="100" />
+              <span>{pizzaCommande.pizza.nom}</span> - {pizzaCommande.pizza.prix}€
+            </div>
+            <div>
+              <p><strong>Description:</strong> {pizzaCommande.pizza.description}</p>
+              <p><strong>Ingrédients:</strong></p>
+              <ul>
+                {pizzaCommande.ingredients.map(ingredient => (
+                  <li key={ingredient.id}>
+                    {ingredient.name} - {ingredient.prix}€
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <h2>{commande.prix}</h2>
+            <button onClick={() => deletePizza(pizzaCommande.pizza.id)}>Supprimer</button>
+          </li>
+        ))}
+      </ul>
+
+      <div>
+        {/* "Valider" button pour confirmer la commande */}
+        <button onClick={validateCommande} disabled={!commande}>Valider la commande</button>
+      </div>
     </div>
   );
 };
