@@ -38,19 +38,19 @@ const PanierCommande = ({ userID }) => {
       }
     };
 
-    // Appeler la fonction pour créer la commande lorsque le userID change
+
     if (userID) {
       createCommande();
     }
-  }, [userID]); // Reexécuter seulement si userID change
+  }, [userID]);
 
-// Fonction pour supprimer une pizza de la commande (via PizzaCommande)
+// Fonction pour supprimer une pizza de la commande
 const deletePizza = async (pizzaCommandeId) => {
   try {
 
     await axios.delete(url + `/pizzaCommandes/${pizzaCommandeId}`);
 
-    // Mettre à jour l'état en retirant la pizza de la commande
+
     setCommandePizzas(commandePizzas.filter(pizzaCommande => pizzaCommande.id !== pizzaCommandeId));
     window.location.reload();
   } catch (error) {
@@ -70,7 +70,7 @@ const deletePizza = async (pizzaCommandeId) => {
     try {
       await axios.put(url + `/commandes/validation/${commande.id}`);
       alert('Commande validée avec succès');
-      navigate('/');  // This will take the user to the root path
+      navigate('/');
       window.location.reload();
     } catch (error) {
       console.error("Erreur lors de la validation de la commande", error);

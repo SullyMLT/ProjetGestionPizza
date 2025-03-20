@@ -34,7 +34,7 @@ const IngredientList = () => {
               {/* Afficher l'image de l'ingrédient */}
               {ingredient.photo && (
                 <img
-                  src={ingredient.photo}  // Le chemin de l'image doit être relatif à la racine publique
+                  src={ingredient.photo}
                   alt={ingredient.name}
                   className="ingredient-photo"
                   style={{ maxWidth: '100px', maxHeight: '100px', objectFit: 'contain' }}

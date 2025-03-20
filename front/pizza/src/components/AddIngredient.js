@@ -20,7 +20,7 @@ function AddIngredient({ addIngredient }) {
     setIngredient((prevIngredient) => ({ ...prevIngredient, [name]: value }));
   };
 
-  // Fonction pour gérer le changement de fichier (image)
+  // Fonction pour gérer le changement de fichier
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Récupère le premier fichier sélectionné
     if (file) {
@@ -30,11 +30,11 @@ function AddIngredient({ addIngredient }) {
         // Prévisualisation de l'image
         setImagePreview(reader.result);
 
-        // Générer un chemin relatif pour l'image (mettre à jour l'état)
-        const imagePath = `/images/ingredients/${file.name}`; // Exemple de chemin pour les images dans un dossier 'public/images/ingredients'
+        // Générer un chemin relatif pour l'image
+        const imagePath = `/${file.name}`;
         setIngredient((prevIngredient) => ({
           ...prevIngredient,
-          pathPhoto: imagePath, // Met à jour le chemin de l'image
+          pathPhoto: imagePath,
         }));
       };
 

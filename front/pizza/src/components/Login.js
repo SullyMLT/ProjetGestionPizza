@@ -21,8 +21,8 @@ function Login() {
       setToken(response.data.token);
       setErrorMessage('');
 
-      // Rediriger vers la racine après une connexion réussie
-      navigate('/');  // This will take the user to the root path
+
+      navigate('/');
       window.location.reload();
 
     } catch (error) {
