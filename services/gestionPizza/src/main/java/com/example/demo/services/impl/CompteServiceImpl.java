@@ -37,7 +37,9 @@ public class CompteServiceImpl implements CompteService {
                 }
             }
         }
-
+        if (compte.getRole().equals(null)){
+            compte.setRole("client");
+        }
         Compte savedCompte = compteRepository.save(compte);
         return this.compteMapperImpl.toDto(savedCompte);
     }
@@ -64,6 +66,20 @@ public class CompteServiceImpl implements CompteService {
             return this.compteMapperImpl.toDto(updatedCompte);
         } else {
             System.out.println("problème updateCompte");
+            return null;
+        }
+    }
+
+    @Override
+    public CompteDto enableDisableCompte(Long id) {
+        Optional<Compte> optionalCompte = this.compteRepository.findById(Math.toIntExact(id));
+        if (optionalCompte.isPresent()) {
+            Compte existingCompte = optionalCompte.get();
+            existingCompte.setActiver(!existingCompte.isActiver());
+            Compte updatedCompte = compteRepository.save(existingCompte);
+            return this.compteMapperImpl.toDto(updatedCompte);
+        } else {
+            System.out.println("problème activateCompte");
             return null;
         }
     }

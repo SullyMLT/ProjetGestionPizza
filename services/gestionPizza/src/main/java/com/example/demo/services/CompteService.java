@@ -6,6 +6,7 @@ import java.util.List;
 public interface CompteService {
     CompteDto createCompte(CompteDto compteDto);
     CompteDto updateCompte(Long id, CompteDto compteDto);
+    CompteDto enableDisableCompte(Long id);
     void deleteCompte(Long id);
     CompteDto getCompteById(Long id);
     List<CompteDto> getAllComptes();

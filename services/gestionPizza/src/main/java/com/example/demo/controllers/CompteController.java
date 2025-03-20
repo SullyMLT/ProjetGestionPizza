@@ -68,4 +68,10 @@ public class CompteController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @PutMapping
+    public ResponseEntity<CompteDto> enableDisableAccount(@RequestParam long id) {
+        CompteDto compteDto = this.compteServiceImpl.enableDisableCompte(id);
+        return ResponseEntity.ok(compteDto);
+    }
 }
