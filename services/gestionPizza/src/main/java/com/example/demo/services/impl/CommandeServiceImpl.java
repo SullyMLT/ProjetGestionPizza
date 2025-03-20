@@ -36,12 +36,12 @@ public class CommandeServiceImpl implements CommandeService {
     private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
-    public CommandeDto addCommande(CommandeDto commandeDto, Long compteId) {
+    public CommandeDto addCommande(CommandeDto commandeDto) {
         Commande commande = this.commandeMapperImpl.toEntity(commandeDto);
         List<Commande> commandes = this.commandeRepository.findAll();
         if (commandes.isEmpty()) {
             for (Commande c : commandes) {
-                if (c.getCompteId().equals(compteId) && !c.isValidation()) {
+                if (c.getCompteId().equals(commandeDto.getCompteId()) && !c.isValidation()) {
                     return this.commandeMapperImpl.toDto(c);
                 }
             }
