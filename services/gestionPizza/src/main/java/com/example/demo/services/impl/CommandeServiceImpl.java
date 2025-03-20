@@ -101,13 +101,14 @@ public class CommandeServiceImpl implements CommandeService {
             commande.setValidation(true);
             Commande updatedCommande = commandeRepository.save(commande);
             List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
+            List<PizzaCommande> pizzaCommandes2 = new ArrayList<>();
             for (PizzaCommande pizzaCommande : pizzaCommandes) {
-                if (!Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
-                    pizzaCommandes.remove(pizzaCommande);
+                if (Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
+                    pizzaCommandes2.add(pizzaCommande);
                 }
             }
             List<PizzaCommandeDto> pizzaCommandeDtos = new ArrayList<>();
-            for (PizzaCommande pizzaCommande : pizzaCommandes) {
+            for (PizzaCommande pizzaCommande : pizzaCommandes2) {
                 pizzaCommandeDtos.add(this.pizzaCommandeMapperImpl.toDto(pizzaCommande));
             }
             this.statistiqueServiceImpl.updateStatistiqueList(pizzaCommandeDtos);

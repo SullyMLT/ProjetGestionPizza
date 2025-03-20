@@ -68,7 +68,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-/*
+
         Statistique statistique = new Statistique();
         statistique.setId("1");
         statistique.setStatPizza(new HashMap<>(0));
@@ -127,7 +127,7 @@ public class DataInitializer implements CommandLineRunner {
 
         Compte compte1 = new Compte();
         compte1.setUsername("admin");
-        compte1.setPassword("admin");
+        compte1.setPassword("$2b$10$LTP4Rm2w4atnP3euLi7Xf.Tki81hRLU/vqUL7d7YllDl3TK0L0KXa");
         compte1.setRole("admin");
         compte1.setActiver(true);
         List<Commande> commandes = new ArrayList<>();
@@ -169,7 +169,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setNote(5);
         commentaire1.setCompteId(savedCompteDto1.getId());
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
-*/
+
 
     }
 

@@ -57,13 +57,14 @@ public class CommentaireServiceImpl implements CommentaireService {
     @Override
     public List<CommentaireDto> getCommentairesByPizzaId(Long pizzaId) {
         List<CommentaireDto> comDto = getCommentaires();
+        List<CommentaireDto> comDto2 = new ArrayList<>();
         if (!comDto.isEmpty()){
             for (CommentaireDto com : comDto){
-                if (!Objects.equals(com.getPizzaOrigine(), pizzaId)){
-                    comDto.remove(com);
+                if (Objects.equals(com.getPizzaOrigine(), pizzaId)){
+                    comDto2.add(com);
                 }
             }
-            return comDto;
+            return comDto2;
         }else{
             return null;
         }
