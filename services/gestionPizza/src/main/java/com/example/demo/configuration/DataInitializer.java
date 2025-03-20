@@ -127,7 +127,7 @@ public class DataInitializer implements CommandLineRunner {
 
         Compte compte1 = new Compte();
         compte1.setUsername("admin");
-        compte1.setPassword("$2b$10$LTP4Rm2w4atnP3euLi7Xf.Tki81hRLU/vqUL7d7YllDl3TK0L0KXa");
+        compte1.setPassword("$2b$10$EXzevRgyKWKLM0.WZNQ.ru6bgPNqF4U9DTUdgsBB19AkFMyZeIYvW");
         compte1.setRole("admin");
         compte1.setActiver(true);
         List<Commande> commandes = new ArrayList<>();
