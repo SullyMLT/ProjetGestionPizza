@@ -122,16 +122,19 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Override
     public List<PizzaCommandeDto> getPizzaCommandeByCommandeId(Long commandeId) {
         List<PizzaCommandeDto> pizzaCommandeDtos = this.getAllPizzaCommandes();
+        List<PizzaCommandeDto> result = new ArrayList<>();
 
         for (PizzaCommandeDto pizzaCommande : pizzaCommandeDtos) {
-            if (!Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
-                pizzaCommandeDtos.remove(pizzaCommande);
+            if (Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
+                result.add(pizzaCommande);
             }
         }
-        if (pizzaCommandeDtos.isEmpty()) {
+
+        if (result.isEmpty()) {
             return null;
         }
 
-        return pizzaCommandeDtos;
+        return result;
     }
+
 }
