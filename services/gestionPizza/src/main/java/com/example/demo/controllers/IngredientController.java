@@ -48,8 +48,13 @@ public class IngredientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIngredient(@PathVariable long id) {
-        ingredientService.deleteIngredient(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteIngredient(@PathVariable long id) {
+        String rep = ingredientService.deleteIngredient(id);
+        if (rep.equals("Ingredient supprimé")){
+            return ResponseEntity.ok(rep);
+        } else {
+            return ResponseEntity.badRequest().body(rep);
+        }
+
     }
 }

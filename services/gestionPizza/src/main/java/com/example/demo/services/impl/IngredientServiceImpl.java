@@ -1,11 +1,14 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.IngredientDto;
+import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
+import com.example.demo.entities.PizzaCommande;
 import com.example.demo.entities.Standard;
 import com.example.demo.mappers.impl.IngredientMapperImpl;
 import com.example.demo.repositories.IngredientRepository;
+import com.example.demo.repositories.PizzaCommandeRepository;
 import com.example.demo.repositories.StandardRepository;
 import com.example.demo.services.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class IngredientServiceImpl implements IngredientService {
     private IngredientMapperImpl ingredientMapperImpl;
     @Autowired
     private StandardRepository standardRepository;
+    @Autowired
+    private PizzaCommandeRepository pizzaCommandeRepository;
 
     @Override
     public IngredientDto addIngredient(IngredientDto ingredientDto) {
@@ -36,19 +41,31 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void deleteIngredient(Long id) {
+    public String deleteIngredient(Long id) {
         IngredientDto ingredientDto = getIngredientById(id);
+        Ingredient ingre = this.ingredientMapperImpl.toEntity(ingredientDto);
         if (ingredientDto != null) {
-            Ingredient ingredient = ingredientMapperImpl.toEntity(ingredientDto);
-            List<Standard> standards = standardRepository.findAll();
-
-            for (Standard standard : standards) {
-                if (standard.getIngredients().contains(ingredient)) {
-                    standard.getIngredients().remove(ingredient);
-                    standardRepository.save(standard);
+            List<PizzaCommande> pizzaCom = this.pizzaCommandeRepository.findAll();
+            for (PizzaCommande pizzaCommande : pizzaCom) {
+                if (pizzaCommande.getIngredients().contains(ingre)) {
+                    return "L'ingredient ne peut pas être supprimé";
                 }
             }
-            ingredientRepository.deleteById(Math.toIntExact(id));
+        }
+        List<Standard> standard = this.standardRepository.findAll();
+        for (Standard stand : standard) {
+            if (stand.getIngredients().contains(ingre)) {
+                stand.getIngredients().remove(ingre);
+                this.standardRepository.save(stand);
+            }
+        }
+
+        ingredientRepository.deleteById(Math.toIntExact(id));
+        Optional<Ingredient> DelIngre = ingredientRepository.findById(Math.toIntExact(id));
+        if (DelIngre.isPresent()) {
+            return "Ingredient non supprimé";
+        }else{
+            return "Ingredient supprimé";
         }
     }
 
