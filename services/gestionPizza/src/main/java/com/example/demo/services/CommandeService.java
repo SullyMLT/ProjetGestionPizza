@@ -10,4 +10,5 @@ public interface CommandeService {
     List<CommandeDto> getAllCommandes();
     CommandeDto updateCommande(Long id, float prix);
     CommandeDto validateCommande(Long id);
+    List<CommandeDto> getAllCommandeFromCompteId(Long compteId);
 }

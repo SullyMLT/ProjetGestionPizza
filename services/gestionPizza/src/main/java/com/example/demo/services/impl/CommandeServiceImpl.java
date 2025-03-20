@@ -31,8 +31,6 @@ public class CommandeServiceImpl implements CommandeService {
     @Autowired
     private PizzaCommandeMapperImpl pizzaCommandeMapperImpl;
     @Autowired
-    private CompteRepository compteRepository;
-    @Autowired
     private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @Override
@@ -95,6 +93,7 @@ public class CommandeServiceImpl implements CommandeService {
         if (optionalCommande.isPresent()) {
             Commande commande = optionalCommande.get();
             commande.setValidation(true);
+            commande.setDescription("Commande validée");
             Commande updatedCommande = commandeRepository.save(commande);
             List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
             List<PizzaCommande> pizzaCommandes2 = new ArrayList<>();
@@ -113,6 +112,18 @@ public class CommandeServiceImpl implements CommandeService {
             System.out.println("problème sur la validation de la commande : "+ commandeId);
             return null;
         }
+    }
+
+    @Override
+    public List<CommandeDto> getAllCommandeFromCompteId(Long compteId) {
+        List<Commande> commandes = this.commandeRepository.findAll();
+        List<CommandeDto> commandeDtos = new ArrayList<>();
+        for (Commande commande : commandes) {
+            if (commande.getCompteId().equals(compteId)) {
+                commandeDtos.add(this.commandeMapperImpl.toDto(commande));
+            }
+        }
+        return commandeDtos;
     }
 
 

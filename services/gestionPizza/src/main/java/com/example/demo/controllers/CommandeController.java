@@ -39,4 +39,11 @@ public class CommandeController {
         CommandeDto commandeDto = commandeServiceImpl.validateCommande(id);
         return ResponseEntity.ok(commandeDto);
     }
+
+    @GetMapping("/commande-compte/{compteId}")
+    public ResponseEntity<List<CommandeDto>> getAllCommandeFromCompteId(@PathVariable Long compteId) {
+        List<CommandeDto> commandes = commandeServiceImpl.getAllCommandeFromCompteId(compteId);
+
+        return ResponseEntity.ok(commandes);
+    }
 }
