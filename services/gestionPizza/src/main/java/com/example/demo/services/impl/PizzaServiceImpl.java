@@ -3,14 +3,17 @@ package com.example.demo.services.impl;
 import com.example.demo.dtos.PizzaDto;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
+import com.example.demo.entities.Standard;
 import com.example.demo.mappers.impl.PizzaMapperImpl;
 import com.example.demo.repositories.PizzaRepository;
+import com.example.demo.repositories.StandardRepository;
 import com.example.demo.services.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -20,6 +23,8 @@ public class PizzaServiceImpl implements PizzaService {
     private PizzaRepository pizzaRepository;
     @Autowired
     private PizzaMapperImpl pizzaMapperImpl;
+    @Autowired
+    private StandardRepository standardRepository;
 
     @Override
     public List<PizzaDto> getAllPizzas() {
@@ -66,7 +71,23 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public void deletePizza(Long id) {
-        this.pizzaRepository.deleteById(Math.toIntExact(id));
+    public boolean deletePizza(Long id) {
+        Optional<Pizza> optionalPizza = this.pizzaRepository.findById(Math.toIntExact(id));
+        if (optionalPizza.isEmpty()) {
+            return false;
+        }
+        List<Standard> standard = this.standardRepository.findAll();
+        for (Standard s : standard) {
+            if (Objects.equals(s.getPizza().getId(), id)) {
+                this.standardRepository.deleteById(s.getId());
+                if (this.standardRepository.findById(s.getId()).isPresent()) {
+                    return false;
+                }
+            }
+        }
+        Pizza pizza = optionalPizza.get();
+        pizza.setActiver(false);
+        pizzaRepository.save(pizza);
+        return true;
     }
 }

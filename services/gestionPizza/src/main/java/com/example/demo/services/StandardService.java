@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface StandardService {
     StandardDto addStandard(StandardDto standardDto);
-    void deleteStandard(Long id);
+    boolean deleteStandard(Long id);
     StandardDto updateStandard(Long id, StandardDto standardDto);
     StandardDto getStandardById(Long id);
     StandardDto getStandardByPizzaId(Long id);

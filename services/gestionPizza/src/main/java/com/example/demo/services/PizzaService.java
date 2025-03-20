@@ -8,5 +8,5 @@ public interface PizzaService {
     PizzaDto getPizzaById(Long id);
     PizzaDto addPizza(PizzaDto pizzaDto);
     PizzaDto updatePizza(Long id, PizzaDto pizzaDto);
-    void deletePizza(Long id);
+    boolean deletePizza(Long id);
 }

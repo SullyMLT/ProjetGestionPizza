@@ -1,5 +1,6 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.PizzaDto;
 import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
@@ -45,8 +46,13 @@ public class StandardServiceImpl implements StandardService {
     }
 
     @Override
-    public void deleteStandard(Long id) {
+    public boolean deleteStandard(Long id) {
         standardRepository.deleteById(id);
+        Optional<Standard> standard = standardRepository.findById(id);
+        if (standard.isPresent()) {
+            return false;
+        }
+        return true;
     }
 
     @Override

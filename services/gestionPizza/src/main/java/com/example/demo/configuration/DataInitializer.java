@@ -68,7 +68,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-/*
+
         Statistique statistique = new Statistique();
         statistique.setId("1");
         statistique.setStatPizza(new HashMap<>(0));
@@ -107,6 +107,7 @@ public class DataInitializer implements CommandLineRunner {
         pizza1.setNom("Pizza Peperoni");
         pizza1.setDescription("Description 1");
         pizza1.setPhoto("/Pepperoni_Pizza_Beauty_1200x1200.webp");
+        pizza1.setActiver(true);
         pizza1 = pizzaServiceImpl.addPizza(pizza1);
 
         standard1.setPizza(pizza1);
@@ -116,6 +117,7 @@ public class DataInitializer implements CommandLineRunner {
         pizza2.setNom("Pizza Margherita");
         pizza2.setDescription("Description 2");
         pizza2.setPhoto("/pizza-1498148703.jpg");
+        pizza2.setActiver(true);
         pizza2 = pizzaServiceImpl.addPizza(pizza2);
 
         standard2.setPizza(pizza2);
@@ -155,7 +157,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1), compte1.getId());
-*/
+
 
     }
 

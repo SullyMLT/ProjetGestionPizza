@@ -18,6 +18,7 @@ public class PizzaMapperImpl implements PizzaMapper {
         pizzaDto.setPrix(pizza.getPrix());
         pizzaDto.setDescription(pizza.getDescription());
         pizzaDto.setPhoto(pizza.getPhoto());
+        pizzaDto.setActiver(pizza.isActiver());
         return pizzaDto;
     }
     public Pizza toEntity(PizzaDto pizzaDto) {
@@ -29,6 +30,7 @@ public class PizzaMapperImpl implements PizzaMapper {
         pizza.setPrix(pizzaDto.getPrix());
         pizza.setDescription(pizzaDto.getDescription());
         pizza.setPhoto(pizzaDto.getPhoto());
+        pizza.setActiver(pizzaDto.isActiver());
         return pizza;
     }
 }

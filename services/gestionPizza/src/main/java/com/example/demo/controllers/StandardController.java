@@ -80,10 +80,4 @@ public class StandardController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStandard(@PathVariable long id) {
-        standardService.deleteStandard(id);
-        return ResponseEntity.noContent().build();
-    }
 }
