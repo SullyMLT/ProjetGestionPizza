@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { url_host } from '../config/config.js';
 const url = url_host;
@@ -7,6 +8,7 @@ const PanierCommande = ({ userID }) => {
   const [error, setError] = useState(null);
   const [commandePizzas, setCommandePizzas] = useState([]);
   const [commande, setCommande] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const createCommande = async () => {
@@ -50,6 +52,7 @@ const deletePizza = async (pizzaCommandeId) => {
 
     // Mettre à jour l'état en retirant la pizza de la commande
     setCommandePizzas(commandePizzas.filter(pizzaCommande => pizzaCommande.id !== pizzaCommandeId));
+    window.location.reload();
   } catch (error) {
     console.error("Erreur lors de la suppression de la pizza de la commande", error);
     setError("Erreur lors de la suppression de la pizza de la commande");
@@ -67,6 +70,8 @@ const deletePizza = async (pizzaCommandeId) => {
     try {
       await axios.put(url + `/commandes/validation/${commande.id}`);
       alert('Commande validée avec succès');
+      navigate('/');  // This will take the user to the root path
+      window.location.reload();
     } catch (error) {
       console.error("Erreur lors de la validation de la commande", error);
       setError("Erreur lors de la validation de la commande");
