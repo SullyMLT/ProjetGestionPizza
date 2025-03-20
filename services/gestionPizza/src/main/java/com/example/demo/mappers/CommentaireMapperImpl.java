@@ -1,12 +1,12 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.CommentaireDto;
 import com.example.demo.entities.Commentaire;
-import com.example.demo.mappers.CommentaireMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CommentaireMapperImpl implements CommentaireMapper {
+public class CommentaireMapperImpl {
+
     public CommentaireDto toDto(Commentaire commentaire) {
         CommentaireDto commentaireDto = new CommentaireDto();
         commentaireDto.setId(commentaire.getId());
@@ -18,6 +18,7 @@ public class CommentaireMapperImpl implements CommentaireMapper {
 
         return commentaireDto;
     }
+
     public Commentaire toEntity(CommentaireDto commentaireDto) {
         Commentaire commentaire = new Commentaire();
         commentaire.setId(commentaireDto.getId());

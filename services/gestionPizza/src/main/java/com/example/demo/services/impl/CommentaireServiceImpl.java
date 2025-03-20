@@ -2,9 +2,7 @@ package com.example.demo.services.impl;
 
 import com.example.demo.entities.Commentaire;
 import com.example.demo.dtos.CommentaireDto;
-import com.example.demo.entities.Compte;
-import com.example.demo.mappers.CommentaireMapper;
-import com.example.demo.mappers.impl.CommentaireMapperImpl;
+import com.example.demo.mappers.CommentaireMapperImpl;
 import com.example.demo.repositories.CommentaireRepository;
 import com.example.demo.repositories.CompteRepository;
 import com.example.demo.services.CommentaireService;
@@ -23,8 +21,6 @@ public class CommentaireServiceImpl implements CommentaireService {
     private CommentaireRepository commentaireRepository;
     @Autowired
     private CommentaireMapperImpl commentaireMapperImpl;
-    @Autowired
-    private CompteRepository compteRepository;
 
     @Override
     public void addCommentaire(CommentaireDto commentaireDto) {

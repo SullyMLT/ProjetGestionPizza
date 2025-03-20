@@ -1,12 +1,10 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dtos.IngredientDto;
-import com.example.demo.dtos.PizzaCommandeDto;
-import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.PizzaCommande;
 import com.example.demo.entities.Standard;
-import com.example.demo.mappers.impl.IngredientMapperImpl;
+import com.example.demo.mappers.IngredientMapperImpl;
 import com.example.demo.repositories.IngredientRepository;
 import com.example.demo.repositories.PizzaCommandeRepository;
 import com.example.demo.repositories.StandardRepository;

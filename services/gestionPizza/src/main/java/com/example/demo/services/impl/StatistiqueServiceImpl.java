@@ -3,9 +3,8 @@ package com.example.demo.services.impl;
 import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.PizzaCommandeDto;
 import com.example.demo.dtos.StatistiqueDto;
-import com.example.demo.entities.Standard;
 import com.example.demo.entities.Statistique;
-import com.example.demo.mappers.StatistiqueMapper;
+import com.example.demo.mappers.StatistiqueMapperImpl;
 import com.example.demo.repositories.StatistiqueRepository;
 import com.example.demo.services.StatistiqueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class StatistiqueServiceImpl implements StatistiqueService {
     @Autowired
     private StatistiqueRepository statistiqueRepository;
     @Autowired
-    private StatistiqueMapper statistiqueMapper;
+    private StatistiqueMapperImpl statistiqueMapper;
 
     @Override
     public StatistiqueDto getStatistique() {

@@ -3,8 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.PizzaDto;
 import com.example.demo.dtos.StandardDto;
-import com.example.demo.entities.Pizza;
-import com.example.demo.mappers.impl.PizzaMapperImpl;
+import com.example.demo.mappers.PizzaMapperImpl;
 import com.example.demo.repositories.PizzaRepository;
 import com.example.demo.services.StandardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/standards")

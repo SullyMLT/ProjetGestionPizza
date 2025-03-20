@@ -1,14 +1,12 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.StatistiqueDto;
 import com.example.demo.entities.Statistique;
-import com.example.demo.mappers.StatistiqueMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StatistiqueMapperImpl implements StatistiqueMapper {
+public class StatistiqueMapperImpl {
 
-    @Override
     public StatistiqueDto toDto(Statistique statistique) {
         if (statistique == null) {
             return null;
@@ -22,7 +20,6 @@ public class StatistiqueMapperImpl implements StatistiqueMapper {
         return statistiqueDto;
     }
 
-    @Override
     public Statistique toEntity(StatistiqueDto statistiqueDto) {
         if (statistiqueDto == null) {
             return null;

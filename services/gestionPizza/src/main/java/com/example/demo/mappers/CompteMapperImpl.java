@@ -1,10 +1,9 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.CompteDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
-import com.example.demo.mappers.CompteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CompteMapperImpl implements CompteMapper {
+public class CompteMapperImpl {
 
     @Autowired
     private CommandeMapperImpl commandeMapperImpl;
 
-    @Override
+
     public CompteDto toDto(Compte compte) {
         CompteDto compteDto = new CompteDto();
         compteDto.setId(compte.getId());
@@ -36,7 +35,7 @@ public class CompteMapperImpl implements CompteMapper {
         return compteDto;
     }
 
-    @Override
+
     public Compte toEntity(CompteDto compteDto) {
         Compte compte = new Compte();
         compte.setId(compteDto.getId());

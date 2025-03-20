@@ -1,18 +1,11 @@
 package com.example.demo.configuration;
 
-import com.example.demo.dtos.*;
-import com.example.demo.entities.*;
-import com.example.demo.mappers.impl.*;
+import com.example.demo.mappers.*;
 import com.example.demo.repositories.StatistiqueRepository;
 import com.example.demo.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -74,7 +67,7 @@ public class DataInitializer implements CommandLineRunner {
         statistique.setStatPizza(new HashMap<>(0));
         statistique.setStatIngredient(new HashMap<>(0));
         this.statistiqueRepository.save(statistique);
-*/
+
         IngredientDto ingredient1 = new IngredientDto();
         ingredient1.setName("Sauce tomate");
         ingredient1.setDescription("Description 1");
@@ -169,7 +162,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setNote(5);
         commentaire1.setCompteId(savedCompteDto1.getId());
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
-
+*/
 
     }
 

@@ -4,7 +4,7 @@ import com.example.demo.dtos.CommandeDto;
 import com.example.demo.dtos.CompteDto;
 import com.example.demo.entities.Commande;
 import com.example.demo.entities.Compte;
-import com.example.demo.mappers.impl.CompteMapperImpl;
+import com.example.demo.mappers.CompteMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import com.example.demo.repositories.CompteRepository;
 import com.example.demo.services.CompteService;

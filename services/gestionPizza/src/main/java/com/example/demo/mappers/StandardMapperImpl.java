@@ -1,4 +1,4 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.IngredientDto;
 import com.example.demo.dtos.PizzaDto;
@@ -6,8 +6,6 @@ import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
 import com.example.demo.entities.Standard;
-import com.example.demo.mappers.StandardMapper;
-import com.example.demo.services.impl.IngredientServiceImpl;
 import com.example.demo.services.impl.PizzaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class StandardMapperImpl implements StandardMapper {
+public class StandardMapperImpl {
 
     @Autowired
     private IngredientMapperImpl ingredientMapperImpl;
@@ -45,6 +43,7 @@ public class StandardMapperImpl implements StandardMapper {
 
         return standardDto;
     }
+
     public Standard toEntity(StandardDto standardDto) {
         Standard standard = new Standard();
         standard.setId(standardDto.getId());

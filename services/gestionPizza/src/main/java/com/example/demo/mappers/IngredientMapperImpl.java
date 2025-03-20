@@ -1,14 +1,12 @@
-package com.example.demo.mappers.impl;
+package com.example.demo.mappers;
 
 import com.example.demo.dtos.IngredientDto;
 import com.example.demo.entities.Ingredient;
-import com.example.demo.mappers.IngredientMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IngredientMapperImpl implements IngredientMapper {
+public class IngredientMapperImpl {
 
-    @Override
     public IngredientDto toDto(Ingredient ingredient) {
         IngredientDto ingredientDto = new IngredientDto();
         ingredientDto.setId(ingredient.getId());
@@ -18,7 +16,7 @@ public class IngredientMapperImpl implements IngredientMapper {
         ingredientDto.setPhoto(ingredient.getPhoto());
         return ingredientDto;
     }
-    @Override
+
     public Ingredient toEntity(IngredientDto ingredientDto) {
         Ingredient ingredient = new Ingredient();
         if (ingredientDto.getId() != null){
