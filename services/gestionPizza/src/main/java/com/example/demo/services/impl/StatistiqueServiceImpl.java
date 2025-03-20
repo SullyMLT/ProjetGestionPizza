@@ -11,6 +11,7 @@ import com.example.demo.services.StatistiqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,19 +24,14 @@ public class StatistiqueServiceImpl implements StatistiqueService {
     private StatistiqueMapper statistiqueMapper;
 
     @Override
-    public StatistiqueDto createStatistique(StatistiqueDto statistiqueDto) {
-        Statistique statistique = this.statistiqueRepository.save(statistiqueMapper.toEntity(statistiqueDto));
-        if (statistique.getId().equals("null")) {
-            statistique.setId("1");
-            statistique = this.statistiqueRepository.save(statistique);
-        }
-        return statistiqueMapper.toDto(statistique);
-    }
-
-    @Override
     public StatistiqueDto getStatistique() {
-        Statistique statistique = statistiqueRepository.findById("1").orElse(new Statistique());
-        return statistiqueMapper.toDto(statistique);
+        Statistique statistique = new Statistique();
+        statistique.setId("1");
+        statistique.setStatPizza(new HashMap<>(0));
+        statistique.setStatIngredient(new HashMap<>(0));
+        this.statistiqueRepository.save(statistique);
+        Statistique getStatistique = statistiqueRepository.findById("1").orElse(statistique);
+        return statistiqueMapper.toDto(getStatistique);
     }
 
     @Override
