@@ -43,14 +43,18 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
             return null;
         }
         List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
-        for (PizzaCommande pizzaCom : pizzaCommandes){
-            if (!Objects.equals(pizzaCom.getCommandeId(), commande.getId())){
-                pizzaCommandes.remove(pizzaCom);
+        if (!pizzaCommandes.isEmpty()){
+            for (PizzaCommande pizzaCom : pizzaCommandes){
+                if (!Objects.equals(pizzaCom.getCommandeId(), commande.getId())){
+                    pizzaCommandes.remove(pizzaCom);
+                }
             }
         }
         float prixCom = 0;
-        for (PizzaCommande pizzaCommandeBefore : pizzaCommandes){
-            prixCom += pizzaCommandeBefore.getPizza().getPrix();
+        if (!pizzaCommandes.isEmpty()){
+            for (PizzaCommande pizzaCommandeBefore : pizzaCommandes){
+                prixCom += pizzaCommandeBefore.getPizza().getPrix();
+            }
         }
         float prix = 0;
         if (!pizzaCommande.getIngredients().isEmpty()) {
