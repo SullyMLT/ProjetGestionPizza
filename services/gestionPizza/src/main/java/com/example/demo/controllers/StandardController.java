@@ -52,17 +52,7 @@ public class StandardController {
 
     @PostMapping
     public ResponseEntity<StandardDto> addStandard(@RequestBody StandardDto standardDto) {
-        PizzaDto pizza = standardDto.getPizza();
-        if (pizza != null) {
-            float price = 0f;
-            for (IngredientDto ingredient : standardDto.getIngredients()) {
-                price += ingredient.getPrix();
-            }
-            if (price > 0 ) {
-                pizza.setPrix(price);
-                pizzaRepository.save(pizzaMapperImpl.toEntity(pizza));
-            }
-        }
+
         StandardDto createdStandard = standardService.addStandard(standardDto);
         return ResponseEntity.status(201).body(createdStandard);
     }

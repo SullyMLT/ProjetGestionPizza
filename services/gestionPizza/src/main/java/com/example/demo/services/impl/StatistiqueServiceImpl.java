@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class StatistiqueServiceImpl implements StatistiqueService {
@@ -24,20 +25,26 @@ public class StatistiqueServiceImpl implements StatistiqueService {
 
     @Override
     public StatistiqueDto getStatistique() {
-        Statistique statistique = new Statistique();
-        statistique.setId("1");
-        statistique.setStatPizza(new HashMap<>(0));
-        statistique.setStatIngredient(new HashMap<>(0));
-        this.statistiqueRepository.save(statistique);
-        Statistique getStatistique = statistiqueRepository.findById("1").orElse(statistique);
-        return statistiqueMapper.toDto(getStatistique);
+        Optional<Statistique> getStatistique = statistiqueRepository.findById("1");
+        if (!getStatistique.isPresent()) {
+            return null;
+        }
+        Statistique statistique = getStatistique.get();
+        return statistiqueMapper.toDto(statistique);
     }
 
     @Override
     public StatistiqueDto updateStatistiqueList(List<PizzaCommandeDto> pizzaCommandeDtos) {
         Statistique statistiqueNotFound = new Statistique();
         statistiqueNotFound.setId("1");
-        Statistique statistique = statistiqueRepository.findById("1").orElse(statistiqueNotFound);
+        statistiqueNotFound.setStatPizza(new HashMap<>(0));
+        statistiqueNotFound.setStatIngredient(new HashMap<>(0));
+        Optional<Statistique> optionalStatistique = statistiqueRepository.findById("1");
+        if (!optionalStatistique.isPresent()) {
+            statistiqueRepository.save(statistiqueNotFound);
+            return statistiqueMapper.toDto(statistiqueNotFound);
+        }
+        Statistique statistique = optionalStatistique.get();
         Map<String, Integer> mapPizza = statistique.getStatPizza();
         Map<String, Integer> mapIngredient = statistique.getStatIngredient();
         for (PizzaCommandeDto pizzaCommandeDto : pizzaCommandeDtos) {

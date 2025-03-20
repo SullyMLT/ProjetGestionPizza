@@ -99,7 +99,7 @@ public class CommandeServiceImpl implements CommandeService {
             List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
             List<PizzaCommande> pizzaCommandes2 = new ArrayList<>();
             for (PizzaCommande pizzaCommande : pizzaCommandes) {
-                if (Objects.equals(pizzaCommande.getCommandeId(), commandeId)) {
+                if (Objects.equals(pizzaCommande.getCommandeId(), updatedCommande.getId())) {
                     pizzaCommandes2.add(pizzaCommande);
                 }
             }

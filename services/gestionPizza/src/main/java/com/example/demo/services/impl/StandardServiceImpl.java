@@ -1,5 +1,7 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.dtos.IngredientDto;
+import com.example.demo.dtos.PizzaDto;
 import com.example.demo.dtos.StandardDto;
 import com.example.demo.entities.Ingredient;
 import com.example.demo.entities.Pizza;
