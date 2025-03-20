@@ -6,7 +6,7 @@ const router = express.Router();
 const privateKey = 'zjerYhe+7V';
 
 // URL de l'API Spring Boot
-const apiBaseUrl = 'http://172.28.123.124:8080/comptes';
+const apiBaseUrl = 'http://localhost:8080/comptes';
 
 // Route de connexion
 router.post('/login', async (req, res) => {
