@@ -68,7 +68,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+/*
         Statistique statistique = new Statistique();
         statistique.setId("1");
         statistique.setStatPizza(new HashMap<>(0));
@@ -169,7 +169,7 @@ public class DataInitializer implements CommandLineRunner {
         commentaire1.setNote(5);
         commentaire1.setCompteId(savedCompteDto1.getId());
         commentaireServiceImpl.addCommentaire(commentaireMapper.toDto(commentaire1));
-
+*/
 
     }
 
