@@ -34,6 +34,24 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
         PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
         Pizza pizza = pizzaCommande.getPizza();
+        Optional<Commande> com = commandeRepository.findById(Math.toIntExact(pizzaCommande.getCommandeId()));
+        if (com.isEmpty()) {
+            return null;
+        }
+        Commande commande = com.get();
+        if (commande.isValidation()){
+            return null;
+        }
+        List<PizzaCommande> pizzaCommandes = this.pizzaCommandeRepository.findAll();
+        for (PizzaCommande pizzaCom : pizzaCommandes){
+            if (!Objects.equals(pizzaCom.getCommandeId(), commande.getId())){
+                pizzaCommandes.remove(pizzaCom);
+            }
+        }
+        float prixCom = 0;
+        for (PizzaCommande pizzaCommandeBefore : pizzaCommandes){
+            prixCom += pizzaCommandeBefore.getPizza().getPrix();
+        }
         float prix = 0;
         if (!pizzaCommande.getIngredients().isEmpty()) {
             for (Ingredient ingre : pizzaCommande.getIngredients()) {
@@ -45,16 +63,10 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         }
         pizzaCommande.setPizza(pizza);
         PizzaCommande savedPizzaCommande = pizzaCommandeRepository.save(pizzaCommande);
-        Long pizzaComId = pizzaCommande.getCommandeId();
-        Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(pizzaComId));
-        if (optionalCommande.isEmpty()) {
-            return null;
-        }
-        Commande commande = optionalCommande.get();
-        commande.setPrix(commande.getPrix() + pizza.getPrix());
+
+        commande.setPrix(prixCom + prix);
         commandeRepository.save(commande);
-        PizzaCommandeDto pizzaComDto = pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
-        return pizzaComDto;
+        return pizzaCommandeMapperImpl.toDto(savedPizzaCommande);
     }
 
     @Override
