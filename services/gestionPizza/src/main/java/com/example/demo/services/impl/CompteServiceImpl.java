@@ -129,12 +129,16 @@ public class CompteServiceImpl implements CompteService {
         return compteDto;
     }
 
-    /*@Override
-    public List<CommandeDto> getAllCommandeByCompteId(Long compteId) {
-        CompteDto compteDto = this.compteServiceImpl.getCompteById(compteId);
-        if (compteDto != null) {
-
+    @Override
+    public String getUsernameByCompteId(Long compteId) {
+        Optional<Compte> optionalCompte = this.compteRepository.findById(Math.toIntExact(compteId));
+        if (optionalCompte.isPresent()){
+            Compte compte = optionalCompte.get();
+            if (!compte.isActiver()){
+                return "Utilisateur Supprimé";
+            }
+            return compte.getUsername();
         }
-        return null;
-    }*/
+        return "Utilisateur non trouvé";
+    }
 }

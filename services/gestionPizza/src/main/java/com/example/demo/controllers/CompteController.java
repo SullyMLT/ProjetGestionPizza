@@ -74,4 +74,10 @@ public class CompteController {
         CompteDto compteDto = this.compteServiceImpl.enableDisableCompte(id);
         return ResponseEntity.ok(compteDto);
     }
+
+    @GetMapping("/username/{compteId}")
+    public ResponseEntity<String> getUsernameByCompteId(@PathVariable long compteId) {
+        String username = compteServiceImpl.getUsernameByCompteId(compteId);
+        return ResponseEntity.ok(username);
+    }
 }

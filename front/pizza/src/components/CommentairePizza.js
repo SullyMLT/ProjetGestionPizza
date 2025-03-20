@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./css/CommentaireListeAdmin.css";
 
@@ -15,7 +14,16 @@ const CommentairesList = ({pizzaId}) => {
     const fetchCommentaires = async () => {
       try {
         const response = await axios.get(`${url}/commentaires/pizza/${pizzaId}`);
-        setCommentaires(response.data);
+        const commentairesData = response.data;
+
+        const commentairesWithUsernames = await Promise.all(
+          commentairesData.map(async (commentaire) => {
+            const userResponse = await axios.get(`${url}/comptes/username/${commentaire.compteId}`);
+            return { ...commentaire, username: userResponse.data };
+          })
+        );
+
+        setCommentaires(commentairesWithUsernames);
       } catch (error) {
         setError(error.response ? error.response.data.message : error.message);
       } finally {
@@ -34,6 +42,7 @@ const CommentairesList = ({pizzaId}) => {
     return <p>Erreur: {error}</p>;
   }
   console.log("id pizza origine : "+pizzaId);
+
   return (
     <section>
       <h2>Commentaires :</h2>
@@ -43,6 +52,7 @@ const CommentairesList = ({pizzaId}) => {
         <div className="commentaires-container">
           {commentaires.map((commentaire) => (
             <div key={commentaire.id} className="commentaire-card">
+              <p><strong>Nom d'utilisateur :</strong> {commentaire.username}</p>
               <p><strong>Note:</strong> {commentaire.note/2.0}/5</p>
               <p><strong>Description:</strong> {commentaire.description}</p>
               <p><small><strong>Date:</strong> {commentaire.date}</small></p>
