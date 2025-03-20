@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import CommentairePizza from "./CommentairePizza";
-
 import { url_host } from '../config/config.js';
+
 const url = url_host;
 
 const PizzaDetails = ({ userID }) => {
@@ -22,21 +22,13 @@ const PizzaDetails = ({ userID }) => {
   useEffect(() => {
     const fetchPizzaDetails = async () => {
       try {
-        const pizzaResponse = await fetch(url+`/pizzas/${id}`);
-        if (!pizzaResponse.ok) {
-          throw new Error('Erreur lors de la récupération des détails de la pizza');
-        }
-        const pizzaData = await pizzaResponse.json();
-        setPizza(pizzaData); // Mettre à jour les détails de la pizza
+        const pizzaResponse = await axios.get(`${url}/pizzas/${id}`);
+        setPizza(pizzaResponse.data); // Mettre à jour les détails de la pizza
 
         // Récupérer les ingrédients standards associés à cette pizza
-        const standardResponse = await fetch(url+`/standards/pizza/${id}`);
-        if (!standardResponse.ok) {
-          throw new Error('Erreur lors de la récupération des ingrédients standards');
-        }
-        const standardData = await standardResponse.json();
-        setStandardIngredients(standardData.ingredients); // Mettre à jour les ingrédients standards
-        setSelectedIngredients(standardData.ingredients)
+        const standardResponse = await axios.get(`${url}/standards/pizza/${id}`);
+        setStandardIngredients(standardResponse.data.ingredients); // Mettre à jour les ingrédients standards
+        setSelectedIngredients(standardResponse.data.ingredients); // Initialiser les ingrédients sélectionnés
       } catch (error) {
         setError(error.message);
       } finally {
@@ -47,12 +39,8 @@ const PizzaDetails = ({ userID }) => {
     // Récupérer tous les ingrédients disponibles
     const fetchAllIngredients = async () => {
       try {
-        const ingredientsResponse = await fetch(url+'/ingredients');
-        if (!ingredientsResponse.ok) {
-          throw new Error('Erreur lors de la récupération de tous les ingrédients');
-        }
-        const allIngredientsData = await ingredientsResponse.json();
-        setIngredients(allIngredientsData);
+        const ingredientsResponse = await axios.get(`${url}/ingredients`);
+        setIngredients(ingredientsResponse.data);
       } catch (error) {
         setError(error.message);
       }
@@ -62,64 +50,47 @@ const PizzaDetails = ({ userID }) => {
     fetchAllIngredients();
   }, [id]);
 
-  
   // Fonction pour gérer le changement d'état des ingrédients
   const handleCheckboxChange = (ingredient, checked) => {
-    if (checked) {
-      // Ajouter l'objet complet de l'ingrédient dans selectedIngredients
-      setSelectedIngredients(prevSelected => [...prevSelected, ingredient]);
-    } else {
-      // Retirer l'objet complet de l'ingrédient de selectedIngredients
-      setSelectedIngredients(prevSelected => prevSelected.filter(i => i.id !== ingredient.id));
-    }
-    setSelectedIngredients(prevSelected => [...prevSelected]);
+    setSelectedIngredients(prevSelected =>
+      checked
+        ? [...prevSelected, ingredient] // Ajouter l'ingrédient
+        : prevSelected.filter(i => i.id !== ingredient.id) // Retirer l'ingrédient
+    );
   };
 
   // Ajouter la pizza à la commande
   const handleAddToCart = async () => {
     if (!pizza) return;
-    console.log('Create commande');
+
     const newCommande = {
       description: "Commande en cours",
       validation: false,
       date: new Date().toISOString(),
-      prix: 0
+      prix: '0', // Mettre à jour le prix avec les ingrédients sélectionnés
     };
 
     try {
-      // Créer la commande sur le serveur
-      const createCommandeResponse = await axios.post(url+'/commandes', newCommande,{params : {compteId : userID}});
+      const createCommandeResponse = await axios.post(`${url}/commandes`, newCommande, {
+        params: { compteId: userID },
+      });
       const commandeId = createCommandeResponse.data.id;
-
-      // Ajouter la pizza à la commande existante
+       console.log(commandeId +" id")
       const pizzaCommande = {
-        commandeId : commandeId,
-        pizza: pizza,
+        commandeId,
+        pizza,
         ingredients: selectedIngredients,
       };
-      console.log(pizzaCommande);
 
-      try {
-        const addPizzaResponse = await fetch(url+'/pizzaCommandes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify(pizzaCommande),
-        });
+      const addPizzaResponse = await axios.post(`${url}/pizzaCommandes`, pizzaCommande);
 
-        if (!addPizzaResponse.ok) {
-          throw new Error('Erreur lors de l\'ajout de la pizza à la commande');
-        }
-
-        alert('Pizza ajoutée à la commande !');
-      } catch (error) {
-        alert('Erreur lors de l\'ajout au panier');
+      if (!addPizzaResponse.data) {
+        throw new Error('Erreur lors de l\'ajout de la pizza à la commande');
       }
+
+      alert('Pizza ajoutée à la commande !');
     } catch (error) {
-      console.error("Erreur lors de la création de la commande", error);
-      return;
+      alert('Erreur lors de l\'ajout au panier');
     }
   };
 
@@ -128,13 +99,13 @@ const PizzaDetails = ({ userID }) => {
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p>Une erreur est survenue : {error}</p>;
   }
 
   if (!pizza) {
     return null;
   }
-  console.log("id pizza origine : "+id);
+
   return (
     <div className="pizza-details">
       <h3>Détails de la pizza : {pizza.nom}</h3>
@@ -166,10 +137,9 @@ const PizzaDetails = ({ userID }) => {
       </ul>
 
       <button onClick={handleAddToCart}>Ajouter au panier</button>
-      
+
       <CommentairePizza pizzaId={id} />
     </div>
-
   );
 };
 

@@ -120,7 +120,7 @@ public class CompteServiceImpl implements CompteService {
     public CompteDto connexion(String username, String password) {
         List<Compte> comptes = this.compteRepository.findAll();
         for (Compte compte : comptes) {
-            if (compte.getUsername().equals(username) && compte.getPassword().equals(password)) {
+            if (compte.getUsername().equals(username)) {
                 return compteMapperImpl.toDto(compte);
             }
         }

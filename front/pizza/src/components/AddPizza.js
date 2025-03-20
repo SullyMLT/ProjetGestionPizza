@@ -130,6 +130,7 @@ function AddPizza() {
       } else {
         throw new Error("Erreur lors de la création du standard");
       }
+
     } catch (error) {
       console.error("Erreur lors de l'envoi des données :", error);
       alert(error.message || "Erreur lors de l'ajout de la pizza et du standard");

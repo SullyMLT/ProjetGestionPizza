@@ -1,36 +1,32 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
 
-const Login = ({ refreshUser }) => {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('token') || ''); // Récupérer le token depuis le localStorage
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      // Envoyer les informations de connexion au backend pour obtenir un token
+      // Envoyer le nom d'utilisateur et le mot de passe au backend pour la validation
       const response = await axios.post('http://localhost:3100/auth/login', { username, password });
-      const token = response.data.token;
 
-      // Stocker le token dans le localStorage
-      localStorage.setItem('token', token);
+      // Si la connexion réussit, stocker le token dans le localStorage
+      localStorage.setItem('token', response.data.token);
+      setToken(response.data.token);
+      setErrorMessage('');
 
-      // Vérifier et obtenir les informations de l'utilisateur
-      axios.get('http://localhost:3100/users/protected', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(response => {
-        const user = response.data.user;
+      // Rediriger vers la racine après une connexion réussie
+      navigate('/');  // This will take the user to the root path
+      window.location.reload();
 
-        navigate('/'); // Rediriger vers la page d'accueil après la connexion
-        window.location.reload();
-      });
-
-    } catch (err) {
-      setError('Utilisateur ou mot de passe incorrect');
+    } catch (error) {
+      setErrorMessage(error.response ? error.response.data.message : 'Erreur inconnue');
     }
   };
 
@@ -38,29 +34,23 @@ const Login = ({ refreshUser }) => {
     <div>
       <h2>Se connecter</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nom d'utilisateur</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Mot de passe</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Nom d'utilisateur"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button type="submit">Se connecter</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
+      {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
-};
+}
 
 export default Login;

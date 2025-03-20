@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
 
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-
+      // Envoie le nom d'utilisateur et le mot de passe en texte clair
       await axios.post('http://localhost:3100/auth/register', { username, password });
       setErrorMessage('');
       alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+
+      // Rediriger vers la racine après une inscription réussie
+      navigate('/'); // This will take the user to the root path
+      window.location.reload();
+
     } catch (error) {
-      setErrorMessage('Erreur lors de l\'inscription');
+      setErrorMessage("Erreur lors de l'inscription");
     }
   };
 

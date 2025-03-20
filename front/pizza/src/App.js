@@ -52,7 +52,7 @@ function App() {
   return (
     <div className="App">
       <header className="header">
-        <Link to="/panier">🧺</Link>
+        <Link to="/panier">🧺Panier</Link>
       </header>
 
       <nav>
@@ -65,7 +65,7 @@ function App() {
             <Link to="/commendes">Liste des commandes</Link>
           </>
         )}
-        <Link to="/commentaires">Liste des commentaires</Link>
+
 
         {token ? (
           <button onClick={logout}>Se déconnecter</button>
@@ -89,7 +89,7 @@ function App() {
         <Route path="/ajouter-ingredient" element={user?.role === 'admin' ? <AddIngredient /> : <Navigate to="/" />} />
         <Route path="/ingredients" element={user?.role === 'admin' ? <IngredientList /> : <Navigate to="/" />} />
         <Route path="/commendes" element={user?.role === 'admin' ? <CommendeList /> : <Navigate to="/" />} />
-        <Route path="/commentaires" element={user?.role === 'admin' ? <CommentairesListeAdmin /> : <Navigate to="/" />} />
+
         
       </Routes>
     </div>

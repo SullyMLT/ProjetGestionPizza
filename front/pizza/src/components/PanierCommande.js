@@ -24,7 +24,7 @@ const PanierCommande = ({ userID }) => {
 
         // Mettre à jour l'état avec la commande créée
         setCommande(createdCommande);
-
+         console.log(userID)
         // Récupérer les pizzas de la commande après la création de la commande
         const commandePizzasResponse = await axios.get(url + `/pizzaCommandes/commande/${createdCommande.id}`);
         setCommandePizzas(commandePizzasResponse.data || []);
@@ -97,7 +97,7 @@ const deletePizza = async (pizzaCommandeId) => {
 
             </div>
 
-            <button onClick={() => deletePizza(pizzaCommande.pizza.id)}>Supprimer</button>
+            <button onClick={() => deletePizza(pizzaCommande.id)}>Supprimer</button>
           </li>
         ))}
       </ul>
