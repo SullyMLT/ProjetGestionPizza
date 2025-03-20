@@ -45,6 +45,9 @@ public class PizzaCommandeController {
     @GetMapping("/commande/{commandeId}")
     public ResponseEntity<List<PizzaCommandeDto>> getPizzaCommandeByCommandeId(@PathVariable long commandeId) {
         List<PizzaCommandeDto> pizzaCommandes = pizzaCommandeService.getPizzaCommandeByCommandeId(commandeId);
+        if (pizzaCommandes == null){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(pizzaCommandes);
     }
 }

@@ -123,6 +123,9 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
                 pizzaCommandeDtos.remove(pizzaCommande);
             }
         }
+        if (pizzaCommandeDtos.isEmpty()) {
+            return null;
+        }
 
         return pizzaCommandeDtos;
     }
