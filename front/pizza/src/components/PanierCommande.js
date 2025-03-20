@@ -94,15 +94,18 @@ const deletePizza = async (pizzaCommandeId) => {
                   </li>
                 ))}
               </ul>
+
             </div>
-            <h2>{commande.prix}</h2>
+
             <button onClick={() => deletePizza(pizzaCommande.pizza.id)}>Supprimer</button>
           </li>
         ))}
       </ul>
 
       <div>
+
         {/* "Valider" button pour confirmer la commande */}
+         <h2>Prix total = {commande ? commande.prix : '...' } €</h2>
         <button onClick={validateCommande} disabled={!commande}>Valider la commande</button>
       </div>
     </div>
