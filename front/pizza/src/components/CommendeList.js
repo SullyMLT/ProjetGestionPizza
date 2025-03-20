@@ -6,9 +6,9 @@ const url = 'http://localhost:8080/commandes';
 
 const CommandeList = () => {
 
-  const [commandes, setCommandes] = useState([]);  // État pour les commandes
-  const [loading, setLoading] = useState(true);  // État pour savoir si les données sont en cours de chargement
-  const [error, setError] = useState(null);  // État pour gérer les erreurs
+  const [commandes, setCommandes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fonction pour récupérer les commandes depuis l'API
@@ -19,23 +19,23 @@ const CommandeList = () => {
           throw new Error('Erreur lors de la récupération des commandes');
         }
         const data = await response.json();
-        setCommandes(data);  // Mettre à jour l'état des commandes avec les données récupérées
+        setCommandes(data);
       } catch (error) {
-        setError(error.message);  // Si une erreur survient, mettre à jour l'état d'erreur
+        setError(error.message);
       } finally {
-        setLoading(false);  // Fin du chargement, mettre à jour l'état de chargement
+        setLoading(false);
       }
     };
 
-    fetchCommandes();  // Appeler la fonction pour récupérer les commandes
-  }, []);  // Le tableau vide [] signifie que l'effet se déclenche une seule fois, lors du montage du composant
+    fetchCommandes();
+  }, []);
 
   if (loading) {
-    return <p>Chargement des commandes...</p>;  // Afficher un message de chargement tant que les données sont en cours de récupération
+    return <p>Chargement des commandes...</p>;
   }
 
   if (error) {
-    return <p>Erreur: {error}</p>;  // Si une erreur survient, afficher un message d'erreur
+    return <p>Erreur: {error}</p>;
   }
 
   return (

@@ -12,13 +12,13 @@ function Register() {
     e.preventDefault();
 
     try {
-      // Envoie le nom d'utilisateur et le mot de passe en texte clair
+
       await axios.post('http://localhost:3100/auth/register', { username, password });
       setErrorMessage('');
       alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
 
-      // Rediriger vers la racine après une inscription réussie
-      navigate('/'); // This will take the user to the root path
+
+      navigate('/');
       window.location.reload();
 
     } catch (error) {

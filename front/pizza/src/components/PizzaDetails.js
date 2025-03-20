@@ -9,12 +9,12 @@ import { url_host } from '../config/config.js';
 const url = url_host;
 
 const PizzaDetails = ({ userID }) => {
-  const { id } = useParams(); // Récupérer l'ID de la pizza depuis l'URL
-  const [pizza, setPizza] = useState(null); // Détails de la pizza
-  const [ingredients, setIngredients] = useState([]); // Liste d'ingrédients
-  const [selectedIngredients, setSelectedIngredients] = useState([]); // Ingrédients sélectionnés par l'utilisateur (objets complets)
-  const [loading, setLoading] = useState(true); // État de chargement
-  const [error, setError] = useState(null); // Gestion des erreurs
+  const { id } = useParams();
+  const [pizza, setPizza] = useState(null);
+  const [ingredients, setIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
  const navigate = useNavigate();
 
 
@@ -23,12 +23,12 @@ const PizzaDetails = ({ userID }) => {
     const fetchPizzaDetails = async () => {
       try {
         const pizzaResponse = await axios.get(`${url}/pizzas/${id}`);
-        setPizza(pizzaResponse.data); // Mettre à jour les détails de la pizza
+        setPizza(pizzaResponse.data);
 
         // Récupérer les ingrédients standards associés à cette pizza
         const standardResponse = await axios.get(`${url}/standards/pizza/${id}`);
 
-        setSelectedIngredients(standardResponse.data.ingredients); // Initialiser les ingrédients sélectionnés
+        setSelectedIngredients(standardResponse.data.ingredients);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -54,8 +54,8 @@ const PizzaDetails = ({ userID }) => {
   const handleCheckboxChange = (ingredient, checked) => {
     setSelectedIngredients(prevSelected =>
       checked
-        ? [...prevSelected, ingredient] // Ajouter l'ingrédient
-        : prevSelected.filter(i => i.id !== ingredient.id) // Retirer l'ingrédient
+        ? [...prevSelected, ingredient]
+        : prevSelected.filter(i => i.id !== ingredient.id)
     );
   };
 
@@ -67,7 +67,7 @@ const PizzaDetails = ({ userID }) => {
       description: "Commande en cours",
       validation: false,
       date: new Date().toISOString(),
-      prix: '0', // Mettre à jour le prix avec les ingrédients sélectionnés
+      prix: '0',
       compteId : userID
     };
 
@@ -90,7 +90,7 @@ const PizzaDetails = ({ userID }) => {
       }
 
       alert('Pizza ajoutée à la commande !');
-      navigate('/');  // This will take the user to the root path
+      navigate('/');
       window.location.reload();
     } catch (error) {
       alert('Erreur lors de l\'ajout au panier');

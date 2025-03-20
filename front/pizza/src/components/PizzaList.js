@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Importer useNavigate
+import { useNavigate } from 'react-router-dom';
 import "./css/PizzaList.css";
 
-// URL de l'API
 import { url_host } from '../config/config.js';
 
 const url = url_host +'/pizzas';
@@ -10,13 +9,13 @@ const url = url_host +'/pizzas';
 const token = localStorage.getItem('token');
 
 const PizzaList = () => {
-  const [pizzas, setPizzas] = useState([]);  // État pour les pizzas
-  const [loading, setLoading] = useState(true);  // État pour savoir si les données sont en cours de chargement
-  const [error, setError] = useState(null);  // État pour gérer les erreurs
-  const navigate = useNavigate();  // Hook pour la navigation
+  const [pizzas, setPizzas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fonction pour récupérer les pizzas depuis l'API
+
     const fetchPizzas = async () => {
       try {
         const response = await fetch(url);
@@ -24,27 +23,27 @@ const PizzaList = () => {
           throw new Error('Erreur lors de la récupération des pizzas');
         }
         const data = await response.json();
-        setPizzas(data);  // Mettre à jour l'état des pizzas avec les données récupérées
+        setPizzas(data);
       } catch (error) {
-        setError(error.message);  // Si une erreur survient, mettre à jour l'état d'erreur
+        setError(error.message);
       } finally {
-        setLoading(false);  // Fin du chargement, mettre à jour l'état de chargement
+        setLoading(false);
       }
     };
 
-    fetchPizzas();  // Appeler la fonction pour récupérer les pizzas
-  }, []);  // Le tableau vide [] signifie que l'effet se déclenche une seule fois, lors du montage du composant
+    fetchPizzas();
+  });
 
   if (loading) {
-    return <p>Chargement des pizzas...</p>;  // Afficher un message de chargement tant que les données sont en cours de récupération
+    return <p>Chargement des pizzas...</p>;
   }
 
   if (error) {
-    return <p>Erreur: {error}</p>;  // Si une erreur survient, afficher un message d'erreur
+    return <p>Erreur: {error}</p>;
   }
 
   const handleDetailClick = (pizzaId) => {
-    // Rediriger vers la page de détails de la pizza
+
     navigate(`/pizzas/${pizzaId}`);
   };
 
