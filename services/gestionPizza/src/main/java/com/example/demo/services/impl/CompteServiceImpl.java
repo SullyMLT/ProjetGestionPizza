@@ -21,8 +21,6 @@ public class CompteServiceImpl implements CompteService {
     @Autowired
     private CompteRepository compteRepository;
     @Autowired
-    private CommandeRepository commandeRepository;
-    @Autowired
     private CompteMapperImpl compteMapperImpl;
 
     @Override
