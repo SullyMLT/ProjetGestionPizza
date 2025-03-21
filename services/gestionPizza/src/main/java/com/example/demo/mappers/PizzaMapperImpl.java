@@ -9,6 +9,9 @@ public class PizzaMapperImpl {
 
     public PizzaDto toDto(Pizza pizza){
         PizzaDto pizzaDto = new PizzaDto();
+        if (pizza == null) {
+            return null;
+        }
         pizzaDto.setId(pizza.getId());
         pizzaDto.setNom(pizza.getNom());
         pizzaDto.setPrix(pizza.getPrix());
@@ -20,8 +23,8 @@ public class PizzaMapperImpl {
 
     public Pizza toEntity(PizzaDto pizzaDto) {
         Pizza pizza = new Pizza();
-        if (pizzaDto.getId() != null) {
-            pizza.setId(pizzaDto.getId());
+        if (pizzaDto == null) {
+            return null;
         }
         pizza.setNom(pizzaDto.getNom());
         pizza.setPrix(pizzaDto.getPrix());
