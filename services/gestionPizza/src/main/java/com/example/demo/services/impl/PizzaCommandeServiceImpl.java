@@ -118,10 +118,7 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         Pizza pizzaDel = new Pizza();
         List<IngredientDto> ingreDel = new ArrayList<>();
         pizzaDel = pizzaRepository.save(pizzaDel);
-        if (pizzaDel == null) {
-            return false;
-        }
-        PizzaDto pizzaDelDto = pizzaMapperImpl.toDto(pizzaDel);
+        PizzaDto pizzaDelDto = this.pizzaMapperImpl.toDto(pizzaDel);
         pizzaComDto.setPizza(pizzaDelDto);
         pizzaComDto.setIngredients(ingreDel);
         this.pizzaCommandeRepository.save(this.pizzaCommandeMapperImpl.toEntity(pizzaComDto));

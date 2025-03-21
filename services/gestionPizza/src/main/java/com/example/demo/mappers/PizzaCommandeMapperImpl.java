@@ -26,7 +26,7 @@ public class PizzaCommandeMapperImpl {
             pizzaCommandeDto.setPizza(pizzaMapperImpl.toDto(pizzaCommande.getPizza()));
         }
         List<IngredientDto> ingreDto = new ArrayList<>();
-        if (pizzaCommande.getIngredients() != null) {
+        if (!pizzaCommande.getIngredients().isEmpty()) {
             for (Ingredient ingredient : pizzaCommande.getIngredients()) {
                 ingreDto.add(ingredientMapperImpl.toDto(ingredient));
             }
@@ -45,7 +45,7 @@ public class PizzaCommandeMapperImpl {
         }
 
         List<Ingredient> ingredients = new ArrayList<>();
-        if (pizzaCommandeDto.getIngredients() != null) {
+        if (!pizzaCommandeDto.getIngredients().isEmpty()) {
             for (IngredientDto ingredientDto : pizzaCommandeDto.getIngredients()) {
                 ingredients.add(ingredientMapperImpl.toEntity(ingredientDto));
             }
