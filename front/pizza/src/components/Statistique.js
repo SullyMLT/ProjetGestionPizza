@@ -49,7 +49,6 @@ const StatsPieChart = () => {
     ],
   };
 
-  // Préparation des données pour le graphique des ingrédients
   const ingredientData = {
     labels: Object.keys(data.statIngredient),
     datasets: [
