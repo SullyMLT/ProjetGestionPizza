@@ -62,18 +62,15 @@ function AddPizza() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-
-
     if (!pizza.nom || !pizza.description || !file || selectedIngredients.length === 0) {
       return alert("Tous les champs doivent être remplis, y compris l'image et les ingrédients.");
     }
 
     try {
-      //Étape 1 : Envoyer l'image
       const formData = new FormData();
       formData.append("image", file);
 
+      console.log("Envoi de l'image...");
       const uploadResponse = await fetch('http://localhost:3100/img/upload-image', {
         method: 'POST',
         body: formData,
@@ -84,10 +81,12 @@ function AddPizza() {
       }
 
       const { imagePath } = await uploadResponse.json();
+      console.log("Image téléchargée avec succès :", imagePath);
+
       const updatedPizza = { ...pizza, photo: imagePath };
 
-      //Étape 2 : Ajouter la pizza avec l'image
-      const pizzaResponse = await fetch("http://localhost:8080/pizzas", {
+      console.log("Ajout de la pizza...");
+      const pizzaResponse = await fetch(url+"/pizzas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedPizza),
@@ -98,14 +97,15 @@ function AddPizza() {
       }
 
       const pizzaResponseData = await pizzaResponse.json();
+      console.log("Pizza créée :", pizzaResponseData);
 
-      //Étape 3 : Associer la pizza aux ingrédients
       const standardData = {
         pizza: pizzaResponseData,
         ingredients: selectedIngredients,
       };
 
-      const standardResponse = await fetch("http://localhost:8080/standards", {
+      console.log("Création du standard...");
+      const standardResponse = await fetch(url+"/standards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(standardData),
