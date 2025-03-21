@@ -39,7 +39,8 @@ public class StandardServiceImpl implements StandardService {
             prix += ingredient.getPrix();
         }
         pizza.setPrix(prix);
-        this.pizzaRepository.save(pizza);
+        Pizza savedPizza = this.pizzaRepository.save(pizza);
+        standard.getPizza().setId(savedPizza.getId());
         Standard savedStandard = standardRepository.save(standard);
         return standardMapperImpl.toDto(savedStandard);
     }

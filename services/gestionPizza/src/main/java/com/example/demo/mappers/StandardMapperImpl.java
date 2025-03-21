@@ -20,9 +20,6 @@ public class StandardMapperImpl {
     private IngredientMapperImpl ingredientMapperImpl;
 
     @Autowired
-    private PizzaServiceImpl PizzaServiceImpl;
-
-    @Autowired
     private PizzaMapperImpl pizzaMapperImpl;
 
     public StandardDto toDto(Standard standard) {
@@ -56,8 +53,7 @@ public class StandardMapperImpl {
         }
         standard.setIngredients(ingredients);
         if (standardDto.getPizza() != null) {
-            long pizzaDtoId = standardDto.getPizza().getId();
-            PizzaDto pizzaDto = this.PizzaServiceImpl.getPizzaById(pizzaDtoId);
+            PizzaDto pizzaDto = standardDto.getPizza();
             Pizza pizza = pizzaMapperImpl.toEntity(pizzaDto);
             standard.setPizza(pizza);
         }

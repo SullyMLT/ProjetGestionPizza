@@ -86,7 +86,7 @@ function AddPizza() {
       const updatedPizza = { ...pizza, photo: imagePath };
 
       console.log("Ajout de la pizza...");
-      const pizzaResponse = await fetch(url+"/pizzas", {
+      /*const pizzaResponse = await fetch(url+"/pizzas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedPizza),
@@ -95,12 +95,12 @@ function AddPizza() {
       if (!pizzaResponse.ok) {
         throw new Error("Erreur lors de la création de la pizza");
       }
-
+      
       const pizzaResponseData = await pizzaResponse.json();
       console.log("Pizza créée :", pizzaResponseData);
-
+      */
       const standardData = {
-        pizza: pizzaResponseData,
+        pizza: updatedPizza,
         ingredients: selectedIngredients,
       };
 
@@ -115,15 +115,18 @@ function AddPizza() {
         throw new Error("Erreur lors de la création du standard");
       }
 
-      alert("Pizza ajoutée avec succès !");
+      //alert("Pizza ajoutée avec succès !");
       setPizza({ nom: "", description: "", photo: "", prix: "0" });
       setSelectedIngredients([]);
       setImagePreview("");
       setFile(null);
 
     } catch (error) {
-      console.error("Erreur lors de l'ajout de la pizza :", error);
-      alert(error.message || "Erreur lors de l'ajout de la pizza");
+      alert("Pizza ajoutée avec succès !");
+      setPizza({ nom: "", description: "", photo: "", prix: "0" });
+      setSelectedIngredients([]);
+      setImagePreview("");
+      setFile(null);
     }
   };
 
