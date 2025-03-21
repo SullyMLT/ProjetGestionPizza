@@ -78,7 +78,7 @@ function App() {
           <>
             <Link to="/commande">Mes commandes</Link>
             <Link to="/statistique-pizza">Statistique</Link>
-            <button onClick={logout}>Se déconnecter</button>
+            <button classname="button-loggout" onClick={logout}>Se déconnecter</button>
           </>
         ) : (
           <>
