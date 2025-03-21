@@ -44,6 +44,8 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public PizzaDto addPizza(PizzaDto pizzaDto) {
         Pizza pizza = this.pizzaMapperImpl.toEntity(pizzaDto);
+        pizza.setActiver(true);
+        pizza.setPrix(0f);
         Pizza piz = this.pizzaRepository.save(pizza);
         return this.pizzaMapperImpl.toDto(piz);
     }
