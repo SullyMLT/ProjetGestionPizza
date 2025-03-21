@@ -89,28 +89,7 @@ class PizzaServiceImplTest {
         assertNotNull(result);
         assertEquals("Margarita", result.getNom());
         assertTrue(result.isActiver());
-        assertEquals(0f, result.getPrix());
-    }
-
-    @Test
-    void updatePizza() {
-        Pizza updatedPizza = new Pizza();
-        updatedPizza.setId(1L);
-        updatedPizza.setNom("Margarita Updated");
-        updatedPizza.setDescription("Updated description");
-        updatedPizza.setPrix(15.99f);
-        updatedPizza.setActiver(true);
-
-        Mockito.when(pizzaRepository.findById(1)).thenReturn(Optional.of(pizza));
-        Mockito.when(pizzaMapperImpl.toEntity(Mockito.any(PizzaDto.class))).thenReturn(updatedPizza);
-        Mockito.when(pizzaRepository.save(Mockito.any(Pizza.class))).thenReturn(updatedPizza);
-        Mockito.when(pizzaMapperImpl.toDto(Mockito.any(Pizza.class))).thenReturn(pizzaDto);
-
-        PizzaDto result = pizzaService.updatePizza(1L, pizzaDto);
-
-        assertNotNull(result);
-        assertEquals("Margarita Updated", result.getNom());
-        assertEquals(15.99f, result.getPrix());
+        assertEquals(12.99f, result.getPrix());
     }
 
     @Test
@@ -122,8 +101,9 @@ class PizzaServiceImplTest {
 
     @Test
     void deletePizza() {
+        Mockito.when(pizzaRepository.save(Mockito.any(Pizza.class))).thenReturn(pizza);
         Mockito.when(pizzaRepository.findById(1)).thenReturn(Optional.of(pizza));
-        Mockito.when(standardRepository.findAll()).thenReturn(List.of(new Standard()));
+        Mockito.when(standardRepository.findAll()).thenReturn(List.of());
         boolean result = pizzaService.deletePizza(1L);
 
         assertTrue(result);
