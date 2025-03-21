@@ -43,14 +43,13 @@ public class IngredientServiceImpl implements IngredientService {
         List<PizzaCommande> pizzaCom = this.pizzaCommandeRepository.findAll();
         for (PizzaCommande pizzaCommande : pizzaCom) {
             if (pizzaCommande.getIngredients().contains(ingre)) {
-                return "L'ingredient ne peut pas être supprimé";
+                return "L'ingredient ne peut pas être supprimé d'une pizza commande";
             }
         }
         List<Standard> standard = this.standardRepository.findAll();
         for (Standard stand : standard) {
             if (stand.getIngredients().contains(ingre)) {
-                stand.getIngredients().remove(ingre);
-                this.standardRepository.save(stand);
+                return "L'ingredient ne peut pas être supprimé d'un standard";
             }
         }
 

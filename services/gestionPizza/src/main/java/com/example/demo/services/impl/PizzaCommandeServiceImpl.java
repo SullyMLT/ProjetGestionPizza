@@ -33,6 +33,9 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
     @Override
     public PizzaCommandeDto createPizzaCommande(PizzaCommandeDto pizzaCommandeDto) {
         PizzaCommande pizzaCommande = pizzaCommandeMapperImpl.toEntity(pizzaCommandeDto);
+        if (pizzaCommande == null) {
+            return null;
+        }
         Pizza pizza = pizzaCommande.getPizza();
         Optional<Commande> com = commandeRepository.findById(Math.toIntExact(pizzaCommande.getCommandeId()));
         if (com.isEmpty()) {
@@ -95,7 +98,11 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
 
     @Override
     public boolean deletePizzaCommande(Long id) {
+        this.pizzaMapperImpl = new PizzaMapperImpl();
         PizzaCommandeDto pizzaComDto = this.getPizzaCommandeById(id);
+        if (pizzaComDto == null) {
+            return false;
+        }
         Long commandeId = pizzaComDto.getCommandeId();
         Optional<Commande> optionalCommande = commandeRepository.findById(Math.toIntExact(commandeId));
         if (optionalCommande.isEmpty()) {
@@ -105,11 +112,16 @@ public class PizzaCommandeServiceImpl implements PizzaCommandeService {
         if (commande.isValidation()){
             return false;
         }
-        commande.setPrix(commande.getPrix() - pizzaComDto.getPizza().getPrix());
+        if (pizzaComDto.getPizza() != null){
+            commande.setPrix(commande.getPrix() - pizzaComDto.getPizza().getPrix());
+        }
         Pizza pizzaDel = new Pizza();
         List<IngredientDto> ingreDel = new ArrayList<>();
         pizzaDel = pizzaRepository.save(pizzaDel);
-        PizzaDto pizzaDelDto = this.pizzaMapperImpl.toDto(pizzaDel);
+        if (pizzaDel == null) {
+            return false;
+        }
+        PizzaDto pizzaDelDto = pizzaMapperImpl.toDto(pizzaDel);
         pizzaComDto.setPizza(pizzaDelDto);
         pizzaComDto.setIngredients(ingreDel);
         this.pizzaCommandeRepository.save(this.pizzaCommandeMapperImpl.toEntity(pizzaComDto));

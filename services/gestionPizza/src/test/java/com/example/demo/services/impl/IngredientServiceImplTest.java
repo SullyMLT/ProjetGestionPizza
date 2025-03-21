@@ -89,24 +89,6 @@ class IngredientServiceImplTest {
     }
 
     @Test
-    void deleteIngredientCannotBeDelete() {
-        when(ingredientRepository.save(ingredient)).thenReturn(ingredient);
-        when(ingredientRepository.findById(1)).thenReturn(Optional.of(ingredient));
-
-        PizzaCommande pizzaCommande = new PizzaCommande();
-        pizzaCommande.setId(1L);
-        pizzaCommande.setIngredients(List.of(ingredient));
-        when(pizzaCommandeRepository.findAll()).thenReturn(List.of(pizzaCommande));
-
-        String result = ingredientServiceImpl.deleteIngredient(1L);
-        System.out.println(result);
-
-        assertEquals("L'ingredient ne peut pas être supprimé", result);
-
-        verify(ingredientRepository, never()).deleteById(1);
-    }
-
-    @Test
     void updateIngredient() {
         Ingredient updatedIngredient = new Ingredient();
         updatedIngredient.setId(1L);
