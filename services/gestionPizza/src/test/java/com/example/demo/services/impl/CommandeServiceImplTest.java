@@ -1,6 +1,5 @@
 package com.example.demo.services.impl;
 
-import com.example.demo.mappers.PizzaCommandeMapperImpl;
 import com.example.demo.repositories.PizzaCommandeRepository;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +8,9 @@ import com.example.demo.entities.Commande;
 import com.example.demo.mappers.CommandeMapperImpl;
 import com.example.demo.repositories.CommandeRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -23,7 +20,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class CommandeServiceImplTest {
@@ -36,6 +32,9 @@ class CommandeServiceImplTest {
 
     @Mock
     private PizzaCommandeRepository pizzaCommandeRepository;
+
+    @Mock
+    private StatistiqueServiceImpl statistiqueServiceImpl;
 
     @InjectMocks
     private CommandeServiceImpl commandeService;
@@ -107,10 +106,22 @@ class CommandeServiceImplTest {
 
     @Test
     void updateCommande() {
-        when(commandeRepository.findById(1)).thenReturn(Optional.of(commande));
-        when(commandeRepository.save(any(Commande.class))).thenReturn(commande);
-        when(commandeMapperImpl.toDto(any(Commande.class))).thenReturn(commandeDto);
 
+        when(commandeRepository.findById(1)).thenReturn(Optional.of(commande));
+        when(commandeRepository.save(any(Commande.class))).thenAnswer(invocation -> {
+            Commande c = invocation.getArgument(0);
+            return c;
+        });
+        when(commandeMapperImpl.toDto(any(Commande.class))).thenAnswer(invocation -> {
+            Commande c = invocation.getArgument(0);
+            CommandeDto dto = new CommandeDto();
+            dto.setId(c.getId());
+            dto.setPrix(c.getPrix());
+            dto.setDescription(c.getDescription());
+            dto.setValidation(c.isValidation());
+            dto.setCompteId(c.getCompteId());
+            return dto;
+        });
         CommandeDto result = commandeService.updateCommande(1L, 25.0f);
 
         assertNotNull(result);
@@ -120,9 +131,14 @@ class CommandeServiceImplTest {
     @Test
     void validateCommande() {
         when(commandeRepository.findById(1)).thenReturn(Optional.of(commande));
-        when(commandeRepository.save(any(Commande.class))).thenReturn(commande);
+        when(commandeRepository.save(any(Commande.class))).thenAnswer(invocation -> {
+            Commande saved = invocation.getArgument(0);
+            return saved;
+        });
         when(commandeMapperImpl.toDto(any(Commande.class))).thenReturn(commandeDto);
         when(pizzaCommandeRepository.findAll()).thenReturn(new ArrayList<>());
+
+        when(statistiqueServiceImpl.updateStatistiqueList(any(List.class))).thenReturn(null);
 
         CommandeDto result = commandeService.validateCommande(1L);
 
