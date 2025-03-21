@@ -59,7 +59,7 @@ public class PizzaServiceImpl implements PizzaService {
             // entity to update
             Pizza p = pizza.get();
             // mise à jour des données
-            p.setNom(pizzaDto.getNom());
+            p.setNom(piz.getNom());
             p.setDescription(piz.getDescription());
             p.setPhoto(piz.getPhoto());
             p.setPrix(piz.getPrix());

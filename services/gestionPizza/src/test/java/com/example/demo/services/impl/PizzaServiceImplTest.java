@@ -123,7 +123,7 @@ class PizzaServiceImplTest {
     @Test
     void deletePizza() {
         Mockito.when(pizzaRepository.findById(1)).thenReturn(Optional.of(pizza));
-        Mockito.when(standardRepository.findAll()).thenReturn(List.of(new Standard()));
+        Mockito.when(standardRepository.findAll()).thenReturn(List.of());
         boolean result = pizzaService.deletePizza(1L);
 
         assertTrue(result);
