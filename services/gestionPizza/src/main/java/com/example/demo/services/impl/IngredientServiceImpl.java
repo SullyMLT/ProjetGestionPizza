@@ -30,9 +30,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientDto addIngredient(IngredientDto ingredientDto) {
-        // conversion Dto to entity
         Ingredient ingredient = this.ingredientMapperImpl.toEntity(ingredientDto);
-        // sauvegarde de l'entité sur la base
         Ingredient saveIngredient = this.ingredientRepository.save(ingredient);
 
         return this.ingredientMapperImpl.toDto(saveIngredient);
