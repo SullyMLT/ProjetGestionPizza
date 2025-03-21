@@ -76,6 +76,6 @@ Utilisateur connecté
 
 ## Auteur
 
-Sully MILLLET
+Sully MILLET
 
 Christian Esteban NUNEZ GUAJARDO
