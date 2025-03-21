@@ -20,11 +20,11 @@ import CommandeListeCompte from "./components/CommandeListeCompte"
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState(null);  // Stocke les informations de l'utilisateur
+  const [user, setUser] = useState(null);  
 
-  const [token, setToken] = useState(localStorage.getItem('token')); // Récupère le token du localStorage
+  const [token, setToken] = useState(localStorage.getItem('token')); 
 
-  // Fonction pour récupérer les informations de l'utilisateur et ses commandes
+
   const refreshUser = () => {
     if (token) {
       axios.get('http://localhost:3100/users/protected', {
@@ -32,10 +32,10 @@ function App() {
       })
       .then(response => {
         const userData = response.data.user;
-        setUser(userData); // Mettre à jour l'utilisateur
+        setUser(userData); 
       })
       .catch(() => {
-        setUser(null); // Si l'utilisateur n'est pas trouvé ou le token est invalide
+        setUser(null); 
       });
     }
   };
@@ -43,17 +43,17 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    refreshUser();  // Rafraîchit les informations de l'utilisateur à chaque changement de token
+    refreshUser();  
   }, [token]);
 
-  // Fonction de déconnexion
+  
   const logout = () => {
-    localStorage.removeItem('token'); // Supprimer le token
-    setToken(null); // Met à jour l'état du token
-    setUser(null); // Réinitialiser l'utilisateur
+    localStorage.removeItem('token'); 
+    setToken(null); 
+    setUser(null); 
 
     navigate('/');
-    window.location.reload(); // Recharger la page
+    window.location.reload(); 
   };
 
   return (
