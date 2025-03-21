@@ -111,11 +111,11 @@ function AddPizza() {
         body: JSON.stringify(standardData),
       });
 
-      if (!standardResponse.ok) {
+      if (!standardResponse) {
         throw new Error("Erreur lors de la création du standard");
       }
 
-      //alert("Pizza ajoutée avec succès !");
+      alert("Pizza ajoutée avec succès !");
       setPizza({ nom: "", description: "", photo: "", prix: "0" });
       setSelectedIngredients([]);
       setImagePreview("");

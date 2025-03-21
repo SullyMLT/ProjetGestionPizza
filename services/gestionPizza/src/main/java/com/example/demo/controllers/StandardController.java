@@ -52,7 +52,6 @@ public class StandardController {
 
     @PostMapping
     public ResponseEntity<StandardDto> addStandard(@RequestBody StandardDto standardDto) {
-
         StandardDto createdStandard = standardService.addStandard(standardDto);
         return ResponseEntity.status(201).body(createdStandard);
     }
