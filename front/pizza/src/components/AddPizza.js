@@ -81,30 +81,15 @@ function AddPizza() {
       }
 
       const { imagePath } = await uploadResponse.json();
-      console.log("Image téléchargée avec succès :", imagePath);
 
       const updatedPizza = { ...pizza, photo: imagePath };
 
-      console.log("Ajout de la pizza...");
-      /*const pizzaResponse = await fetch(url+"/pizzas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedPizza),
-      });
-
-      if (!pizzaResponse.ok) {
-        throw new Error("Erreur lors de la création de la pizza");
-      }
       
-      const pizzaResponseData = await pizzaResponse.json();
-      console.log("Pizza créée :", pizzaResponseData);
-      */
       const standardData = {
         pizza: updatedPizza,
         ingredients: selectedIngredients,
       };
 
-      console.log("Création du standard...");
       const standardResponse = await fetch(url+"/standards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
