@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import "./css/Login.css";
+
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [token, setToken] = useState(localStorage.getItem('token') || ''); // Récupérer le token depuis le localStorage
+  const [token, setToken] = useState(localStorage.getItem('token') || ''); // récupère le token depuis le localStorage
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,7 +23,6 @@ function Login() {
       setToken(response.data.token);
       setErrorMessage('');
 
-
       navigate('/');
       window.location.reload();
 
@@ -31,24 +32,26 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Se connecter</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <h2 className="login-title">Se connecter</h2>
+      <form className="login-form" onSubmit={handleSubmit}>
         <input
           type="text"
+          className="login-input"
           placeholder="Nom d'utilisateur"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
+          className="login-input"
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Se connecter</button>
+        <button type="submit" className="login-button">Se connecter</button>
       </form>
-      {errorMessage && <p>{errorMessage}</p>}
+      {errorMessage && <p className="login-error">{errorMessage}</p>}
     </div>
   );
 }

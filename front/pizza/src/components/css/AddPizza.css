@@ -9,7 +9,7 @@
   
   h2 {
     text-align: center;
-    color: #2c3e50;
+    color: #343a40;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     position: relative;
@@ -36,7 +36,7 @@
   }
 
   .add-pizza-form h2 {
-    color: #2c3e50; /* Noir pour les titres */
+    color: #2c3e50; 
   }
   
   .form-group {
