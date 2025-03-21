@@ -40,12 +40,10 @@ public class IngredientServiceImpl implements IngredientService {
     public String deleteIngredient(Long id) {
         IngredientDto ingredientDto = getIngredientById(id);
         Ingredient ingre = this.ingredientMapperImpl.toEntity(ingredientDto);
-        if (ingredientDto != null) {
-            List<PizzaCommande> pizzaCom = this.pizzaCommandeRepository.findAll();
-            for (PizzaCommande pizzaCommande : pizzaCom) {
-                if (pizzaCommande.getIngredients().contains(ingre)) {
-                    return "L'ingredient ne peut pas être supprimé";
-                }
+        List<PizzaCommande> pizzaCom = this.pizzaCommandeRepository.findAll();
+        for (PizzaCommande pizzaCommande : pizzaCom) {
+            if (pizzaCommande.getIngredients().contains(ingre)) {
+                return "L'ingredient ne peut pas être supprimé";
             }
         }
         List<Standard> standard = this.standardRepository.findAll();

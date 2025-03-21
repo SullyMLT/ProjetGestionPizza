@@ -132,12 +132,20 @@ class CommandeServiceImplTest {
     void validateCommande() {
         when(commandeRepository.findById(1)).thenReturn(Optional.of(commande));
         when(commandeRepository.save(any(Commande.class))).thenAnswer(invocation -> {
-            Commande saved = invocation.getArgument(0);
-            return saved;
+            Commande c = invocation.getArgument(0);
+            return c;
         });
-        when(commandeMapperImpl.toDto(any(Commande.class))).thenReturn(commandeDto);
+        when(commandeMapperImpl.toDto(any(Commande.class))).thenAnswer(invocation -> {
+            Commande c = invocation.getArgument(0);
+            CommandeDto dto = new CommandeDto();
+            dto.setId(c.getId());
+            dto.setPrix(c.getPrix());
+            dto.setDescription(c.getDescription());
+            dto.setValidation(c.isValidation());
+            dto.setCompteId(c.getCompteId());
+            return dto;
+        });
         when(pizzaCommandeRepository.findAll()).thenReturn(new ArrayList<>());
-
         when(statistiqueServiceImpl.updateStatistiqueList(any(List.class))).thenReturn(null);
 
         CommandeDto result = commandeService.validateCommande(1L);

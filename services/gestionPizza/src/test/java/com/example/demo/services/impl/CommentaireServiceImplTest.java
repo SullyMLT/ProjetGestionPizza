@@ -86,7 +86,6 @@ class CommentaireServiceImplTest {
     void addCommentaire() {
         when(commentaireMapperImpl.toEntity(any(CommentaireDto.class))).thenReturn(commentaire);
         when(commentaireRepository.save(any(Commentaire.class))).thenReturn(commentaire);
-        when(commentaireMapperImpl.toDto(any(Commentaire.class))).thenReturn(commentaireDto);
 
         commentaireService.addCommentaire(commentaireDto);
         verify(commentaireRepository, times(1)).save(any(Commentaire.class));
