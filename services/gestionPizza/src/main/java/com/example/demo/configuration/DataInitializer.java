@@ -163,7 +163,7 @@ public class DataInitializer implements CommandLineRunner {
         // Create Commentaires
         Commentaire commentaire1 = new Commentaire();
         commentaire1.setDescription("Très bonne pizza !");
-        commentaire1.setDate("2023-10-01");
+        commentaire1.setDate("2025-03-21");
         commentaire1.setPizzaOrigine(pizza1.getId());
         commentaire1.setNote(5);
         commentaire1.setCompteId(savedCompteDto1.getId());
